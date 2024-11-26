@@ -47,7 +47,7 @@ class Snap(BaseModel):
     revision: str
     status: str
     summary: str
-    title: str
+    title: str | None = None
     tracking_channel: str = Field(
         validation_alias=AliasChoices("tracking-channel", "tracking_channel"),
         serialization_alias="tracking-channel",
