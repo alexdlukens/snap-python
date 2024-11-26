@@ -7,10 +7,13 @@ SNAPD_SOCKET = "/run/snapd.socket"
 
 
 class SnapClient(AbstractSnapsClient):
-    def __init__(self, version: str = "v2"):
+    def __init__(self, version: str = "v2", snapd_socket_location: str = None):
+        if snapd_socket_location is None:
+            snapd_socket_location = SNAPD_SOCKET
         self.version = version
         self._base_url = "http://localhost"
-        self._transport = httpx.AsyncHTTPTransport(uds=SNAPD_SOCKET)
+        self._snapd_socket_location = snapd_socket_location
+        self._transport = httpx.AsyncHTTPTransport(uds=snapd_socket_location)
         self.client = httpx.AsyncClient(transport=self._transport)
 
         self.snaps = SnapsEndpoints(self)

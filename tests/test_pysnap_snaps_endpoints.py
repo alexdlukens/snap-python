@@ -4,6 +4,7 @@ import httpx
 import pytest
 
 from pysnap.client import SnapClient
+from tests.lib.setup_lxd_container import function_scope_container
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 CODE_DIR = BASE_DIR / "src" / "pysnap"
@@ -14,6 +15,10 @@ TEST_DATA_DIR = TEST_DIR / "data"
 @pytest.fixture
 def setup_client():
     return SnapClient(version="v2")
+
+@pytest.fixture
+def setup_lxd_client():
+    return SnapClient(version="v2", snapd_socket_location="/tmp/snapd.socket")
 
 
 @pytest.mark.asyncio
