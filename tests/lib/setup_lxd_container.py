@@ -16,8 +16,6 @@ SOCAT_SERVICE_FILE = TEST_LIB_DIR / "socat_snapd.service"
 
 logger = logging.getLogger("pysnap.tests.lib.setup_lxd_container")
 logger.setLevel(logging.INFO)
-logger.handlers.clear()
-logger.addHandler(logging.StreamHandler())
 
 
 def list_images_on_machine(client: pylxd.Client = None):
@@ -245,14 +243,14 @@ def setup_lxd_container(
 def function_scope_container() -> Container:
     container = setup_lxd_container("pysnap-test", clean=True)
     yield container
-    stop_container("pysnap-test", container.client, remove=True)
+    stop_container("pysnap-test", container.client, remove=False)
 
 
 @pytest.fixture(scope="module")
 def module_scope_container() -> Container:
     container = setup_lxd_container("pysnap-test", clean=True)
     yield container
-    stop_container("pysnap-test", container.client, remove=True)
+    stop_container("pysnap-test", container.client, remove=False)
 
 
 # socat cmd: socat TCP-LISTEN:8181,fork UNIX-CONNECT:/run/snapd.socket

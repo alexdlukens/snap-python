@@ -7,15 +7,27 @@ SNAPD_SOCKET = "/run/snapd.socket"
 
 
 class SnapClient(AbstractSnapsClient):
-    def __init__(self, version: str = "v2", snapd_socket_location: str = None):
-        if snapd_socket_location is None:
-            snapd_socket_location = SNAPD_SOCKET
-        self.version = version
-        self._base_url = "http://localhost"
-        self._snapd_socket_location = snapd_socket_location
-        self._transport = httpx.AsyncHTTPTransport(uds=snapd_socket_location)
-        self.client = httpx.AsyncClient(transport=self._transport)
+    def __init__(
+        self,
+        version: str = "v2",
+        snapd_socket_location: str = None,
+        tcp_location: str = None,
+    ):
+        if tcp_location and snapd_socket_location:
+            raise ValueError(
+                "Only one of snapd_socket_location or tcp_location can be provided."
+            )
+        if tcp_location is not None:
+            self._base_url = tcp_location
+            self._transport = httpx.AsyncHTTPTransport()
+        else:
+            self._base_url = "http://localhost"
+            self._transport = httpx.AsyncHTTPTransport(
+                uds=snapd_socket_location or SNAPD_SOCKET
+            )
 
+        self.version = version
+        self.client = httpx.AsyncClient(transport=self._transport)
         self.snaps = SnapsEndpoints(self)
 
     async def request(self, method: str, endpoint: str, **kwargs) -> httpx.Response:
@@ -39,5 +51,10 @@ class SnapClient(AbstractSnapsClient):
             httpx.Response: _description_
         """
         response = await self.client.get(f"{self._base_url}/")
+
+        return response
+
+    async def get_changes_by_id(self, change_id: str) -> httpx.Response:
+        response = await self.request("GET", f"changes/{change_id}")
 
         return response
