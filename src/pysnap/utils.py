@@ -5,7 +5,7 @@ import httpx
 from pysnap.schemas.changes import ChangesResponse
 
 
-class AbstractSnapsClient(ABC):
+class AbstractSnapsClient(ABC):  # pragma: no cover
     @abstractmethod
     async def request(self) -> httpx.Response:
         pass

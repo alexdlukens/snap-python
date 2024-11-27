@@ -41,7 +41,7 @@ async def test_snap_client_list_snaps(setup_lxd_client: SnapClient):
 
 
 @pytest.mark.asyncio
-async def test_snap_client_install_snap(setup_lxd_client: SnapClient):
+async def test_snap_client_install_snap_no_wait(setup_lxd_client: SnapClient):
     logger.debug("Running test_snap_client_install_snap")
     response = await setup_lxd_client.snaps.install_snap("hello-world")
     assert response.status_code == 202
@@ -49,8 +49,6 @@ async def test_snap_client_install_snap(setup_lxd_client: SnapClient):
     while True:
         changes = await setup_lxd_client.get_changes_by_id(response.change)
         assert changes.status_code == 200
-        tasks_remaining = len(changes.result.tasks)
-        logger.debug("Tasks remaining: %s", tasks_remaining)
         if changes.result.ready:
             logger.debug("Snap hello-world installed successfully")
             break
@@ -71,8 +69,6 @@ async def test_snap_client_install_snap(setup_lxd_client: SnapClient):
 
     while True:
         changes = await setup_lxd_client.get_changes_by_id(removal_response.change)
-        tasks_remaining = len(changes.result.tasks)
-        logger.debug("Tasks remaining: %s", tasks_remaining)
         if changes.result.ready:
             logger.debug("Snap hello-world removed successfully")
             break
@@ -100,3 +96,14 @@ async def test_snap_client_install_with_wait(setup_lxd_client: SnapClient):
 
     installed_snaps = await setup_lxd_client.snaps.list_installed_snaps()
     assert "hello-world" not in [snap.name for snap in installed_snaps.result]
+
+
+async def test_get_unknown_change(setup_lxd_client: SnapClient):
+    logger.debug("Running test_get_unknown_change")
+
+    bad_response = await setup_lxd_client.get_changes_by_id("unknown-change-id")
+
+    assert bad_response.status_code == 404
+    assert bad_response.status == "Not Found"
+    assert not bad_response.ready
+    assert bad_response.type == "error"

@@ -1,7 +1,6 @@
 import logging
 
 import httpx
-from pydantic import ValidationError
 
 from pysnap.components.snaps import SnapsEndpoints
 from pysnap.schemas.changes import ChangesResponse
@@ -41,7 +40,7 @@ class SnapClient(AbstractSnapsClient):
         response = await self.client.request(
             method, f"{self._base_url}/{self.version}/{endpoint}", **kwargs
         )
-
+        logger.debug(f"response: {response.content}")
         response.raise_for_status()
         return response
 
@@ -62,15 +61,13 @@ class SnapClient(AbstractSnapsClient):
         return response
 
     async def get_changes_by_id(self, change_id: str) -> ChangesResponse:
-        response = await self.request("GET", f"changes/{change_id}")
-
         try:
-            response = ChangesResponse.model_validate_json(response.content)
-        except ValidationError as ve:
-            # print the error message and raise the exception
-            with open("error.json", "w") as f:
-                f.write(ve.json())
-                logger.debug("Saved validation errors to: %s", f.name)
-            raise ve
+            response = await self.request("GET", f"changes/{change_id}")
+        except httpx.HTTPStatusError as e:
+            logger.warning(
+                f"Bad response status code for get_changes_by_id: {e.response.status_code}"
+            )
+            response = e.response
+            pass
 
-        return response
+        return ChangesResponse.model_validate_json(response.content)

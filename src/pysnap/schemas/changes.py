@@ -1,6 +1,6 @@
 from pydantic import AliasChoices, AwareDatetime, BaseModel, Field
 
-from pysnap.schemas.common import BaseResponse
+from pysnap.schemas.common import BaseErrorResult, BaseResponse
 
 
 class Task(BaseModel):
@@ -42,8 +42,10 @@ class ChangesResult(BaseModel):
 
 
 class ChangesResponse(BaseResponse):
-    result: ChangesResult
+    result: ChangesResult | BaseErrorResult
 
     @property
     def ready(self) -> bool:
+        if isinstance(self.result, BaseErrorResult):
+            return False
         return self.result.ready

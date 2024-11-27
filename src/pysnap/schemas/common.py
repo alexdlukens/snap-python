@@ -4,12 +4,16 @@ from typing import Literal, Optional
 from pydantic import AliasChoices, BaseModel, ConfigDict, Field
 
 
+class BaseErrorResult(BaseModel):
+    message: str
+
+
 class BaseResponse(BaseModel):
     status_code: int = Field(
         validation_alias=AliasChoices("status-code", "status_code"),
         serialization_alias="status-code",
     )
-    type: Literal["sync", "async"]
+    type: Literal["sync", "async", "error"]
     status: str
 
 
