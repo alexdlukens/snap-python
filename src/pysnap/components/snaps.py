@@ -56,24 +56,37 @@ class SnapsEndpoints:
             changes_id = response.change
             while True:
                 changes = await self._client.get_changes_by_id(changes_id)
-                if changes.result.ready:
+                if changes.ready:
                     break
                 if changes.result.err:
                     raise Exception(f"Error in snap install: {changes.result.err}")
-                await asyncio.sleep(1.0)
+                await asyncio.sleep(2.0)
             return changes
         return response
 
     async def remove_snap(
-        self, snap: str, purge: bool, terminate: bool
-    ) -> httpx.Response:
+        self, snap: str, purge: bool, terminate: bool, wait: bool = False
+    ) -> AsyncResponse | ChangesResponse:
         request_data = {
             "action": "remove",
             "purge": purge,
             "terminate": terminate,
         }
 
-        response: httpx.Response = await self._client.request(
+        raw_response: httpx.Response = await self._client.request(
             "POST", f"{self.common_endpoint}/{snap}", json=request_data
         )
+        response = AsyncResponse.model_validate_json(raw_response.content)
+
+        if wait:
+            changes_id = response.change
+            while True:
+                changes = await self._client.get_changes_by_id(changes_id)
+                if changes.ready:
+                    break
+                if changes.result.err:
+                    raise Exception(f"Error in snap remove: {changes.result.err}")
+                await asyncio.sleep(2.0)
+            return changes
+
         return response
