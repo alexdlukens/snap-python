@@ -50,9 +50,9 @@ async def test_snap_client_install_snap(setup_lxd_client: SnapClient):
     while True:
         changes = await setup_lxd_client.get_changes_by_id(changes_id)
         assert changes.status_code == 200
-        tasks_remaining = len(changes.json()["result"]["tasks"])
+        tasks_remaining = len(changes.result.tasks)
         logger.debug("Tasks remaining: %s", tasks_remaining)
-        if changes.json()["result"]["status"] == "Done":
+        if changes.result.ready:
             logger.debug("Snap hello-world installed successfully")
             break
         await asyncio.sleep(1.0)
@@ -74,9 +74,9 @@ async def test_snap_client_install_snap(setup_lxd_client: SnapClient):
 
     while True:
         changes = await setup_lxd_client.get_changes_by_id(changes_id)
-        tasks_remaining = len(changes.json()["result"]["tasks"])
+        tasks_remaining = len(changes.result.tasks)
         logger.debug("Tasks remaining: %s", tasks_remaining)
-        if changes.json()["result"]["status"] == "Done":
+        if changes.result.ready:
             logger.debug("Snap hello-world removed successfully")
             break
         await asyncio.sleep(1.0)

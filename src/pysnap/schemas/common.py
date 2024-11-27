@@ -5,14 +5,12 @@ from pydantic import AliasChoices, BaseModel, ConfigDict, Field
 
 
 class BaseResponse(BaseModel):
-    model_config = ConfigDict(extra="allow")
     status_code: int = Field(
         validation_alias=AliasChoices("status-code", "status_code"),
         serialization_alias="status-code",
     )
     type: str
     status: str
-    sources: list[str]
 
 
 class SnapBaseVersion(Enum):
