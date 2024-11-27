@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Optional
+from typing import Literal, Optional
 
 from pydantic import AliasChoices, BaseModel, ConfigDict, Field
 
@@ -9,7 +9,7 @@ class BaseResponse(BaseModel):
         validation_alias=AliasChoices("status-code", "status_code"),
         serialization_alias="status-code",
     )
-    type: str
+    type: Literal["sync", "async"]
     status: str
 
 
@@ -54,3 +54,7 @@ class Media(BaseModel):
     type: str
     url: str
     width: Optional[float] = None
+
+
+class AsyncResponse(BaseResponse):
+    change: str
