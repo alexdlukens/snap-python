@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 
 import httpx
 
+from pysnap.schemas.changes import ChangesResponse
+
 
 class AbstractSnapsClient(ABC):
     @abstractmethod
@@ -10,4 +12,8 @@ class AbstractSnapsClient(ABC):
 
     @abstractmethod
     async def request_raw(self) -> httpx.Response:
+        pass
+
+    @abstractmethod
+    async def get_changes_by_id(self, change_id: str) -> ChangesResponse:
         pass

@@ -43,4 +43,7 @@ class ChangesResult(BaseModel):
 
 class ChangesResponse(BaseResponse):
     result: ChangesResult
-    # make top level ready field based on result.ready
+
+    @property
+    def ready(self) -> bool:
+        return self.result.ready
