@@ -1,5 +1,9 @@
+import asyncio
+
 import httpx
 
+from pysnap.schemas.changes import ChangesResponse
+from pysnap.schemas.common import AsyncResponse
 from pysnap.schemas.snaps import SnapListResponse
 from pysnap.utils import AbstractSnapsClient
 
@@ -32,7 +36,8 @@ class SnapsEndpoints:
         ignore_validation: bool = False,
         jailmode: bool = False,
         revision: int = None,
-    ) -> httpx.Response:
+        wait: bool = False,
+    ) -> AsyncResponse | ChangesResponse:
         request_data = {
             "action": "install",
             "channel": channel,
@@ -43,9 +48,20 @@ class SnapsEndpoints:
         }
         if revision:
             request_data["revision"] = revision
-        response: httpx.Response = await self._client.request(
+        raw_response: httpx.Response = await self._client.request(
             "POST", f"{self.common_endpoint}/{snap}", json=request_data
         )
+        response = AsyncResponse.model_validate_json(raw_response.content)
+        if wait:
+            changes_id = response.change
+            while True:
+                changes = await self._client.get_changes_by_id(changes_id)
+                if changes.result.ready:
+                    break
+                if changes.result.err:
+                    raise Exception(f"Error in snap install: {changes.result.err}")
+                await asyncio.sleep(1.0)
+            return changes
         return response
 
     async def remove_snap(
