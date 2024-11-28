@@ -3,6 +3,7 @@ import logging
 import httpx
 
 from pysnap.components.snaps import SnapsEndpoints
+from pysnap.components.store import StoreEndpoints
 from pysnap.schemas.changes import ChangesResponse
 from pysnap.utils import AbstractSnapsClient
 
@@ -33,11 +34,16 @@ class SnapClient(AbstractSnapsClient):
             )
 
         self.version = version
-        self.client = httpx.AsyncClient(transport=self._transport)
+        self.snapd_client = httpx.AsyncClient(transport=self._transport)
         self.snaps = SnapsEndpoints(self)
+        self.store = StoreEndpoints(
+            base_url="https://api.snapcraft.io",
+            version="v2",
+            headers={"Snap-Device-Series": "16", "X-Ubuntu-Series": "16"},
+        )
 
     async def request(self, method: str, endpoint: str, **kwargs) -> httpx.Response:
-        response = await self.client.request(
+        response = await self.snapd_client.request(
             method, f"{self._base_url}/{self.version}/{endpoint}", **kwargs
         )
         logger.debug(f"response: {response.content}")
@@ -45,7 +51,7 @@ class SnapClient(AbstractSnapsClient):
         return response
 
     async def request_raw(self, method: str, endpoint: str, **kwargs) -> httpx.Response:
-        response = await self.client.request(method, endpoint, **kwargs)
+        response = await self.snapd_client.request(method, endpoint, **kwargs)
 
         response.raise_for_status()
         return response
@@ -56,7 +62,7 @@ class SnapClient(AbstractSnapsClient):
         Returns:
             httpx.Response: _description_
         """
-        response = await self.client.get(f"{self._base_url}/")
+        response = await self.snapd_client.get(f"{self._base_url}/")
 
         return response
 

@@ -1,0 +1,221 @@
+{
+    "additionalProperties": false,
+    "properties": {
+        "error-list": {
+            "items": {
+                "additionalProperties": false,
+                "properties": {
+                    "code": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "code",
+                    "message"
+                ],
+                "type": "object"
+            },
+            "type": "array"
+        },
+        "results": {
+            "items": {
+                "additionalProperties": false,
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "revision": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "base": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            },
+                            "channel": {
+                                "type": "string"
+                            },
+                            "common-ids": {
+                                "introduced_at": 20,
+                                "items": {
+                                    "type": "string"
+                                },
+                                "type": "array"
+                            },
+                            "confinement": {
+                                "type": "string"
+                            },
+                            "download": {
+                                "additionalProperties": false,
+                                "properties": {
+                                    "size": {
+                                        "type": "number"
+                                    }
+                                },
+                                "required": [
+                                    "size"
+                                ],
+                                "type": "object"
+                            },
+                            "revision": {
+                                "type": "number"
+                            },
+                            "type": {
+                                "type": "string"
+                            },
+                            "version": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "snap": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "categories": {
+                                "items": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "featured": {
+                                            "type": "boolean"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "name",
+                                        "featured"
+                                    ],
+                                    "type": "object"
+                                },
+                                "type": "array"
+                            },
+                            "contact": {
+                                "type": "string"
+                            },
+                            "description": {
+                                "type": "string"
+                            },
+                            "license": {
+                                "type": "string"
+                            },
+                            "links": {
+                                "additionalProperties": {
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "minItems": 1,
+                                    "type": "array"
+                                },
+                                "introduced_at": 21,
+                                "type": [
+                                    "object",
+                                    "null"
+                                ]
+                            },
+                            "media": {
+                                "items": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "height": {
+                                            "type": [
+                                                "null",
+                                                "integer"
+                                            ]
+                                        },
+                                        "type": {
+                                            "type": "string"
+                                        },
+                                        "url": {
+                                            "type": "string"
+                                        },
+                                        "width": {
+                                            "type": [
+                                                "null",
+                                                "integer"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "type",
+                                        "url",
+                                        "width",
+                                        "height"
+                                    ],
+                                    "type": "object"
+                                },
+                                "type": "array"
+                            },
+                            "prices": {
+                                "type": "object"
+                            },
+                            "private": {
+                                "type": "boolean"
+                            },
+                            "publisher": {
+                                "additionalProperties": false,
+                                "properties": {
+                                    "display-name": {
+                                        "type": "string"
+                                    },
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "username": {
+                                        "type": "string"
+                                    },
+                                    "validation": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "id",
+                                    "username",
+                                    "display-name"
+                                ],
+                                "type": "object"
+                            },
+                            "store-url": {
+                                "introduced_at": 20,
+                                "type": "string"
+                            },
+                            "summary": {
+                                "type": "string"
+                            },
+                            "title": {
+                                "type": "string"
+                            },
+                            "website": {
+                                "introduced_at": 20,
+                                "type": [
+                                    "null",
+                                    "string"
+                                ]
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "snap-id": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "snap-id",
+                    "snap"
+                ],
+                "type": "object"
+            },
+            "type": "array"
+        }
+    },
+    "required": [
+        "results"
+    ],
+    "type": "object"
+}
