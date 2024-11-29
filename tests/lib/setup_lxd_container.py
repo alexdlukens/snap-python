@@ -14,7 +14,7 @@ TEST_DIR = Path(__file__).parent.parent
 TEST_LIB_DIR = TEST_DIR / "lib"
 SOCAT_SERVICE_FILE = TEST_LIB_DIR / "socat_snapd.service"
 
-logger = logging.getLogger("pysnap.tests.lib.setup_lxd_container")
+logger = logging.getLogger("snap_python.tests.lib.setup_lxd_container")
 logger.setLevel(logging.INFO)
 
 
@@ -176,7 +176,7 @@ def setup_lxd_container(
     container_os: str = "debian",
     version: str = "sid",
     variant: str = "default",
-    project: str = "pysnap",
+    project: str = "snap-python",
     clean: bool = False,
 ) -> Container:
     client = get_project_client(project)
@@ -241,16 +241,16 @@ def setup_lxd_container(
 
 @pytest.fixture(scope="function")
 def function_scope_container() -> Container:
-    container = setup_lxd_container("pysnap-test", clean=True)
+    container = setup_lxd_container("snap-python-test", clean=True)
     yield container
-    stop_container("pysnap-test", container.client, remove=False)
+    stop_container("snap-python-test", container.client, remove=False)
 
 
 @pytest.fixture(scope="module")
 def module_scope_container() -> Container:
-    container = setup_lxd_container("pysnap-test", clean=True)
+    container = setup_lxd_container("snap-python-test", clean=True)
     yield container
-    stop_container("pysnap-test", container.client, remove=False)
+    stop_container("snap-python-test", container.client, remove=False)
 
 
 # socat cmd: socat TCP-LISTEN:8181,fork UNIX-CONNECT:/run/snapd.socket

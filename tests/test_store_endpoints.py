@@ -4,11 +4,11 @@ from unittest.mock import AsyncMock, MagicMock
 import pytest
 from httpx import HTTPError, Response
 
-from pysnap.client import StoreEndpoints
-from pysnap.schemas.store.categories import (
+from snap_python.client import StoreEndpoints
+from snap_python.schemas.store.categories import (
     CategoryResponse,
 )
-from pysnap.schemas.store.info import InfoResponse
+from snap_python.schemas.store.info import InfoResponse
 
 
 @pytest.fixture(scope="function")

@@ -1,18 +1,18 @@
-# pysnap
+# snap_python
 
-Pysnap provides an API client to interact with snapd
+snap_python provides an API client to interact with snapd
 
 ## Installation
 
-To install Pysnap, you can use pip:
+To install snap_python, you can use pip:
 
 ```
-pip install pysnap
+pip install snap_python
 ```
 
 ## Usage
 
-Here is a simple example of how to use Pysnap:
+Here is a simple example of how to use snap_python:
 
 ```python
 # TODO

@@ -5,16 +5,16 @@ from pathlib import Path
 import httpx
 import pytest
 
-from pysnap.client import SnapClient
-from pysnap.schemas.changes import ChangesResponse
+from snap_python.client import SnapClient
+from snap_python.schemas.changes import ChangesResponse
 from tests.lib.setup_lxd_container import module_scope_container  # noqa: F401
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-CODE_DIR = BASE_DIR / "src" / "pysnap"
+CODE_DIR = BASE_DIR / "src" / "snap_python"
 TEST_DIR = BASE_DIR / "tests"
 TEST_DATA_DIR = TEST_DIR / "data"
 
-logger = logging.getLogger("pysnap.tests.test_pysnap_snaps_endpoints")
+logger = logging.getLogger("snap_python.tests.test_snap_python_snaps_endpoints")
 logger.setLevel(logging.DEBUG)
 logger.handlers.clear()
 logger.propagate = True

@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 import httpx
 
-from pysnap.schemas.changes import ChangesResponse
+from snap_python.schemas.changes import ChangesResponse
 
 
 class AbstractSnapsClient(ABC):  # pragma: no cover

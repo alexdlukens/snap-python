@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "pysnap"
+name = "snap-python"
 version = "0.0.1"
 description = ""
 authors = ["Alexander Lukens <alexdlukens@gmail.com>"]

@@ -2,10 +2,10 @@ import asyncio
 
 import httpx
 
-from pysnap.schemas.changes import ChangesResponse
-from pysnap.schemas.common import AsyncResponse
-from pysnap.schemas.snaps import SnapListResponse
-from pysnap.utils import AbstractSnapsClient
+from snap_python.schemas.changes import ChangesResponse
+from snap_python.schemas.common import AsyncResponse
+from snap_python.schemas.snaps import SnapListResponse
+from snap_python.utils import AbstractSnapsClient
 
 
 class SnapsEndpoints:

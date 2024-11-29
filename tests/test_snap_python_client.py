@@ -1,7 +1,7 @@
 import httpx
 import pytest
 
-from pysnap.client import SnapClient
+from snap_python.client import SnapClient
 
 
 @pytest.fixture

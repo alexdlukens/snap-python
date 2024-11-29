@@ -1,6 +1,6 @@
 from pydantic import AliasChoices, AwareDatetime, BaseModel, Field
 
-from pysnap.schemas.common import BaseErrorResult, BaseResponse
+from snap_python.schemas.common import BaseErrorResult, BaseResponse
 
 
 class Task(BaseModel):

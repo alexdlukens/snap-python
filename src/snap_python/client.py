@@ -2,14 +2,14 @@ import logging
 
 import httpx
 
-from pysnap.components.snaps import SnapsEndpoints
-from pysnap.components.store import StoreEndpoints
-from pysnap.schemas.changes import ChangesResponse
-from pysnap.utils import AbstractSnapsClient
+from snap_python.components.snaps import SnapsEndpoints
+from snap_python.components.store import StoreEndpoints
+from snap_python.schemas.changes import ChangesResponse
+from snap_python.utils import AbstractSnapsClient
 
 SNAPD_SOCKET = "/run/snapd.socket"
 
-logger = logging.getLogger("pysnap.client")
+logger = logging.getLogger("snap_python.client")
 logger.setLevel(logging.DEBUG)
 
 

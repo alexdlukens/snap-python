@@ -1,6 +1,6 @@
 from pydantic import AliasChoices, AwareDatetime, BaseModel, ConfigDict, Field
 
-from pysnap.schemas.common import (
+from snap_python.schemas.common import (
     BaseResponse,
     Media,
     SnapApp,

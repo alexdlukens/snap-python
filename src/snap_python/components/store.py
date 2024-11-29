@@ -3,13 +3,13 @@ import functools
 import retry
 from httpx import AsyncClient
 
-from pysnap.schemas.store.categories import (
+from snap_python.schemas.store.categories import (
     VALID_CATEGORY_FIELDS,
     CategoryResponse,
     SingleCategoryResponse,
 )
-from pysnap.schemas.store.info import VALID_SNAP_INFO_FIELDS, InfoResponse
-from pysnap.schemas.store.search import (
+from snap_python.schemas.store.info import VALID_SNAP_INFO_FIELDS, InfoResponse
+from snap_python.schemas.store.search import (
     VALID_SEARCH_CATEGORY_FIELDS,
     SearchResponse,
 )

@@ -6,7 +6,7 @@ from typing import List, Optional
 
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field
 
-from pysnap.schemas.store.search import Snap
+from snap_python.schemas.store.search import Snap
 
 VALID_SNAP_INFO_FIELDS = [
     "architectures",
