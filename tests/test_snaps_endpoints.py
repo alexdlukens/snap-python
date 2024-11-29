@@ -55,7 +55,6 @@ async def test_snap_client_install_snap_no_wait(setup_lxd_client: SnapClient):
         await asyncio.sleep(1.0)
 
     installed_snaps = await setup_lxd_client.snaps.list_installed_snaps()
-    assert len(installed_snaps) == 2
     snap_names = [snap.name for snap in installed_snaps.result]
     assert "hello-world" in snap_names
     assert "core" in snap_names

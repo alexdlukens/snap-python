@@ -16,15 +16,24 @@ from pysnap.schemas.store.search import (
 
 
 class StoreEndpoints:
+    """Query snap store that is available at <base_url> for information about snaps.
+    Calls made directly with store to enable querying the non-default snap store for information.
+    Snapd only supports the store at snapcraft.io
+
+    Certain functionality is not available in snapd, such as querying for/by categories
+    """
+
     def __init__(
         self, base_url: str, version: str, headers: dict[str, str] = None
     ) -> None:
-        self.client = AsyncClient()
-        self.client.request = functools.partial(self.client.request, timeout=5)
+        self.store_client = AsyncClient()
+        self.store_client.request = functools.partial(
+            self.store_client.request, timeout=5
+        )
         self.base_url = f"{base_url}/{version}"
         self._raw_base_url = base_url
         if headers is not None:
-            self.client.headers.update(headers)
+            self.store_client.headers.update(headers)
 
     async def get_snap_details(self, snap_name: str, fields: list[str] | None = None):
         query = {}
@@ -35,7 +44,9 @@ class StoreEndpoints:
                 )
             query["fields"] = ",".join(fields)
         route = f"/api/v1/snaps/details/{snap_name}"
-        response = self.client.get(f"{self._raw_base_url}{route}", params=query)
+        response = await self.store_client.get(
+            f"{self._raw_base_url}{route}", params=query
+        )
         response.raise_for_status()
         return response.json()
 
@@ -48,7 +59,9 @@ class StoreEndpoints:
                 )
             query["fields"] = ",".join(fields)
         route = f"/v2/snaps/info/{snap_name}"
-        response = await self.client.get(f"{self._raw_base_url}{route}", params=query)
+        response = await self.store_client.get(
+            f"{self._raw_base_url}{route}", params=query
+        )
         response.raise_for_status()
         return InfoResponse.model_validate_json(response.content)
 
@@ -65,7 +78,7 @@ class StoreEndpoints:
         if type is not None:
             query["type"] = type
         route = "/snaps/categories"
-        response = await self.client.get(f"{self.base_url}{route}", params=query)
+        response = await self.store_client.get(f"{self.base_url}{route}", params=query)
         response.raise_for_status()
         return CategoryResponse.model_validate_json(response.content)
 
@@ -81,7 +94,7 @@ class StoreEndpoints:
             query["fields"] = ",".join(fields)
 
         route = f"/snaps/category/{name}"
-        response = await self.client.get(f"{self.base_url}{route}", params=query)
+        response = await self.store_client.get(f"{self.base_url}{route}", params=query)
         response.raise_for_status()
         return SingleCategoryResponse.model_validate_json(response.content)
 
@@ -100,7 +113,9 @@ class StoreEndpoints:
         publisher: str | None = None,
         headers: dict[str, str] | None = None,
     ) -> SearchResponse:
-        """from https://api.snapcraft.io/docs/search.html#snaps_find"""
+        """from https://api.snapcraft.io/docs/search.html#snaps_find
+        and https://snapcraft.io/docs/snapd-api#heading--find
+        """
 
         route = "/snaps/find"
         query_dict: dict = {
@@ -136,7 +151,7 @@ class StoreEndpoints:
             if key in query_dict:
                 query_dict[key] = str(query_dict[key]).lower()
 
-        response = await self.client.get(
+        response = await self.store_client.get(
             f"{self.base_url}{route}", params=query_dict, headers=extra_headers
         )
         response.raise_for_status()
