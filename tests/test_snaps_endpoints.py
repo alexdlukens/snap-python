@@ -106,3 +106,29 @@ async def test_get_unknown_change(setup_lxd_client: SnapClient):
     assert bad_response.status == "Not Found"
     assert not bad_response.ready
     assert bad_response.type == "error"
+
+
+async def test_install_specific_snap_revision_channel(setup_lxd_client: SnapClient):
+    logger.debug("Running test_install_specific_snap_revision_channel")
+    response = await setup_lxd_client.snaps.install_snap(
+        "usconstitution", channel="latest/edge", revision=96, wait=True
+    )
+    assert isinstance(response, ChangesResponse)
+    assert response.status_code == 200
+
+    installed_snaps = await setup_lxd_client.snaps.list_installed_snaps()
+    assert "usconstitution" in [snap.name for snap in installed_snaps.result]
+
+    constitution_snap = [
+        snap for snap in installed_snaps.result if snap.name == "usconstitution"
+    ][0]
+    assert constitution_snap.revision == "96"
+    assert constitution_snap.channel == "latest/edge"
+
+    removal_response = await setup_lxd_client.snaps.remove_snap(
+        "usconstitution", purge=True, terminate=True, wait=True
+    )
+    assert removal_response.status_code == 200
+
+    installed_snaps = await setup_lxd_client.snaps.list_installed_snaps()
+    assert "usconstitution" not in [snap.name for snap in installed_snaps.result]
