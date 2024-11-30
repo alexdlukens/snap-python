@@ -1,6 +1,7 @@
 import logging
 
 import httpx
+from retry import retry
 
 from snap_python.components.snaps import SnapsEndpoints
 from snap_python.components.store import StoreEndpoints
@@ -49,6 +50,7 @@ class SnapClient(AbstractSnapsClient):
             headers=self.store_headers,
         )
 
+    @retry(httpx.HTTPError, tries=3, delay=1, backoff=1)
     async def request(self, method: str, endpoint: str, **kwargs) -> httpx.Response:
         response = await self.snapd_client.request(
             method, f"{self._base_url}/{self.version}/{endpoint}", **kwargs
@@ -57,6 +59,7 @@ class SnapClient(AbstractSnapsClient):
         response.raise_for_status()
         return response
 
+    @retry(httpx.HTTPError, tries=3, delay=1, backoff=1)
     async def request_raw(self, method: str, endpoint: str, **kwargs) -> httpx.Response:
         response = await self.snapd_client.request(method, endpoint, **kwargs)
 
