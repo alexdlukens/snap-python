@@ -3,6 +3,11 @@ from pydantic import AliasChoices, AwareDatetime, BaseModel, Field
 from snap_python.schemas.common import BaseErrorResult, BaseResponse
 
 
+class MaintenanceInfo(BaseModel):
+    kind: str
+    message: str
+
+
 class Task(BaseModel):
     id: str
     kind: str
@@ -43,6 +48,7 @@ class ChangesResult(BaseModel):
 
 class ChangesResponse(BaseResponse):
     result: ChangesResult | BaseErrorResult
+    maintenance: MaintenanceInfo | None = None
 
     @property
     def ready(self) -> bool:

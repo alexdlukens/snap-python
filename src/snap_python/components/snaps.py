@@ -1,11 +1,14 @@
 import asyncio
+import logging
 
 import httpx
 
 from snap_python.schemas.changes import ChangesResponse
 from snap_python.schemas.common import AsyncResponse
 from snap_python.schemas.snaps import SnapListResponse
-from snap_python.utils import AbstractSnapsClient
+from snap_python.utils import AbstractSnapsClient, going_to_reload_daemon
+
+logger = logging.getLogger("snap_python.components.snaps")
 
 
 class SnapsEndpoints:
@@ -54,13 +57,22 @@ class SnapsEndpoints:
         response = AsyncResponse.model_validate_json(raw_response.content)
         if wait:
             changes_id = response.change
+            previous_changes = None
             while True:
-                changes = await self._client.get_changes_by_id(changes_id)
+                try:
+                    changes = await self._client.get_changes_by_id(changes_id)
+                except httpx.HTTPError as e:
+                    if going_to_reload_daemon(previous_changes):
+                        logger.debug("Waiting for daemon to reload")
+                        await asyncio.sleep(2.0)
+                        continue
+
                 if changes.ready:
                     break
                 if changes.result.err:
                     raise Exception(f"Error in snap install: {changes.result.err}")
                 await asyncio.sleep(2.0)
+                previous_changes = changes
             return changes
         return response
 
