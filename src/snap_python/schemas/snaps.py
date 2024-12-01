@@ -43,14 +43,15 @@ class Snap(BaseModel):
     )
     name: str
     private: bool
-    publisher: dict[str, str]
+    publisher: dict[str, str] | None = None
     revision: str
     status: str
     summary: str
     title: str | None = None
-    tracking_channel: str = Field(
+    tracking_channel: str | None = Field(
         validation_alias=AliasChoices("tracking-channel", "tracking_channel"),
         serialization_alias="tracking-channel",
+        default=None,
     )
     type: str
     version: str
