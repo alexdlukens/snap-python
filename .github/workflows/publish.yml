@@ -29,15 +29,7 @@ jobs:
     - name: Build package
       run: |
         poetry build
-    
     - name: Upload release asset
-      uses: actions/upload-release-asset@v1
+      uses: softprops/action-gh-release@v1
       with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./dist/*.whl
-        asset_name: $(basename ./dist/*.whl)
-        asset_content_type: application/octet-stream
-
-    - name: Clean up
-      run: |
-        rm -rf dist build *.egg-info
+        files: dist/*.whl
