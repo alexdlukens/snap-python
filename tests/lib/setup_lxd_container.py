@@ -124,11 +124,6 @@ def ensure_snapd_clean_install(container: Container):
         stderr_handler=logger.error,
     )
     container.execute(
-        ["sudo", "apt-get", "install", "-y", "apt-utils"],
-        stdout_handler=logger.debug,
-        stderr_handler=logger.error,
-    )
-    container.execute(
         [
             "sudo",
             "apt-get",
