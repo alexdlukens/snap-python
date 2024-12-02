@@ -1,4 +1,6 @@
+import asyncio
 import logging
+from typing import AsyncGenerator
 
 import httpx
 from retry import retry
@@ -86,3 +88,23 @@ class SnapClient(AbstractSnapsClient):
             pass
 
         return ChangesResponse.model_validate_json(response.content)
+
+    async def get_changes_by_id_generator(
+        self, change_id: str
+    ) -> AsyncGenerator[ChangesResponse, None]:
+        while True:
+            try:
+                response = await self.request("GET", f"changes/{change_id}")
+            except httpx.HTTPStatusError as e:
+                logger.warning(
+                    f"Bad response status code for get_changes_by_id: {e.response.status_code}"
+                )
+                response = e.response
+                pass
+
+            change_response = ChangesResponse.model_validate_json(response.content)
+            yield change_response
+
+            await asyncio.sleep(
+                0.01
+            )  # Add a delay to avoid spamming the server with requests

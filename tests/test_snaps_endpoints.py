@@ -7,6 +7,7 @@ import pytest
 
 from snap_python.client import SnapClient
 from snap_python.schemas.changes import ChangesResponse
+from snap_python.schemas.common import AsyncResponse
 from tests.lib.setup_lxd_container import module_scope_container  # noqa: F401
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -158,3 +159,36 @@ async def test_get_snap_info(setup_lxd_client: SnapClient):
     )
 
     assert snap_info == snap
+
+
+async def test_install_snap_async_generator(setup_lxd_client: SnapClient):
+    logger.debug("Running test_install_snap_async_generator")
+
+    async_install_response: AsyncResponse = await setup_lxd_client.snaps.install_snap(
+        "hello-world", wait=False
+    )
+
+    count = 0
+    async for change in setup_lxd_client.get_changes_by_id_generator(
+        async_install_response.change
+    ):
+        assert isinstance(change, ChangesResponse)
+        if change.ready:
+            break
+        count += 1
+        await asyncio.sleep(1.0)
+        if count > 90:
+            pytest.fail(
+                f"Snap installation took longer than expected (90 sec).\n{change.model_dump_json(indent=4)}"
+            )
+
+    installed_snaps = await setup_lxd_client.snaps.list_installed_snaps()
+    assert "hello-world" in [snap.name for snap in installed_snaps.result]
+
+    # remove the snap
+    await setup_lxd_client.snaps.remove_snap(
+        "hello-world", purge=True, terminate=True, wait=True
+    )
+
+    installed_snaps = await setup_lxd_client.snaps.list_installed_snaps()
+    assert "hello-world" not in [snap.name for snap in installed_snaps.result]
