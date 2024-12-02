@@ -1,0 +1,432 @@
+{
+    "additionalProperties": false,
+    "properties": {
+        "channel-map": {
+            "items": {
+                "additionalProperties": false,
+                "properties": {
+                    "architectures": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "base": {
+                        "oneOf": [
+                            {
+                                "type": "null"
+                            },
+                            {
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "channel": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "architecture": {
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "released-at": {
+                                "introduced_at": 5,
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            },
+                            "risk": {
+                                "type": "string"
+                            },
+                            "track": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "track",
+                            "risk",
+                            "name",
+                            "architecture"
+                        ],
+                        "type": "object"
+                    },
+                    "common-ids": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array"
+                    },
+                    "confinement": {
+                        "type": "string"
+                    },
+                    "created-at": {
+                        "type": "string"
+                    },
+                    "download": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "deltas": {
+                                "items": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "format": {
+                                            "type": "string"
+                                        },
+                                        "sha3-384": {
+                                            "type": "string"
+                                        },
+                                        "size": {
+                                            "type": "number"
+                                        },
+                                        "source": {
+                                            "type": "number"
+                                        },
+                                        "target": {
+                                            "type": "number"
+                                        },
+                                        "url": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "format",
+                                        "sha3-384",
+                                        "size",
+                                        "source",
+                                        "target",
+                                        "url"
+                                    ],
+                                    "type": "object"
+                                },
+                                "type": "array"
+                            },
+                            "sha3-384": {
+                                "type": "string"
+                            },
+                            "size": {
+                                "type": "number"
+                            },
+                            "url": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "sha3-384",
+                            "size",
+                            "url",
+                            "deltas"
+                        ],
+                        "type": "object"
+                    },
+                    "epoch": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "read": {
+                                "items": {
+                                    "type": "number"
+                                },
+                                "type": "array"
+                            },
+                            "write": {
+                                "items": {
+                                    "type": "number"
+                                },
+                                "type": "array"
+                            }
+                        },
+                        "required": [
+                            "read",
+                            "write"
+                        ],
+                        "type": [
+                            "object",
+                            "null"
+                        ]
+                    },
+                    "resources": {
+                        "introduced_at": 57,
+                        "items": {
+                            "additionalProperties": false,
+                            "introduced_at": 57,
+                            "properties": {
+                                "architectures": {
+                                    "introduced_at": 59,
+                                    "items": {
+                                        "introduced_at": 59,
+                                        "type": "string"
+                                    },
+                                    "type": "array"
+                                },
+                                "created-at": {
+                                    "introduced_at": 57,
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "introduced_at": 57,
+                                    "type": "string"
+                                },
+                                "download": {
+                                    "introduced_at": 57,
+                                    "properties": {
+                                        "sha3-384": {
+                                            "introduced_at": 57,
+                                            "type": "string"
+                                        },
+                                        "size": {
+                                            "introduced_at": 57,
+                                            "type": "integer"
+                                        },
+                                        "url": {
+                                            "introduced_at": 57,
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                },
+                                "name": {
+                                    "introduced_at": 57,
+                                    "type": "string"
+                                },
+                                "revision": {
+                                    "introduced_at": 57,
+                                    "type": "integer"
+                                },
+                                "type": {
+                                    "introduced_at": 57,
+                                    "type": "string"
+                                },
+                                "version": {
+                                    "introduced_at": 57,
+                                    "type": [
+                                        "null",
+                                        "string"
+                                    ]
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "type": "array"
+                    },
+                    "revision": {
+                        "type": "number"
+                    },
+                    "snap-yaml": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "version": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "channel"
+                ],
+                "type": "object"
+            },
+            "type": "array"
+        },
+        "default-track": {
+            "introduced_at": 14,
+            "type": [
+                "string",
+                "null"
+            ]
+        },
+        "error-list": {
+            "items": {
+                "additionalProperties": false,
+                "properties": {
+                    "code": {
+                        "type": "string"
+                    },
+                    "message": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "code",
+                    "message"
+                ],
+                "type": "object"
+            },
+            "type": "array"
+        },
+        "name": {
+            "type": "string"
+        },
+        "snap": {
+            "additionalProperties": false,
+            "properties": {
+                "categories": {
+                    "introduced_at": 11,
+                    "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "featured": {
+                                "introduced_at": 11,
+                                "type": "boolean"
+                            },
+                            "name": {
+                                "introduced_at": 11,
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "name",
+                            "featured"
+                        ],
+                        "type": "object"
+                    },
+                    "type": "array"
+                },
+                "contact": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "gated-snap-ids": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "license": {
+                    "type": "string"
+                },
+                "links": {
+                    "additionalProperties": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "minItems": 1,
+                        "type": "array"
+                    },
+                    "introduced_at": 21,
+                    "type": [
+                        "object",
+                        "null"
+                    ]
+                },
+                "media": {
+                    "items": {
+                        "additionalProperties": false,
+                        "properties": {
+                            "height": {
+                                "type": [
+                                    "null",
+                                    "integer"
+                                ]
+                            },
+                            "type": {
+                                "type": "string"
+                            },
+                            "url": {
+                                "type": "string"
+                            },
+                            "width": {
+                                "type": [
+                                    "null",
+                                    "integer"
+                                ]
+                            }
+                        },
+                        "required": [
+                            "type",
+                            "url",
+                            "width",
+                            "height"
+                        ],
+                        "type": "object"
+                    },
+                    "type": "array"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "prices": {
+                    "type": "object"
+                },
+                "private": {
+                    "type": "boolean"
+                },
+                "publisher": {
+                    "additionalProperties": false,
+                    "description": "The publisher.",
+                    "properties": {
+                        "display-name": {
+                            "description": "Display name corresponding to the publisher.",
+                            "type": "string"
+                        },
+                        "id": {
+                            "description": "The publisher id.",
+                            "type": "string"
+                        },
+                        "username": {
+                            "description": "Username belonging to the publisher.",
+                            "type": "string"
+                        },
+                        "validation": {
+                            "description": "Indicates if the account has been validated.",
+                            "introduced_at": 3,
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "id",
+                        "username",
+                        "display-name"
+                    ],
+                    "type": "object"
+                },
+                "snap-id": {
+                    "type": "string"
+                },
+                "store-url": {
+                    "introduced_at": 17,
+                    "type": "string"
+                },
+                "summary": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "trending": {
+                    "introduced_at": 16,
+                    "type": "boolean"
+                },
+                "unlisted": {
+                    "introduced_at": 18,
+                    "type": "boolean"
+                },
+                "website": {
+                    "introduced_at": 4,
+                    "oneOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
+                }
+            },
+            "type": "object"
+        },
+        "snap-id": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "name",
+        "snap-id",
+        "snap",
+        "channel-map"
+    ],
+    "type": "object"
+}

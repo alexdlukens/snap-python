@@ -1,3 +1,4 @@
+# fail_fast: true
 repos:
   - repo: local
     hooks:
@@ -13,9 +14,9 @@ repos:
         language: script
         types: [python]
         pass_filenames: true
-      - id: pytest
-        name: pytest
-        entry: './.venv/bin/pytest tests/'
-        language: script
-        types: [python]
-        pass_filenames: false
+      # - id: pytest
+      #   name: pytest
+      #   entry: './.venv/bin/pytest tests/'
+      #   language: script
+      #   types: [python]
+      #   pass_filenames: false

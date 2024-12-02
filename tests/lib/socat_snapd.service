@@ -1,0 +1,11 @@
+[Unit]
+Description=Run socat after snapd
+After=snapd.service
+Requires=snapd.service
+
+[Service]
+ExecStart=/usr/bin/socat TCP-LISTEN:8181,fork UNIX-CONNECT:/run/snapd.socket
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

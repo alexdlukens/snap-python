@@ -1,0 +1,46 @@
+name: Publish Python Package
+
+on:
+  push:
+    branches:
+      - master
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.12'
+
+    - name: Install Poetry
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+        export PATH="$HOME/.local/bin:$PATH"
+
+    - name: Install dependencies
+      run: |
+        poetry install
+
+    - name: Build package
+      run: |
+        poetry build
+    
+    - name: Upload package to GitHub Release
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./dist/*.tar.gz
+        asset_name: package.tar.gz
+        asset_content_type: application/gzip
+
+    - name: Clean up
+      run: |
+        rm -rf dist build *.egg-info

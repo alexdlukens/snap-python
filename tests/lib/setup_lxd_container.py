@@ -1,17 +1,21 @@
 import logging
 import subprocess
+from pathlib import Path
 
 import pylxd
 import pylxd.exceptions
 import pylxd.managers
 import pylxd.models
 import pylxd.models.container
+import pytest
 from pylxd.models import Container, Image, Project
 
-logger = logging.getLogger("pysnap.tests.lib.setup_lxd_container")
+TEST_DIR = Path(__file__).parent.parent
+TEST_LIB_DIR = TEST_DIR / "lib"
+SOCAT_SERVICE_FILE = TEST_LIB_DIR / "socat_snapd.service"
+
+logger = logging.getLogger("snap_python.tests.lib.setup_lxd_container")
 logger.setLevel(logging.INFO)
-logger.handlers.clear()
-logger.addHandler(logging.StreamHandler())
 
 
 def list_images_on_machine(client: pylxd.Client = None):
@@ -115,27 +119,52 @@ def stop_container(container_name: str, client: pylxd.Client, remove: bool = Tru
 
 def ensure_snapd_clean_install(container: Container):
     container.execute(
-        ["apt-get", "update", "-y"],
+        ["sudo", "apt-get", "update", "-y"],
         stdout_handler=logger.debug,
         stderr_handler=logger.error,
     )
     container.execute(
-        ["apt-get", "install", "-y", "snapd"],
+        [
+            "sudo",
+            "apt-get",
+            "install",
+            "-y",
+            "libsquashfuse0",
+            "squashfuse",
+            "fuse",
+            "curl",
+            "socat",
+            "snapd",
+        ],
         stdout_handler=logger.debug,
         stderr_handler=logger.error,
     )
 
-    # remove all existing snaps
-    # list all snaps
-    snap_list = container.execute(
-        ["snap", "list", "|", "tail", "-n", "+2", "|", "awk", "'{print $1}'"]
+    with open(SOCAT_SERVICE_FILE, "rb") as f:
+        container.files.put("/etc/systemd/system/socat_snapd.service", f.read())
+
+    logger.info("Starting socat service")
+    # ensure socat service is enabled
+    container.execute(
+        [
+            "sudo",
+            "systemctl",
+            "enable",
+            "socat_snapd.service",
+        ],
+        stdout_handler=logger.debug,
+        stderr_handler=logger.error,
     )
-    snap_list = snap_list.stdout.split("\n")
-    for snap in snap_list:
-        if snap:
-            logger.info("Removing snap %s", snap)
-            container_response = container.execute(["snap", "remove", "--purge", snap])
-            logger.info("Response: %s", container_response.stdout.decode("utf-8"))
+    container.execute(
+        [
+            "sudo",
+            "systemctl",
+            "start",
+            "socat_snapd.service",
+        ],
+        stdout_handler=logger.debug,
+        stderr_handler=logger.error,
+    )
 
 
 def setup_lxd_container(
@@ -143,7 +172,7 @@ def setup_lxd_container(
     container_os: str = "debian",
     version: str = "sid",
     variant: str = "default",
-    project: str = "pysnap",
+    project: str = "snap-python",
     clean: bool = False,
 ) -> Container:
     client = get_project_client(project)
@@ -182,6 +211,17 @@ def setup_lxd_container(
         container.devices.update(
             {"eth0": {"name": "eth0", "network": "lxdbr0", "type": "nic"}}
         )
+        container.devices.update(
+            {
+                "snapd_socket": {
+                    "bind": "host",
+                    "listen": "tcp:127.0.0.1:8181",
+                    "connect": "tcp:127.0.0.1:8181",
+                    "type": "proxy",
+                }
+            }
+        )
+
         container.save(wait=True)
 
     if container.status != "Running":
@@ -193,3 +233,20 @@ def setup_lxd_container(
 
     logger.info("Container %s is ready", container.name)
     return container
+
+
+@pytest.fixture(scope="function")
+def function_scope_container() -> Container:
+    container = setup_lxd_container("snap-python-test", clean=True)
+    yield container
+    stop_container("snap-python-test", container.client, remove=False)
+
+
+@pytest.fixture(scope="module")
+def module_scope_container() -> Container:
+    container = setup_lxd_container("snap-python-test", clean=True)
+    yield container
+    stop_container("snap-python-test", container.client, remove=False)
+
+
+# socat cmd: socat TCP-LISTEN:8181,fork UNIX-CONNECT:/run/snapd.socket
