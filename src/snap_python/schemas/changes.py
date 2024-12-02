@@ -68,5 +68,5 @@ class ChangesResponse(BaseResponse):
     @property
     def ready(self) -> bool:
         if isinstance(self.result, BaseErrorResult):
-            return False
+            return True
         return self.result.ready

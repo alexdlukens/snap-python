@@ -5,6 +5,7 @@ from typing import AsyncGenerator
 import httpx
 from retry import retry
 
+from snap_python.components.config import ConfigEndpoints
 from snap_python.components.snaps import SnapsEndpoints
 from snap_python.components.store import StoreEndpoints
 from snap_python.schemas.changes import ChangesResponse
@@ -51,6 +52,7 @@ class SnapClient(AbstractSnapsClient):
             version=self.version,
             headers=self.store_headers,
         )
+        self.config = ConfigEndpoints(self)
 
     @retry(httpx.HTTPError, tries=3, delay=1, backoff=1)
     async def request(self, method: str, endpoint: str, **kwargs) -> httpx.Response:
