@@ -58,6 +58,10 @@ class Snap(BaseModel):
     website: str | None = None
 
 
+class SingleSnapResponse(BaseResponse):
+    result: Snap
+
+
 class SnapListResponse(BaseResponse):
     result: list[Snap]
 

@@ -6,7 +6,7 @@ import httpx
 
 from snap_python.schemas.changes import ChangesResponse
 from snap_python.schemas.common import AsyncResponse
-from snap_python.schemas.snaps import SnapListResponse
+from snap_python.schemas.snaps import SingleSnapResponse, SnapListResponse
 from snap_python.utils import AbstractSnapsClient, going_to_reload_daemon
 
 logger = logging.getLogger("snap_python.components.snaps")
@@ -30,6 +30,13 @@ class SnapsEndpoints:
                 message=f"Invalid status code in response: {response.status_code}",
             )
         return response
+
+    async def get_snap_info(self, snap: str) -> SingleSnapResponse:
+        response: httpx.Response = await self._client.request(
+            "GET", f"{self.common_endpoint}/{snap}"
+        )
+
+        return SingleSnapResponse.model_validate_json(response.content)
 
     async def install_snap(
         self,
@@ -98,17 +105,18 @@ class SnapsEndpoints:
             while True:
                 try:
                     changes = await self._client.get_changes_by_id(changes_id)
+                    logger.debug(f"Progress: {changes.result.overall_progress}")
                 except httpx.HTTPError as e:
                     if going_to_reload_daemon(previous_changes):
                         logger.debug("Waiting for daemon to reload")
-                        await asyncio.sleep(2.0)
+                        await asyncio.sleep(0.1)
                         continue
 
                 if changes.ready:
                     break
                 if changes.result.err:
                     raise Exception(f"Error in snap install: {changes.result.err}")
-                await asyncio.sleep(2.0)
+                await asyncio.sleep(0.1)
                 previous_changes = changes
             return changes
         return response
@@ -133,13 +141,21 @@ class SnapsEndpoints:
 
         if wait:
             changes_id = response.change
+            previous_changes = None
             while True:
-                changes = await self._client.get_changes_by_id(changes_id)
+                try:
+                    changes = await self._client.get_changes_by_id(changes_id)
+                except httpx.HTTPError as e:
+                    if going_to_reload_daemon(previous_changes):
+                        logger.debug("Waiting for daemon to reload")
+                        await asyncio.sleep(0.1)
+                        continue
                 if changes.ready:
                     break
                 if changes.result.err:
                     raise Exception(f"Error in snap remove: {changes.result.err}")
-                await asyncio.sleep(2.0)
+                await asyncio.sleep(0.1)
+                previous_changes = changes
             return changes
 
         return response

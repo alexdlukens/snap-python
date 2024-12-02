@@ -132,3 +132,29 @@ async def test_install_specific_snap_revision_channel(setup_lxd_client: SnapClie
 
     installed_snaps = await setup_lxd_client.snaps.list_installed_snaps()
     assert "usconstitution" not in [snap.name for snap in installed_snaps.result]
+
+
+async def test_get_snap_info(setup_lxd_client: SnapClient):
+    logger.debug("Running test_get_snap_info")
+
+    # install hello-world snap
+    response = await setup_lxd_client.snaps.install_snap("hello-world", wait=True)
+
+    # ensure snap shows up in list_installed_snaps
+    installed_snaps = await setup_lxd_client.snaps.list_installed_snaps()
+    assert "hello-world" in [snap.name for snap in installed_snaps.result]
+
+    # ensure snap info can be retrieved using get_snap_info
+    snap_info = await setup_lxd_client.snaps.get_snap_info("hello-world")
+    assert snap_info.status_code == 200
+
+    # ensure snap info is identical to item in list_installed_snaps
+    snap_info = snap_info.result
+    snap = [snap for snap in installed_snaps.result if snap.name == "hello-world"][0]
+
+    # remove snap
+    removal_response = await setup_lxd_client.snaps.remove_snap(
+        "hello-world", purge=True, terminate=True, wait=True
+    )
+
+    assert snap_info == snap
