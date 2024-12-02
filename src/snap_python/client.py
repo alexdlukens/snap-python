@@ -55,7 +55,6 @@ class SnapClient(AbstractSnapsClient):
         response = await self.snapd_client.request(
             method, f"{self._base_url}/{self.version}/{endpoint}", **kwargs
         )
-        logger.debug(f"response: {response.content}")
         response.raise_for_status()
         return response
 
