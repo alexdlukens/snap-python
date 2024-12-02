@@ -32,11 +32,25 @@ class SnapsEndpoints:
         return response
 
     async def get_snap_info(self, snap: str) -> SingleSnapResponse:
-        response: httpx.Response = await self._client.request(
-            "GET", f"{self.common_endpoint}/{snap}"
-        )
+        try:
+            response: httpx.Response = await self._client.request(
+                "GET", f"{self.common_endpoint}/{snap}"
+            )
+        except httpx.HTTPStatusError as e:
+            logger.debug(
+                "Bad status code from get_snap_info on snap %s: %s",
+                snap,
+                e.response.status_code,
+            )
+            response = e.response
 
         return SingleSnapResponse.model_validate_json(response.content)
+
+    async def is_snap_installed(self, snap: str) -> bool:
+        snap_info = await self.get_snap_info(snap)
+        if snap_info.status == "OK":
+            return True
+        return False
 
     async def install_snap(
         self,

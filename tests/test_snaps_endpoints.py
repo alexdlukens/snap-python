@@ -7,7 +7,7 @@ import pytest
 
 from snap_python.client import SnapClient
 from snap_python.schemas.changes import ChangesResponse
-from snap_python.schemas.common import AsyncResponse
+from snap_python.schemas.common import AsyncResponse, BaseErrorResult
 from tests.lib.setup_lxd_container import module_scope_container  # noqa: F401
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -83,7 +83,7 @@ async def test_snap_client_install_with_wait(setup_lxd_client: SnapClient):
     response = await setup_lxd_client.snaps.install_snap("hello-world", wait=True)
     assert isinstance(response, ChangesResponse)
     assert response.status_code == 200
-
+    assert await setup_lxd_client.snaps.is_snap_installed("hello-world") is True
     installed_snaps = await setup_lxd_client.snaps.list_installed_snaps()
     assert "hello-world" in [snap.name for snap in installed_snaps.result]
 
@@ -96,6 +96,7 @@ async def test_snap_client_install_with_wait(setup_lxd_client: SnapClient):
 
     installed_snaps = await setup_lxd_client.snaps.list_installed_snaps()
     assert "hello-world" not in [snap.name for snap in installed_snaps.result]
+    assert await setup_lxd_client.snaps.is_snap_installed("hello-world") is False
 
 
 async def test_get_unknown_change(setup_lxd_client: SnapClient):
@@ -105,7 +106,7 @@ async def test_get_unknown_change(setup_lxd_client: SnapClient):
 
     assert bad_response.status_code == 404
     assert bad_response.status == "Not Found"
-    assert not bad_response.ready
+    assert isinstance(bad_response.result, BaseErrorResult)
     assert bad_response.type == "error"
 
 

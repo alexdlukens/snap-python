@@ -1,6 +1,7 @@
 from pydantic import AliasChoices, AwareDatetime, BaseModel, ConfigDict, Field
 
 from snap_python.schemas.common import (
+    BaseErrorResult,
     BaseResponse,
     Media,
     SnapApp,
@@ -59,7 +60,7 @@ class Snap(BaseModel):
 
 
 class SingleSnapResponse(BaseResponse):
-    result: Snap
+    result: Snap | BaseErrorResult
 
 
 class SnapListResponse(BaseResponse):
