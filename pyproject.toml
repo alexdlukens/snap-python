@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "snap-python"
-version = "0.0.1"
+version = "0.0.2"
 description = "An api to interact with snapd and snap stores"
 authors = ["Alexander Lukens <alexdlukens@gmail.com>"]
 license = "MIT"
