@@ -18,6 +18,8 @@ logger.setLevel(logging.DEBUG)
 
 
 class SnapClient(AbstractSnapsClient):
+    """Core class for interacting with the Snap Store and Snapd."""
+
     def __init__(
         self,
         version: str = "v2",
@@ -56,6 +58,18 @@ class SnapClient(AbstractSnapsClient):
 
     @retry(httpx.HTTPError, tries=3, delay=1, backoff=1)
     async def request(self, method: str, endpoint: str, **kwargs) -> httpx.Response:
+        """
+        Sends an HTTP request to the specified endpoint using the given method and parameters.
+        Args:
+            method (str): The HTTP method to use for the request (e.g., 'GET', 'POST').
+            endpoint (str): The API endpoint to send the request to.
+            **kwargs: Additional keyword arguments to pass to the request.
+        Returns:
+            httpx.Response: The response object from the HTTP request.
+        Raises:
+            httpx.HTTPStatusError: If the response contains an HTTP status code indicating an error.
+        """
+
         response = await self.snapd_client.request(
             method, f"{self._base_url}/{self.version}/{endpoint}", **kwargs
         )
@@ -64,6 +78,18 @@ class SnapClient(AbstractSnapsClient):
 
     @retry(httpx.HTTPError, tries=3, delay=1, backoff=1)
     async def request_raw(self, method: str, endpoint: str, **kwargs) -> httpx.Response:
+        """
+        Sends an HTTP request using the specified method and endpoint.
+        Args:
+            method (str): The HTTP method to use for the request (e.g., 'GET', 'POST').
+            endpoint (str): The endpoint URL to send the request to.
+            **kwargs: Additional keyword arguments to pass to the request.
+        Returns:
+            httpx.Response: The response object resulting from the HTTP request.
+        Raises:
+            httpx.HTTPStatusError: If the response contains an HTTP status code indicating an error.
+        """
+
         response = await self.snapd_client.request(method, endpoint, **kwargs)
 
         response.raise_for_status()
