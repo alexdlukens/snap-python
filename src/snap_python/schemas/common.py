@@ -62,3 +62,37 @@ class Media(BaseModel):
 
 class AsyncResponse(BaseResponse):
     change: str
+
+
+class Download(BaseModel):
+    model_config = ConfigDict(extra="forbid", exclude_unset=True)
+
+    size: float
+
+
+class Revision(BaseModel):
+    model_config = ConfigDict(extra="forbid", exclude_unset=True)
+
+    base: Optional[SnapBaseVersion] = None
+    channel: Optional[str] = None
+    common_ids: Optional[list[str]] = Field(None, alias="common-ids")
+    confinement: Optional[SnapConfinement] = None
+    download: Optional[Download] = None
+    revision: Optional[str] = None
+    type: Optional[str] = None
+    version: Optional[str] = None
+
+
+class Publisher(BaseModel):
+    model_config = ConfigDict(extra="forbid", exclude_unset=True)
+
+    display_name: str = Field(
+        ...,
+        validation_alias=AliasChoices("display-name", "display_name"),
+        description="Display name corresponding to the publisher.",
+    )
+    id: str = Field(..., description="The publisher id.")
+    username: str = Field(..., description="Username belonging to the publisher.")
+    validation: Optional[str] = Field(
+        None, description="Indicates if the account has been validated."
+    )

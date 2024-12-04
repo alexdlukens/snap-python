@@ -1,6 +1,7 @@
 import pathlib
 from unittest.mock import AsyncMock, MagicMock
 
+import pydantic
 import pytest
 from httpx import HTTPError, Response
 
@@ -67,6 +68,6 @@ async def test_get_snap_info_success(setup_snaps_api: StoreEndpoints):
     setup_snaps_api.store_client.get.return_value.raise_for_status = MagicMock()
     try:
         response = await setup_snaps_api.get_snap_info("py-rand-tool")
-    except Exception as e:
-        pytest.fail(f"Unexpected exception: {e}")
+    except pydantic.ValidationError as e:
+        pytest.fail(f"Unexpected exception: \n{e.json(indent=2)}")
     assert isinstance(response, InfoResponse)
