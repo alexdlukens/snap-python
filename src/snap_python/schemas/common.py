@@ -75,10 +75,12 @@ class Revision(BaseModel):
 
     base: Optional[SnapBaseVersion] = None
     channel: Optional[str] = None
-    common_ids: Optional[list[str]] = Field(None, alias="common-ids")
+    common_ids: Optional[list[str]] = Field(
+        None, validation_alias=AliasChoices("common-ids", "common_ids")
+    )
     confinement: Optional[SnapConfinement] = None
     download: Optional[Download] = None
-    revision: Optional[str] = None
+    revision: Optional[int | str] = None
     type: Optional[str] = None
     version: Optional[str] = None
 

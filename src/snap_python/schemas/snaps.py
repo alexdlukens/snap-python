@@ -15,10 +15,12 @@ from snap_python.schemas.store.categories import Category
 
 class InstalledSnapFields(Revision):
     apps: list[SnapApp] = Field(default_factory=list)
-    developer: str
-    devmode: bool
+    developer: Optional[str] = None
+    devmode: Optional[bool] = None
     icon: Optional[str] = None
-    id: str
+    id: Optional[str] = Field(
+        None, validation_alias=AliasChoices("id", "snap-id"), serialization_alias="id"
+    )
     ignore_validation: bool = Field(
         validation_alias=AliasChoices("ignore-validation", "ignore_validation"),
         serialization_alias="ignore-validation",
@@ -56,14 +58,14 @@ class StoreSnapFields(BaseModel):
 
 
 class Snap(BaseModel):
-    model_config = ConfigDict(extra="ignore", exclude_unset=True)
+    model_config = ConfigDict(extra="forbid")
 
     contact: Optional[str] = None
-    description: str
+    description: Optional[str] = None
     license: str = "unset"
     links: Optional[dict[str, list[str]]] = None
     media: Optional[list[Media]] = None
-    name: str
+    name: Optional[str] = None
     private: Optional[bool] = None
     publisher: Optional[Publisher] = Field(None, description="The publisher.")
     summary: Optional[str] = None

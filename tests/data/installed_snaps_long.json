@@ -1,0 +1,3647 @@
+{
+    "status_code": 200,
+    "type": "sync",
+    "status": "OK",
+    "result": [
+        {
+            "base": null,
+            "channel": "stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "13",
+            "type": "app",
+            "version": "0.1",
+            "apps": [],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": null,
+            "id": "QTTvBfEDSFw9OAOmdhHWdYh0BNNgz3BU",
+            "ignore_validation": false,
+            "install_date": "2024-09-03T11:50:44.598696-04:00",
+            "installed_size": 143360,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/gtk2-common-themes_13.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "",
+            "description": "A snap that exports the GTK 2.x themes used on various Linux distros.\n",
+            "license": "unset",
+            "links": null,
+            "media": null,
+            "name": "gtk2-common-themes",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "All the (common) GTK 2 themes",
+            "title": "GTK2 Common Themes",
+            "unlisted": null,
+            "website": null
+        },
+        {
+            "base": "core20",
+            "channel": "stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "22",
+            "type": "app",
+            "version": "0.19.0-4-g5d52c15",
+            "apps": [
+                {
+                    "snap": "woke",
+                    "name": "woke",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "degville",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2021/12/woke.png",
+            "id": "YSDc137YVn784zYxZY3SDnsbYs043RaO",
+            "ignore_validation": false,
+            "install_date": "2024-10-17T10:50:04.229477-04:00",
+            "installed_size": 12427264,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/woke_22.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "mailto:graham.morrison@canonical.com",
+            "description": "Creating an inclusive work environment is imperative to a healthy,\nsupportive, and productive culture, and an environment where everyone\nfeels welcome and included. woke is a text file analysis tool that finds\nplaces within your source code that contain non-inclusive language and\nsuggests replacing them with more inclusive alternatives.\n\nThe following home directory locations are supported for woke's configuration file:\n\n- $HOME/.config/woke.yaml\n- $HOME/.config/woke.yml\n- $HOME/.woke.yaml\n- $HOME/.woke.yml\n\nRemote files can be accessed after connecting the network interface:\n\n`snap connect woke:network`\n\nIf your project directory is on another storage device, mounted via _/media_, _/run/media_ or _/mnt_, you will need to connect the removable-media interface to permit woke access:\n\n`snap connect woke:removable-media`\n\nThe Snapcraft build files for woke can be found here:\nhttps://github.com/degville/woke-snap\n\nThe snap build is not endorsed by the woke project.",
+            "license": "unset",
+            "links": {
+                "contact": [
+                    "mailto:graham.morrison@canonical.com"
+                ],
+                "website": [
+                    "https://github.com/get-woke/woke"
+                ]
+            },
+            "media": [
+                {
+                    "height": 233.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2021/12/woke.png",
+                    "width": 233.0
+                },
+                {
+                    "height": 497.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2021/12/woke_01.png",
+                    "width": 959.0
+                },
+                {
+                    "height": 513.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2021/12/woke_02.png",
+                    "width": 959.0
+                }
+            ],
+            "name": "woke",
+            "private": false,
+            "publisher": {
+                "display_name": "Graham Morrison",
+                "id": "bJzr2XzZg6Qv6Z53HIeziXyxtn1XItIq",
+                "username": "degville",
+                "validation": "unproven"
+            },
+            "summary": "Detect non-inclusive language in your source code",
+            "title": "woke",
+            "unlisted": null,
+            "website": "https://github.com/get-woke/woke"
+        },
+        {
+            "base": "core22",
+            "channel": "latest/stable",
+            "common_ids": null,
+            "confinement": "classic",
+            "download": null,
+            "revision": "5303",
+            "type": "app",
+            "version": "3.2.2",
+            "apps": [
+                {
+                    "snap": "charmcraft",
+                    "name": "charmcraft",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "charmcraft",
+                    "name": "spread",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2021/06/image-juju-256.svg.png",
+            "id": "gcqfpVCOUvmDuYT0Dh5PjdeGypSEzNdV",
+            "ignore_validation": false,
+            "install_date": "2024-11-19T14:29:32.917864-05:00",
+            "installed_size": 61452288,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/charmcraft_5303.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "",
+            "description": "Charmcraft enables charm creators to build, publish, and manage charmed operators for Kubernetes, metal and virtual machines.",
+            "license": "Apache-2.0",
+            "links": {
+                "issues": [
+                    "https://github.com/canonical/charmcraft/issues"
+                ],
+                "website": [
+                    "https://github.com/canonical/charmcraft/"
+                ]
+            },
+            "media": [
+                {
+                    "height": 256.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2021/06/image-juju-256.svg.png",
+                    "width": 256.0
+                }
+            ],
+            "name": "charmcraft",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "The charming tool",
+            "title": "charmcraft",
+            "unlisted": null,
+            "website": "https://github.com/canonical/charmcraft/"
+        },
+        {
+            "base": "core22",
+            "channel": "latest/stable",
+            "common_ids": [
+                "org.kde.ktouch.desktop"
+            ],
+            "confinement": "strict",
+            "download": null,
+            "revision": "118",
+            "type": "app",
+            "version": "23.08.4",
+            "apps": [
+                {
+                    "snap": "ktouch",
+                    "name": "ktouch",
+                    "desktop_file": "/var/lib/snapd/desktop/applications/ktouch_ktouch.desktop",
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": "org.kde.ktouch.desktop"
+                }
+            ],
+            "developer": "kde",
+            "devmode": false,
+            "icon": "/v2/icons/ktouch/icon",
+            "id": "0LBKL63ul4N4KJQn6ala2DzoCjPblZ5r",
+            "ignore_validation": false,
+            "install_date": "2024-10-21T08:33:40.658381-04:00",
+            "installed_size": 127148032,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/ktouch_118.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "https://bugs.kde.org/enter_bug.cgi?product=neon&component=Snaps",
+            "description": "KTouch is a typewriter trainer for learning to touch type. It provides you with text to train on and adjusts to different levels depending on how good you are. It displays your keyboard and indicates which key to press next and which is the correct finger to use. You learn typing with all fingers, step by step, without having to look down at the keyboard to find your keys. It is convenient for all ages and the perfect typing tutor for schools, universities, and personal use. KTouch ships with dozens of different courses in many languages and a comfortable course editor. Different keyboard layouts are supported and new user-defined layouts can be created. During training, KTouch collects comprehensive statistical information to help you or your teacher to analyze your progress.",
+            "license": "unset",
+            "links": {
+                "contact": [
+                    "https://bugs.kde.org/enter_bug.cgi?product=neon&component=Snaps"
+                ],
+                "website": [
+                    "https://www.kde.org"
+                ]
+            },
+            "media": [
+                {
+                    "height": 256.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2017/01/icon_14.png",
+                    "width": 256.0
+                },
+                {
+                    "height": 781.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2019/01/ktouch_gir0tw1.png",
+                    "width": 1058.0
+                }
+            ],
+            "name": "ktouch",
+            "private": false,
+            "publisher": {
+                "display_name": "KDE",
+                "id": "2rsYZu6kqYVFsSejExu4YENdXQEO40Xb",
+                "username": "kde",
+                "validation": "verified"
+            },
+            "summary": "Touch Typing Tutor",
+            "title": "KTouch",
+            "unlisted": null,
+            "website": "https://www.kde.org"
+        },
+        {
+            "base": "core20",
+            "channel": "stable",
+            "common_ids": [
+                "org.gimp.GIMP"
+            ],
+            "confinement": "strict",
+            "download": null,
+            "revision": "436",
+            "type": "app",
+            "version": "2.10.38",
+            "apps": [
+                {
+                    "snap": "gimp",
+                    "name": "gimp",
+                    "desktop_file": "/var/lib/snapd/desktop/applications/gimp_gimp.desktop",
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": "org.gimp.GIMP"
+                }
+            ],
+            "developer": "snapcrafters",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2017/07/gimp.png",
+            "id": "KDHYbyuzZukmLhiogKiUksByRhXD2gYV",
+            "ignore_validation": false,
+            "install_date": "2024-09-03T11:50:51.508788-04:00",
+            "installed_size": 540721152,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/gimp_436.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "https://github.com/snapcrafters/gimp/issues",
+            "description": "Whether you are a graphic designer, photographer, illustrator, or scientist, GIMP provides you with sophisticated tools to get your job done. You can further enhance your productivity with GIMP thanks to many customization options and 3rd party plugins.\n\nThis snap is maintained by the Snapcrafters community, and is not necessarily endorsed or officially maintained by the upstream developers.\n\nUpstream Project: https://www.gimp.org/\nsnapcraft.yaml Build Definition: https://github.com/snapcrafters/gimp/blob/master/snap/snapcraft.yaml",
+            "license": "unset",
+            "links": {
+                "contact": [
+                    "https://github.com/snapcrafters/gimp/issues"
+                ],
+                "website": [
+                    "https://www.gimp.org/"
+                ]
+            },
+            "media": [
+                {
+                    "height": null,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2017/07/gimp.png",
+                    "width": null
+                },
+                {
+                    "height": 640.0,
+                    "type": "banner",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2019/10/gimp-splash-fs8.png",
+                    "width": 1920.0
+                },
+                {
+                    "height": null,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2018/05/Screenshot_from_2018-05-09_15-25-10.png",
+                    "width": null
+                },
+                {
+                    "height": null,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2018/05/Screenshot_from_2018-05-09_15-24-36.png",
+                    "width": null
+                }
+            ],
+            "name": "gimp",
+            "private": false,
+            "publisher": {
+                "display_name": "Snapcrafters",
+                "id": "eEoV9TnaNkCzfJBu9SRhr2678vzyYV43",
+                "username": "snapcrafters",
+                "validation": "starred"
+            },
+            "summary": "GNU Image Manipulation Program",
+            "title": "GNU Image Manipulation Program",
+            "unlisted": null,
+            "website": "https://www.gimp.org/"
+        },
+        {
+            "base": "core20",
+            "channel": "latest/stable",
+            "common_ids": null,
+            "confinement": "classic",
+            "download": null,
+            "revision": "40",
+            "type": "app",
+            "version": "1.7.7",
+            "apps": [
+                {
+                    "snap": "obsidian",
+                    "name": "obsidian",
+                    "desktop_file": "/var/lib/snapd/desktop/applications/obsidian_obsidian.desktop",
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "obsidianmd",
+            "devmode": false,
+            "icon": "/v2/icons/obsidian/icon",
+            "id": "XSpRD8poWONFIT1z9TleS4XrS1u0MlfG",
+            "ignore_validation": false,
+            "install_date": "2024-11-18T10:59:08.781708-05:00",
+            "installed_size": 127700992,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/obsidian_40.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "",
+            "description": "Obsidian",
+            "license": "unset",
+            "links": null,
+            "media": [
+                {
+                    "height": 512.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2023/06/icon.png",
+                    "width": 512.0
+                }
+            ],
+            "name": "obsidian",
+            "private": false,
+            "publisher": {
+                "display_name": "Obsidian",
+                "id": "WfRJPqOpcF44N2eXtz8wK4LhCx7r7eHu",
+                "username": "obsidianmd",
+                "validation": "unproven"
+            },
+            "summary": "Obsidian",
+            "title": "Obsidian",
+            "unlisted": null,
+            "website": null
+        },
+        {
+            "base": "core22",
+            "channel": "kisak-fresh/stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "184",
+            "type": "app",
+            "version": "24.2.3~kisak1~j",
+            "apps": [],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": null,
+            "id": "JWD4nJLiCdHrZWKOWlzGbh0cv0omRmDj",
+            "ignore_validation": false,
+            "install_date": "2024-10-07T15:10:14.418697-04:00",
+            "installed_size": 202350592,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/gaming-graphics-core22_184.snap",
+            "status": "active",
+            "tracking_channel": "kisak-fresh/stable",
+            "contact": "https://github.com/canonical/gaming-graphics",
+            "description": "Graphics libraries useful for gaming platforms like Steam",
+            "license": "unset",
+            "links": {
+                "contact": [
+                    "https://github.com/canonical/gaming-graphics"
+                ],
+                "website": [
+                    "https://github.com/canonical/gaming-graphics"
+                ]
+            },
+            "media": null,
+            "name": "gaming-graphics-core22",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "Shared Mesa stack for gaming",
+            "title": "gaming-graphics-core22",
+            "unlisted": null,
+            "website": "https://github.com/canonical/gaming-graphics"
+        },
+        {
+            "base": "core20",
+            "channel": "stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "704",
+            "type": "app",
+            "version": "0.36-snapd2.59.4",
+            "apps": [
+                {
+                    "snap": "snappy-debug",
+                    "name": "audit-arch",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "snappy-debug",
+                    "name": "id-range",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "snappy-debug",
+                    "name": "scanlog",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "snappy-debug",
+                    "name": "scmp-sys-resolver",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "snappy-debug",
+                    "name": "security",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "snappy-debug",
+                    "name": "snappy-debug",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2015/10/hello_2.png",
+            "id": "DVAzG29Avl1Cn5s1nLXGzyQ0vi9v87Jw",
+            "ignore_validation": false,
+            "install_date": "2024-09-12T18:16:41.130021-04:00",
+            "installed_size": 17104896,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/snappy-debug_704.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "mailto:snaps@canonical.com",
+            "description": "Snap developers can use this tool to help them debug and fix policy violations.\n\nEach snap runs confined inside its own sandbox. The policy of each sandbox describes what the application is allowed to do. When an application tries to do something that is not allowed, the system logs a policy violation.\n\nThis snap\n\n* watches syslog for such policy violations,\n* shows them in a human readable format,\n* and makes recommendations for how to solve them.\n\nRun the following command to start watching policy violations.\n\n  sudo snappy-debug\n\nIf you have dropped messages, try the following command instead.\n\n  sudo journalctl --output=short --follow --all | sudo snappy-debug\n\nNote: these commands only show policy violations that happen _after_ you run them. So first run one of these commands and then run the snap that you want to debug.\n\nSee `snappy-debug --help` for more information about this tool.\n",
+            "license": "GPL-3.0-or-later",
+            "links": {
+                "contact": [
+                    "mailto:snaps@canonical.com"
+                ]
+            },
+            "media": [
+                {
+                    "height": 256.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2015/10/hello_2.png",
+                    "width": 256.0
+                }
+            ],
+            "name": "snappy-debug",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "Tool for debugging snap confinement policy violations",
+            "title": "snappy-debug",
+            "unlisted": null,
+            "website": null
+        },
+        {
+            "base": "core18",
+            "channel": "stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "198",
+            "type": "app",
+            "version": "3.28.0-19-g98f9e67.98f9e67",
+            "apps": [],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": "/v2/icons/gnome-3-28-1804/icon",
+            "id": "TKv5Fm000l4XiUYJW9pjWHLkCPlDbIg1",
+            "ignore_validation": false,
+            "install_date": "2024-11-13T12:33:20.120672-05:00",
+            "installed_size": 172830720,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/gnome-3-28-1804_198.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "https://gitlab.gnome.org/Community/Ubuntu/gnome-3-28-1804/issues",
+            "description": "This snap includes a GNOME 3.28 stack (the base libraries and desktop \nintegration components) and shares it through the content interface.",
+            "license": "unset",
+            "links": {
+                "contact": [
+                    "https://gitlab.gnome.org/Community/Ubuntu/gnome-3-28-1804/issues"
+                ]
+            },
+            "media": [
+                {
+                    "height": 256.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2018/04/icon_ysMJicB.png",
+                    "width": 256.0
+                }
+            ],
+            "name": "gnome-3-28-1804",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "Shared GNOME 3.28 runtime for Ubuntu 18.04",
+            "title": "GNOME 3.28 runtime",
+            "unlisted": null,
+            "website": null
+        },
+        {
+            "base": "core18",
+            "channel": "latest/edge",
+            "common_ids": null,
+            "confinement": "classic",
+            "download": null,
+            "revision": "151",
+            "type": "app",
+            "version": "1.0.0+604",
+            "apps": [
+                {
+                    "snap": "mojo",
+                    "name": "juju-check",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "mojo",
+                    "name": "juju-parse-status",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "mojo",
+                    "name": "mojo",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "canonical-is-snaps",
+            "devmode": false,
+            "icon": null,
+            "id": "8GZ3t2c3Ah0N6Ht1luBY351TLORtUL3d",
+            "ignore_validation": false,
+            "install_date": "2024-10-11T09:24:13.539191-04:00",
+            "installed_size": 165453824,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/mojo_151.snap",
+            "status": "active",
+            "tracking_channel": "latest/edge",
+            "contact": "",
+            "description": "Mojo is a system of configuration and tools for verifying the success of Juju environment deployments. It's available as an open source project under the GPLv3 license on Launchpad.",
+            "license": "unset",
+            "links": null,
+            "media": null,
+            "name": "mojo",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical IS Snaps",
+                "id": "3AgcfWmX2VAMxSvOfCdSoHqsoZxPyPqH",
+                "username": "canonical-is-snaps",
+                "validation": "unproven"
+            },
+            "summary": "Mojo - Continuous Delivery for Juju",
+            "title": "mojo",
+            "unlisted": null,
+            "website": null
+        },
+        {
+            "base": "core22",
+            "channel": "1.17/stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "2354",
+            "type": "app",
+            "version": "1.17.6",
+            "apps": [
+                {
+                    "snap": "vault",
+                    "name": "vault",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "vault",
+                    "name": "vaultd",
+                    "desktop_file": null,
+                    "daemon": "simple",
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2017/09/android-chrome-512x512.png",
+            "id": "bIb4p4yWWjyZdo2EU64whkZhw9QYYsMH",
+            "ignore_validation": false,
+            "install_date": "2024-11-22T13:46:17.018522-05:00",
+            "installed_size": 200896512,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/vault_2354.snap",
+            "status": "active",
+            "tracking_channel": "1.17/stable",
+            "contact": "",
+            "description": "A modern system requires access to a multitude of secrets: database\ncredentials, API keys for external services, credentials for service-oriented\narchitecture communication, etc. Understanding who is accessing what secrets\nis already very difficult and platform-specific. Adding on key rolling,\nsecure storage, and detailed audit logs is almost impossible without a custom\nsolution. This is where Vault steps in.\n\nThis snap is maintained by Canonical.\n\n**Usage**\n \n* To start the Vault service, edit the configuration file at `/var/snap/vault/common/vault.hcl` and start the service with `sudo snap start vault.vaultd`.\n\n* To use the Vault Client, run `vault` commands. For example: `vault status`.",
+            "license": "BUSL-1.1",
+            "links": {
+                "issues": [
+                    "https://github.com/canonical/snap-vault/issues"
+                ],
+                "source": [
+                    "https://github.com/hashicorp/vault"
+                ],
+                "website": [
+                    "https://github.com/canonical/snap-vault",
+                    "https://www.vaultproject.io/"
+                ]
+            },
+            "media": [
+                {
+                    "height": 256.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2017/09/android-chrome-512x512.png",
+                    "width": 256.0
+                },
+                {
+                    "height": 500.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/03/Screenshot_from_2024-03-20_16-12-04-1710965788.png",
+                    "width": 873.0
+                },
+                {
+                    "height": 1068.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/03/Screenshot_from_2024-03-20_16-15-49-1710965788.png",
+                    "width": 1793.0
+                }
+            ],
+            "name": "vault",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "Vault is a tool for securely accessing secrets.",
+            "title": "vault",
+            "unlisted": null,
+            "website": "https://github.com/canonical/snap-vault"
+        },
+        {
+            "base": "core22",
+            "channel": "latest/stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "5361",
+            "type": "app",
+            "version": "133.0-2",
+            "apps": [
+                {
+                    "snap": "firefox",
+                    "name": "firefox",
+                    "desktop_file": "/var/lib/snapd/desktop/applications/firefox_firefox.desktop",
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "firefox",
+                    "name": "geckodriver",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "mozilla",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2021/12/firefox_logo.png",
+            "id": "3wdHCAVyZEmYsCMFDE9qt92UV8rC8Wdk",
+            "ignore_validation": false,
+            "install_date": "2024-11-27T10:52:57.311610-05:00",
+            "installed_size": 287358976,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/firefox_5361.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable/ubuntu-24.04",
+            "contact": "https://support.mozilla.org/kb/file-bug-report-or-feature-request-mozilla",
+            "description": "Firefox is a powerful, extensible web browser with support for modern web application technologies.",
+            "license": "unset",
+            "links": {
+                "contact": [
+                    "https://support.mozilla.org/kb/file-bug-report-or-feature-request-mozilla"
+                ],
+                "website": [
+                    "https://www.mozilla.org/firefox/"
+                ]
+            },
+            "media": [
+                {
+                    "height": 196.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2021/12/firefox_logo.png",
+                    "width": 196.0
+                },
+                {
+                    "height": 1415.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2021/09/Screenshot_from_2021-09-30_08-01-50.png",
+                    "width": 1850.0
+                }
+            ],
+            "name": "firefox",
+            "private": false,
+            "publisher": {
+                "display_name": "Mozilla",
+                "id": "OgeoZuqQpVvSr9eGKJzNCrFGSaKXpkey",
+                "username": "mozilla",
+                "validation": "verified"
+            },
+            "summary": "Mozilla Firefox web browser",
+            "title": "firefox",
+            "unlisted": null,
+            "website": "https://www.mozilla.org/firefox/"
+        },
+        {
+            "base": null,
+            "channel": "latest/stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "609",
+            "type": "base",
+            "version": "20240920",
+            "apps": [],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2024/06/core-icon-large_yqSW18J.png",
+            "id": "dwTAh7MZZ01zyriOZErqd1JynQLiOGvM",
+            "ignore_validation": false,
+            "install_date": "2024-10-28T07:26:56.187458-04:00",
+            "installed_size": 69382144,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/core24_609.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "",
+            "description": "Base snaps are a specific type of snap that include libraries and dependencies common to many applications. They provide a consistent and reliable execution environment for the snap packages that use them.\n\nThe core24 base snap provides a runtime environment based on Ubuntu 24.04 (Noble Numbat).\n\nOther Ubuntu environment base snaps include:\n-   Core 18: <https://snapcraft.io/core18>\n-   Core 20: <https://snapcraft.io/core20> \n-   Core 22: <https://snapcraft.io/core22>\n\n**Using a base snap**\n\nBase snaps are installed automatically when a snap package requires them. Only one of each type of base snap is ever installed.\n\nManually removing a base snap may affect the stability of your system.\n\n**Building snaps with core24**\n\nSnap developers can use this base in their own snaps by adding the following to the snap's snapcraft.yaml:\n\n    base: core24\n\n**Additional Information***\n\nFor more details, and guidance on using base snaps, see our documentation: <https://snapcraft.io/docs/base-snaps>",
+            "license": "unset",
+            "links": {
+                "issues": [
+                    "https://github.com/snapcore/core-base/issues"
+                ],
+                "source": [
+                    "https://github.com/snapcore/core-base"
+                ],
+                "website": [
+                    "https://snapcraft.io/"
+                ]
+            },
+            "media": [
+                {
+                    "height": 498.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/06/core-icon-large_yqSW18J.png",
+                    "width": 498.0
+                },
+                {
+                    "height": 932.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/06/core-01-1718731728.png",
+                    "width": 568.0
+                },
+                {
+                    "height": 932.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/06/core-02-1718731728.png",
+                    "width": 568.0
+                },
+                {
+                    "height": 932.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/06/core-03-1718731728.png",
+                    "width": 568.0
+                }
+            ],
+            "name": "core24",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "Snap runtime environment",
+            "title": "Core 24 base snap",
+            "unlisted": null,
+            "website": "https://snapcraft.io/"
+        },
+        {
+            "base": "core24",
+            "channel": "stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "143",
+            "type": "app",
+            "version": "24.0.9",
+            "apps": [],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2024/04/logo_bO5tj2X.png",
+            "id": "HyhSEBPv3vHsW6uOHkQR384NgI7S6zpj",
+            "ignore_validation": false,
+            "install_date": "2024-09-03T10:45:16.036484-04:00",
+            "installed_size": 221761536,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/mesa-2404_143.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "https://github.com/canonical/mesa-2404",
+            "description": "A content snap containing the mesa libraries and drivers for `base: core24` snaps.\n\nIt supports a broad range of hardware through the Mesa stack as well as Nvidia\ndrivers installed from your distribution through the native SnapD support.\n\nTo make use of this snap in your application, allowing for GPU acceleration on\na broader set of hardware without including the drivers in your snap, refer to the\ndocumentation below:\n\nhttps://mir-server.io/docs/the-gpu-2404-snap-interface\n\n_Note: On some, typically desktop, systems SnapD supports loading Nvidia drivers installed on the host. mesa-core22 is compatible with this._",
+            "license": "MIT",
+            "links": {
+                "contact": [
+                    "https://github.com/canonical/mesa-2404",
+                    "https://matrix.to/#/#mir-server:matrix.org"
+                ],
+                "issues": [
+                    "https://github.com/canonical/mesa-2404/issues"
+                ],
+                "source": [
+                    "https://github.com/canonical/mesa-2404"
+                ],
+                "website": [
+                    "https://mesa3d.org/"
+                ]
+            },
+            "media": [
+                {
+                    "height": 512.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/04/logo_bO5tj2X.png",
+                    "width": 512.0
+                }
+            ],
+            "name": "mesa-2404",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "Mesa libraries for core24 snaps",
+            "title": "mesa-2404",
+            "unlisted": null,
+            "website": "https://mesa3d.org/"
+        },
+        {
+            "base": null,
+            "channel": "latest/stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "2846",
+            "type": "base",
+            "version": "20240920",
+            "apps": [],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2024/06/core-icon-large.png",
+            "id": "CSO04Jhav2yK0uz97cr0ipQRyqg0qQL6",
+            "ignore_validation": false,
+            "install_date": "2024-10-02T08:34:08.461703-04:00",
+            "installed_size": 58052608,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/core18_2846.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "https://github.com/snapcore/core18/issues",
+            "description": "Base snaps are a specific type of snap that include libraries and dependencies common to many applications. They provide a consistent and reliable execution environment for the snap packages that use them.\n\nThe core18 base snap provides a runtime environment based on Ubuntu 18.04 LTS (Bionic Beaver).\n\nOther Ubuntu environment base snaps include:\n-   Core 20: <https://snapcraft.io/core20>\n-   Core 22: <https://snapcraft.io/core22> \n-   Core 24: <https://snapcraft.io/core24>\n\n**Using a base snap**\n\nBase snaps are installed automatically when a snap package requires them. Only one of each type of base snap is ever installed.\n\nManually removing a base snap may affect the stability of your system.\n\n**Building snaps with core18**\n\nSnap developers can use this base in their own snaps by adding the following to the snap's snapcraft.yaml:\n\n    base: core18\n\n**Additional Information***\n\nFor more details, and guidance on using base snaps, see our documentation: <https://snapcraft.io/docs/base-snaps>",
+            "license": "unset",
+            "links": {
+                "contact": [
+                    "https://github.com/snapcore/core18/issues"
+                ],
+                "source": [
+                    "https://github.com/snapcore/core18"
+                ],
+                "website": [
+                    "https://snapcraft.io"
+                ]
+            },
+            "media": [
+                {
+                    "height": 498.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/06/core-icon-large.png",
+                    "width": 498.0
+                },
+                {
+                    "height": 932.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/06/core-01-1718723969.png",
+                    "width": 568.0
+                },
+                {
+                    "height": 932.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/06/core-02-1718723969.png",
+                    "width": 568.0
+                },
+                {
+                    "height": 932.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/06/core-03-1718723969.png",
+                    "width": 568.0
+                }
+            ],
+            "name": "core18",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "Snap runtime environment",
+            "title": "Core 18 base snap",
+            "unlisted": null,
+            "website": "https://snapcraft.io"
+        },
+        {
+            "base": "core22",
+            "channel": "stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "5",
+            "type": "app",
+            "version": "5.108",
+            "apps": [],
+            "developer": "kde",
+            "devmode": false,
+            "icon": "/v2/icons/kf5-5-108-qt-5-15-10-core22/icon",
+            "id": "asBmghjgB07YgytS7KuP2HYj81arwkQS",
+            "ignore_validation": false,
+            "install_date": "2024-10-16T16:25:04.144929-04:00",
+            "installed_size": 472018944,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/kf5-5-108-qt-5-15-10-core22_5.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "",
+            "description": "KDE Frameworks are addons and useful extensions to Qt",
+            "license": "unset",
+            "links": null,
+            "media": [
+                {
+                    "height": null,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2023/07/icon_pn6872z.png",
+                    "width": null
+                }
+            ],
+            "name": "kf5-5-108-qt-5-15-10-core22",
+            "private": false,
+            "publisher": {
+                "display_name": "KDE",
+                "id": "2rsYZu6kqYVFsSejExu4YENdXQEO40Xb",
+                "username": "kde",
+                "validation": "verified"
+            },
+            "summary": "KDE Frameworks 5",
+            "title": "kf5-5-108-qt-5-15-10-core22",
+            "unlisted": null,
+            "website": null
+        },
+        {
+            "base": "core24",
+            "channel": "",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "x6",
+            "type": "app",
+            "version": "0.1.4",
+            "apps": [
+                {
+                    "snap": "store-tui",
+                    "name": "store-tui",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "",
+            "devmode": false,
+            "icon": null,
+            "id": "",
+            "ignore_validation": false,
+            "install_date": "2024-12-02T20:38:11.666122-05:00",
+            "installed_size": 36438016,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/store-tui_x6.snap",
+            "status": "active",
+            "tracking_channel": "latest/edge",
+            "contact": "mailto:alexdlukens@gmail.com",
+            "description": "A TUI for for navigating the Snap Store.\n\nDesigned using the \"Textual\" Python Library - https://github.com/textualize/textual/\n\n- [✅] Browse the Snap Store\n- [✅] Search for Snaps\n- [✅] View Snap Details\n- [✅] Open Store URL in Browser\n- [❌] Install/Modify Snaps directly from the TUI\n- [❌] View Installed Snaps\n- [❌] View Snap Channels and Revisions\n- [❌] Sort and Filter Snaps\n",
+            "license": "MIT",
+            "links": {
+                "contact": [
+                    "mailto:alexdlukens@gmail.com"
+                ],
+                "website": [
+                    "https://github.com/alexdlukens/snap-store-tui"
+                ]
+            },
+            "media": null,
+            "name": "store-tui",
+            "private": false,
+            "publisher": null,
+            "summary": "Navigate the Snap Store from the terminal",
+            "title": null,
+            "unlisted": null,
+            "website": "https://github.com/alexdlukens/snap-store-tui"
+        },
+        {
+            "base": "core22",
+            "channel": "latest/candidate",
+            "common_ids": [
+                "org.kde.kalendar"
+            ],
+            "confinement": "strict",
+            "download": null,
+            "revision": "1",
+            "type": "app",
+            "version": "23.04.3",
+            "apps": [
+                {
+                    "snap": "kalendar",
+                    "name": "kalendar",
+                    "desktop_file": "/var/lib/snapd/desktop/applications/kalendar_kalendar.desktop",
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": "org.kde.kalendar"
+                }
+            ],
+            "developer": "kde",
+            "devmode": false,
+            "icon": null,
+            "id": "U6LPrrBFZAS9QZIvkQY3R6mrj76kutwC",
+            "ignore_validation": false,
+            "install_date": "2024-10-16T16:24:54.975524-04:00",
+            "installed_size": 312844288,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/kalendar_1.snap",
+            "status": "active",
+            "tracking_channel": "latest/candidate",
+            "contact": "",
+            "description": "Kalendar is a calendar application that allows you to manage your tasks and events. Kalendar supports both local calendars as well as a multitude of online calendars: Nextcloud, Google® Calendar, Outlook®, Caldav, and many more.\n\nKalendar gives you many ways to interact with your events. The month view provides an overview of the entire month; the week view presents a detailed hour-by-hour overview of your week; and the schedule view lists all of your upcoming events so that you can easily and quickly plan ahead.\n\nA tasks view is also available, making it possible for you to manage your tasks and subtasks with Kalendar's powerful tree view and its customisable filtering capabilities.\n\nKalendar was built with the idea to be usable on desktop, on mobile and everything in between.",
+            "license": "unset",
+            "links": null,
+            "media": null,
+            "name": "kalendar",
+            "private": false,
+            "publisher": {
+                "display_name": "KDE",
+                "id": "2rsYZu6kqYVFsSejExu4YENdXQEO40Xb",
+                "username": "kde",
+                "validation": "verified"
+            },
+            "summary": "Manage your tasks and events with speed and ease",
+            "title": "Kalendar",
+            "unlisted": null,
+            "website": null
+        },
+        {
+            "base": "core22",
+            "channel": "latest/stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "585",
+            "type": "app",
+            "version": "128.5.0esr-1",
+            "apps": [
+                {
+                    "snap": "thunderbird",
+                    "name": "thunderbird",
+                    "desktop_file": "/var/lib/snapd/desktop/applications/thunderbird_thunderbird.desktop",
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2023/10/thunderbird.png",
+            "id": "k1Ml1O9GzSO2QftV0ZlWSbUfQ78nN460",
+            "ignore_validation": false,
+            "install_date": "2024-12-02T12:52:44.246400-05:00",
+            "installed_size": 157863936,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/thunderbird_585.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable/ubuntu-24.04",
+            "contact": "https://www.thunderbird.net/contact/",
+            "description": "Thunderbird is a free email application that’s easy to set up and customize - and it’s loaded with great features!",
+            "license": "unset",
+            "links": {
+                "contact": [
+                    "https://www.thunderbird.net/contact/"
+                ],
+                "donations": [
+                    "https://www.thunderbird.net/donate/"
+                ],
+                "issues": [
+                    "https://bugzilla.mozilla.org/enter_bug.cgi?product=Thunderbird&op_sys=Linux&keywords=snap"
+                ],
+                "website": [
+                    "https://www.thunderbird.net/"
+                ]
+            },
+            "media": [
+                {
+                    "height": 512.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2023/10/thunderbird.png",
+                    "width": 512.0
+                },
+                {
+                    "height": 2160.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/07/128_-_Dark2x-1721080472.png",
+                    "width": 3840.0
+                },
+                {
+                    "height": 2160.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/07/128_-_Light2x-1721080472.png",
+                    "width": 3840.0
+                }
+            ],
+            "name": "thunderbird",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "Mozilla Thunderbird email application",
+            "title": "thunderbird",
+            "unlisted": null,
+            "website": "https://www.thunderbird.net/"
+        },
+        {
+            "base": "core24",
+            "channel": "latest/edge",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "762",
+            "type": "app",
+            "version": "5.9.0",
+            "apps": [
+                {
+                    "snap": "mattermost-desktop",
+                    "name": "mattermost-desktop",
+                    "desktop_file": "/var/lib/snapd/desktop/applications/mattermost-desktop_mattermost-desktop.desktop",
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "snapcrafters",
+            "devmode": false,
+            "icon": "/v2/icons/mattermost-desktop/icon",
+            "id": "ed0pxJoDHrgmAWHH7baX5nryAHy1UNj0",
+            "ignore_validation": false,
+            "install_date": "2024-09-03T10:45:16.502501-04:00",
+            "installed_size": 120639488,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/mattermost-desktop_762.snap",
+            "status": "active",
+            "tracking_channel": "latest/edge",
+            "contact": "https://github.com/snapcrafters/mattermost-desktop/issues",
+            "description": "Mattermost is secure workplace messaging from behind your firewall.\n\n- Discuss topics in private groups, one-to-one or team-wide\n- Easily share and view image files\n- Connect in-house systems with webhooks and Slack-compatible integrations\n\nFor technical and operations teams who execute high-stakes, collaborative workflows,\nMattermost provides integrated team messaging, audio and screen share, workflow automation\nand project management. Governments, banks and tech giants use our secure collaboration platform\nto reduce risk and error rates while accelerating technical productivity.\n\nTo use this app, you need a URL for a Mattermost server.\n\nThis snap is maintained by the Snapcrafters community, and is not necessarily endorsed or\nofficially maintained by the upstream developers.\n",
+            "license": "MIT",
+            "links": {
+                "contact": [
+                    "https://github.com/snapcrafters/mattermost-desktop/issues"
+                ],
+                "issues": [
+                    "https://github.com/snapcrafters/mattermost-desktop/issues"
+                ],
+                "source": [
+                    "https://github.com//snapcrafters/mattermost-desktop"
+                ],
+                "website": [
+                    "https://mattermost.com/"
+                ]
+            },
+            "media": [
+                {
+                    "height": 256.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2017/04/mattermost-desktop.png",
+                    "width": 256.0
+                },
+                {
+                    "height": 1592.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2023/12/146078917-e1ba8c1f-24e5-4613-8b4b-f3507422f4f2.png",
+                    "width": 2788.0
+                },
+                {
+                    "height": 834.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2023/12/mattermost-open-source-unzip_M0ciZHb.png",
+                    "width": 1179.0
+                },
+                {
+                    "height": 2159.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2023/12/Playbooks_Hero.png",
+                    "width": 3840.0
+                }
+            ],
+            "name": "mattermost-desktop",
+            "private": false,
+            "publisher": {
+                "display_name": "Snapcrafters",
+                "id": "eEoV9TnaNkCzfJBu9SRhr2678vzyYV43",
+                "username": "snapcrafters",
+                "validation": "starred"
+            },
+            "summary": "A secure, flexible platform build for the new era of collaboration",
+            "title": "Mattermost Desktop",
+            "unlisted": null,
+            "website": "https://mattermost.com/"
+        },
+        {
+            "base": "core22",
+            "channel": "latest/stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "74",
+            "type": "app",
+            "version": "2024.11.1",
+            "apps": [
+                {
+                    "snap": "bw",
+                    "name": "bw",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "bitwarden",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2020/07/512x512_Vnw287h.png",
+            "id": "n0XNnJXxSdYYHRYwtfYV2mBSkzH1Fbkn",
+            "ignore_validation": false,
+            "install_date": "2024-11-21T17:29:00.884523-05:00",
+            "installed_size": 30842880,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/bw_74.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "https://bitwarden.com",
+            "description": "Bitwarden, Inc. is the parent company of 8bit Solutions LLC.\n\nNAMED BEST PASSWORD MANAGER BY THE VERGE, U.S. NEWS &amp; WORLD REPORT, CNET, AND MORE.\n\nManage, store, secure, and share unlimited passwords across unlimited devices from anywhere. Bitwarden delivers open source password management solutions to everyone, whether at  home, at work, or on the go.\n\nGenerate strong, unique, and random passwords based on security requirements for every website you frequent.\n\nBitwarden Send quickly transmits encrypted information --- files and plaintext -- directly to anyone.\n\nBitwarden offers Teams and Enterprise plans for companies so you can securely share passwords with colleagues.\n\nWhy Choose Bitwarden:\n\nWorld-Class Encryption\nPasswords are protected with advanced end-to-end encryption (AES-256 bit, salted hashing, and PBKDF2 SHA-256) so your data stays secure and private.\n\nBuilt-in Password Generator\nGenerate strong, unique, and random passwords based on security requirements for every website you frequent.\n\nGlobal Translations\nBitwarden translations exist in 40 languages and are growing, thanks to our global community.\n\nCross-Platform Applications\nSecure and share sensitive data within your Bitwarden Vault from any browser, mobile device, or desktop OS, and more.\n",
+            "license": "Proprietary",
+            "links": {
+                "contact": [
+                    "https://bitwarden.com"
+                ]
+            },
+            "media": [
+                {
+                    "height": 512.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2020/07/512x512_Vnw287h.png",
+                    "width": 512.0
+                },
+                {
+                    "height": null,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2018/05/Capture.PNG",
+                    "width": null
+                }
+            ],
+            "name": "bw",
+            "private": false,
+            "publisher": {
+                "display_name": "8bit Solutions LLC",
+                "id": "SflUpHyJuL9BkjUnFAgINhCW9QjI5tow",
+                "username": "bitwarden",
+                "validation": "verified"
+            },
+            "summary": "Bitwarden CLI - A secure and free password manager for all of your devices.",
+            "title": "bw",
+            "unlisted": null,
+            "website": null
+        },
+        {
+            "base": "core24",
+            "channel": "latest/stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "114",
+            "type": "app",
+            "version": "1.11.86",
+            "apps": [
+                {
+                    "snap": "element-desktop",
+                    "name": "element-desktop",
+                    "desktop_file": "/var/lib/snapd/desktop/applications/element-desktop_element-desktop.desktop",
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "ken-vandine",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2020/07/element-desktop.png",
+            "id": "nZQQXb6Hap0I2ZF3ZsTeFeh80gXHN8DQ",
+            "ignore_validation": false,
+            "install_date": "2024-11-25T16:44:52.420796-05:00",
+            "installed_size": 388988928,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/element-desktop_114.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "mailto:ken@vandine.org",
+            "description": "Element is both a secure messenger and a productivity team collaboration app that is ideal for group chats while remote working. This chat app uses end-to-end encryption to provide powerful video conferencing, file sharing and voice calls.\n\nElement’s features include:\n   - Advanced online communication tools\n   - Fully encrypted messages to allow safer corporate communication, even for remote workers",
+            "license": "unset",
+            "links": {
+                "contact": [
+                    "mailto:ken@vandine.org"
+                ],
+                "issues": [
+                    "https://github.com/kenvandine/element-desktop/issues"
+                ],
+                "source-code": [
+                    "https://github.com/kenvandine/element-desktop",
+                    "https://github.com/element-hq/element-desktop"
+                ],
+                "website": [
+                    "https://element.io/"
+                ]
+            },
+            "media": [
+                {
+                    "height": 256.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2020/07/element-desktop.png",
+                    "width": 256.0
+                }
+            ],
+            "name": "element-desktop",
+            "private": false,
+            "publisher": {
+                "display_name": "Ken VanDine",
+                "id": "EH9A6Xg1QtCjYt4v3QlBVTPLAHDvEIn6",
+                "username": "ken-vandine",
+                "validation": "starred"
+            },
+            "summary": "A feature-rich client for Matrix.org",
+            "title": "Element Desktop",
+            "unlisted": null,
+            "website": "https://element.io/"
+        },
+        {
+            "base": "core22",
+            "channel": "latest/stable",
+            "common_ids": null,
+            "confinement": "classic",
+            "download": null,
+            "revision": "12961",
+            "type": "app",
+            "version": "8.4.4",
+            "apps": [
+                {
+                    "snap": "snapcraft",
+                    "name": "snapcraft",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2018/04/Snapcraft-logo-bird.png",
+            "id": "vMTKRaLjnOJQetI78HjntT37VuoyssFE",
+            "ignore_validation": false,
+            "install_date": "2024-10-29T06:27:19.753458-04:00",
+            "installed_size": 74182656,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/snapcraft_12961.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "https://forum.snapcraft.io/c/snapcraft",
+            "description": "Package, distribute, and update any app for Linux and IoT.\n\nSnaps are containerised software packages that are simple to create and install. They auto-update and are safe to run. And because they bundle their dependencies, they work on all major Linux systems without modification.",
+            "license": "GPL-3.0",
+            "links": {
+                "contact": [
+                    "https://forum.snapcraft.io/c/snapcraft"
+                ],
+                "website": [
+                    "https://github.com/snapcore/snapcraft"
+                ]
+            },
+            "media": [
+                {
+                    "height": 256.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2018/04/Snapcraft-logo-bird.png",
+                    "width": 256.0
+                },
+                {
+                    "height": 1080.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2019/03/shot-1.png",
+                    "width": 1920.0
+                },
+                {
+                    "height": 240.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2019/03/banner_Gqg7Com.png",
+                    "width": 1218.0
+                },
+                {
+                    "height": 1080.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2019/03/featured_HG3LAVN.png",
+                    "width": 1920.0
+                },
+                {
+                    "height": 1080.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2019/03/shot-2_nxKjIUA.png",
+                    "width": 1920.0
+                }
+            ],
+            "name": "snapcraft",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "easily create snaps",
+            "title": "snapcraft",
+            "unlisted": null,
+            "website": "https://github.com/snapcore/snapcraft"
+        },
+        {
+            "base": "core20",
+            "channel": "stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "96",
+            "type": "app",
+            "version": "2.0",
+            "apps": [
+                {
+                    "snap": "usconstitution",
+                    "name": "usconstitution",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "kz6fittycent",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2018/04/Scroll_ICON.png",
+            "id": "u5C3btEUUR5bjqlBEouwNjlcJkB1qrVz",
+            "ignore_validation": false,
+            "install_date": "2024-11-30T12:31:52.792909-05:00",
+            "installed_size": 9039872,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/usconstitution_96.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "https://github.com/kz6fittycent/USConstitution",
+            "description": "Keep yourself educated on the U.S. Constitution right from the terminal!\n\nTo install: `sudo snap install usconstitution`\n\nTo run, just type: `usconstitution`\n\n    With ascii - `usconstitution`\n    \n    Without ascii - `usconstitution -p`",
+            "license": "MIT",
+            "links": {
+                "contact": [
+                    "https://github.com/kz6fittycent/USConstitution"
+                ],
+                "donations": [
+                    "https://www.patreon.com/c/kz6fittycent"
+                ]
+            },
+            "media": [
+                {
+                    "height": 256.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2018/04/Scroll_ICON.png",
+                    "width": 256.0
+                },
+                {
+                    "height": 1015.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2018/03/Screenshot_from_2018-03-16_23-02-47.png",
+                    "width": 1115.0
+                }
+            ],
+            "name": "usconstitution",
+            "private": false,
+            "publisher": {
+                "display_name": "James Tigert",
+                "id": "jyL6NPmmwE6knQhm89MUOgpM4FSKEUJa",
+                "username": "kz6fittycent",
+                "validation": "unproven"
+            },
+            "summary": "Read the US Constitution from your Terminal!",
+            "title": "US Constitution",
+            "unlisted": null,
+            "website": null
+        },
+        {
+            "base": "core20",
+            "channel": "latest/stable",
+            "common_ids": [
+                "code.desktop"
+            ],
+            "confinement": "classic",
+            "download": null,
+            "revision": "176",
+            "type": "app",
+            "version": "f1a4fb10",
+            "apps": [
+                {
+                    "snap": "code",
+                    "name": "code",
+                    "desktop_file": "/var/lib/snapd/desktop/applications/code_code.desktop",
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": "code.desktop"
+                },
+                {
+                    "snap": "code",
+                    "name": "url-handler",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "vscode",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2019/05/code_ozwVHSV.png",
+            "id": "Ht0aUHi7ofh9Fbwh6m7jUN2pAy6kzBiu",
+            "ignore_validation": false,
+            "install_date": "2024-11-18T10:59:08.962714-05:00",
+            "installed_size": 331837440,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/code_176.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "https://twitter.com/code",
+            "description": "Visual Studio Code is a new choice of tool that combines the\nsimplicity of a code editor with what developers need for the core\nedit-build-debug cycle.\n",
+            "license": "unset",
+            "links": {
+                "contact": [
+                    "https://twitter.com/code"
+                ],
+                "website": [
+                    "https://code.visualstudio.com/"
+                ]
+            },
+            "media": [
+                {
+                    "height": 512.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2019/05/code_ozwVHSV.png",
+                    "width": 512.0
+                },
+                {
+                    "height": 520.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2017/09/home-screenshot-linux.png",
+                    "width": 617.0
+                },
+                {
+                    "height": null,
+                    "type": "video",
+                    "url": "https://www.youtube.com/watch?v=Sdg0ef2PpBw",
+                    "width": null
+                }
+            ],
+            "name": "code",
+            "private": false,
+            "publisher": {
+                "display_name": "Visual Studio Code",
+                "id": "qXCsqdX95tRyVlJUKTKESXEAuNRPfJob",
+                "username": "vscode",
+                "validation": "verified"
+            },
+            "summary": "Code editing. Redefined.",
+            "title": "code",
+            "unlisted": null,
+            "website": "https://code.visualstudio.com/"
+        },
+        {
+            "base": "core20",
+            "channel": "yoga/stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "338",
+            "type": "app",
+            "version": "yoga",
+            "apps": [
+                {
+                    "snap": "openstackclients",
+                    "name": "aodh",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "openstackclients",
+                    "name": "barbican",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "openstackclients",
+                    "name": "cinder",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "openstackclients",
+                    "name": "cloudkitty",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "openstackclients",
+                    "name": "freezer",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "openstackclients",
+                    "name": "glance",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "openstackclients",
+                    "name": "gnocchi",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "openstackclients",
+                    "name": "heat",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "openstackclients",
+                    "name": "magnum",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "openstackclients",
+                    "name": "manila",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "openstackclients",
+                    "name": "mistral",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "openstackclients",
+                    "name": "monasca",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "openstackclients",
+                    "name": "murano",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "openstackclients",
+                    "name": "neutron",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "openstackclients",
+                    "name": "nova",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "openstackclients",
+                    "name": "openstack",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "openstackclients",
+                    "name": "swift",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "openstackclients",
+                    "name": "tacker",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "openstackclients",
+                    "name": "trove",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "openstackclients",
+                    "name": "vitrage",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "openstackclients",
+                    "name": "watcher",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2018/08/OpenStack-Logo-Mark.png",
+            "id": "n61HGFwQwCYUizp8TcdUWRitZwbumzVR",
+            "ignore_validation": false,
+            "install_date": "2024-11-12T10:34:50.984545-05:00",
+            "installed_size": 45158400,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/openstackclients_338.snap",
+            "status": "active",
+            "tracking_channel": "yoga/stable",
+            "contact": "mailto:openstack-snappers@lists.launchpad.net",
+            "description": "OpenStackClient (aka OSC) is a command-line client for OpenStack\nthat brings the command set for Compute, Identity, Image, Object\nStore and Block Storage APIs together in a single shell with a\nuniform command structure.\n.\nThe primary goal is to provide a unified shell command structure\nand a common language to describe operations in OpenStack.\n.\nThis snap provides the openstack command-line client and other\nproject specific command-line clients.",
+            "license": "unset",
+            "links": {
+                "contact": [
+                    "mailto:openstack-snappers@lists.launchpad.net"
+                ],
+                "website": [
+                    "https://opendev.org/x/snap-openstackclients"
+                ]
+            },
+            "media": [
+                {
+                    "height": 256.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2018/08/OpenStack-Logo-Mark.png",
+                    "width": 256.0
+                }
+            ],
+            "name": "openstackclients",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "OpenStack Client tools",
+            "title": "openstackclients",
+            "unlisted": null,
+            "website": "https://opendev.org/x/snap-openstackclients"
+        },
+        {
+            "base": "core22",
+            "channel": "",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "176",
+            "type": "app",
+            "version": "0+git.510a601",
+            "apps": [],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": null,
+            "id": "lATO8HzwVvrAPrlZRAWpfyrJKlAJrZS3",
+            "ignore_validation": false,
+            "install_date": "2024-08-27T11:42:13-04:00",
+            "installed_size": 529625088,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/gnome-42-2204_176.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable/ubuntu-24.04",
+            "contact": "https://github.com/ubuntu/gnome-sdk/issues",
+            "description": "This snap provides the GNOME 42 stack to other snaps that use it. It shares the base GNOME libraries and desktop integration components through the content interface. This helps reduce the size of snaps and helps developers to easily snap desktop applications.\n\n**For users**\n\nThis snap is automatically installed and removed when needed. **Manually adding or removing this snap is not recommended** and might break things.\n\n* If you are having issues with **snaps** using GNOME, please contact the experts on the Snapcraft forum: https://forum.snapcraft.io/\n* If you want to install the GNOME Desktop Environment, then you are in the wrong place. Please take a look at https://www.gnome.org/ for more information on how to get it.\n\n**For developers**\n\n* The `gnome` extension is the recommended way to use this in your own snap: https://snapcraft.io/docs/gnome-extension\n* You can report issues with this content snap on GitHub: https://github.com/ubuntu/gnome-sdk/issues\n* The source code of this snap is available on GitHub in the `gnome-42-2204` branch: https://github.com/ubuntu/gnome-sdk/tree/gnome-42-2204\n",
+            "license": "unset",
+            "links": {
+                "contact": [
+                    "https://github.com/ubuntu/gnome-sdk/issues"
+                ]
+            },
+            "media": null,
+            "name": "gnome-42-2204",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "Shared GNOME 42 Ubuntu stack",
+            "title": null,
+            "unlisted": null,
+            "website": null
+        },
+        {
+            "base": "core20",
+            "channel": "latest/stable",
+            "common_ids": null,
+            "confinement": "classic",
+            "download": null,
+            "revision": "278",
+            "type": "app",
+            "version": "0.2.9",
+            "apps": [
+                {
+                    "snap": "lpci",
+                    "name": "lpci",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "jugmac00",
+            "devmode": false,
+            "icon": null,
+            "id": "0VsUZY0xWWFXx7Qep7rjnXyOlfyNOVMu",
+            "ignore_validation": false,
+            "install_date": "2024-09-13T11:08:14.097659-04:00",
+            "installed_size": 79052800,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/lpci_278.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "",
+            "description": "lpci is a runner for Launchpad CI jobs.  You can use it locally, though\nmost people will use it via Launchpad.  Create a `.launchpad.yaml` file\ndescribing the builds and tests you want to run, and Launchpad will run them\nfor you.\n",
+            "license": "GPL-3.0",
+            "links": null,
+            "media": null,
+            "name": "lpci",
+            "private": false,
+            "publisher": {
+                "display_name": "Jürgen Gmach",
+                "id": "fPTFXOBd0Z85lpYkq7PbbPvw4cxKRGoK",
+                "username": "jugmac00",
+                "validation": "unproven"
+            },
+            "summary": "Runner for Launchpad CI jobs",
+            "title": "lpci",
+            "unlisted": null,
+            "website": null
+        },
+        {
+            "base": "core22",
+            "channel": "latest/stable",
+            "common_ids": null,
+            "confinement": "classic",
+            "download": null,
+            "revision": "2642",
+            "type": "app",
+            "version": "1.6.0",
+            "apps": [
+                {
+                    "snap": "rockcraft",
+                    "name": "rockcraft",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "rockcraft",
+                    "name": "skopeo",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": null,
+            "id": "3mPIBn6L9IYLyBAZsaqjlnMk7huEtqlv",
+            "ignore_validation": false,
+            "install_date": "2024-12-02T12:52:41.542327-05:00",
+            "installed_size": 60919808,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/rockcraft_2642.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "",
+            "description": "Rockcraft aims to take the same primitives used in Charmcraft and Snapcraft\nto create OCI images.\n",
+            "license": "GPL-3.0",
+            "links": null,
+            "media": null,
+            "name": "rockcraft",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "A craft like experience to create rocks",
+            "title": "rockcraft",
+            "unlisted": null,
+            "website": null
+        },
+        {
+            "base": "core22",
+            "channel": "5.21/stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "31214",
+            "type": "app",
+            "version": "5.21.2-084c8c8",
+            "apps": [
+                {
+                    "snap": "lxd",
+                    "name": "activate",
+                    "desktop_file": null,
+                    "daemon": "oneshot",
+                    "enabled": true,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "lxd",
+                    "name": "buginfo",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "lxd",
+                    "name": "check-kernel",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "lxd",
+                    "name": "daemon",
+                    "desktop_file": null,
+                    "daemon": "simple",
+                    "enabled": true,
+                    "active": true,
+                    "common_id": null
+                },
+                {
+                    "snap": "lxd",
+                    "name": "lxc",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "lxd",
+                    "name": "lxd",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "lxd",
+                    "name": "user-daemon",
+                    "desktop_file": null,
+                    "daemon": "simple",
+                    "enabled": true,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2023/07/lxd_tag.png",
+            "id": "J60k4JY0HppjwOjW8dZdYc8obXKxujRu",
+            "ignore_validation": false,
+            "install_date": "2024-11-19T14:29:50.679469-05:00",
+            "installed_size": 109867008,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/lxd_31214.snap",
+            "status": "active",
+            "tracking_channel": "5.21/stable",
+            "contact": "mailto:lxd@lists.canonical.com",
+            "description": "LXD is a system container and virtual machine manager.\n\nIt offers a simple CLI and REST API to manage local or remote instances,\nuses an image based workflow and support for a variety of advanced features.\n\nImages are available for all Ubuntu releases and architectures as well\nas for a wide number of other Linux distributions. Existing\nintegrations with many deployment and operation tools, makes it work\njust like a public cloud, except everything is under your control.\n\nLXD containers are lightweight, secure by default and a great\nalternative to virtual machines when running Linux on Linux.\n\nLXD virtual machines are modern and secure, using UEFI and secure-boot\nby default and a great choice when a different kernel or operating\nsystem is needed.\n\nWith clustering, up to 50 LXD servers can be easily joined and managed\ntogether with the same tools and APIs and without needing any external\ndependencies.\n\n\nSupported configuration options for the snap (snap set lxd [<key>=<value>...]):\n\n  - apparmor.unprivileged-restrictions-disable: Whether to disable restrictions on unprivileged user namespaces [default=true]\n  - ceph.builtin: Use snap-specific Ceph configuration [default=false]\n  - ceph.external: Use the system's ceph tools (ignores ceph.builtin) [default=false]\n  - criu.enable: Enable experimental live-migration support [default=false]\n  - daemon.debug: Increase logging to debug level [default=false]\n  - daemon.group: Set group of users that have full control over LXD [default=lxd]\n  - daemon.user.group: Set group of users that have restricted LXD access [default=lxd]\n  - daemon.preseed: Pass a YAML configuration to `lxd init` on initial start\n  - daemon.syslog: Send LXD log events to syslog [default=false]\n  - daemon.verbose: Increase logging to verbose level [default=false]\n  - lvm.external: Use the system's LVM tools [default=false]\n  - lxcfs.pidfd: Start per-container process tracking [default=false]\n  - lxcfs.loadavg: Start tracking per-container load average [default=false]\n  - lxcfs.cfs: Consider CPU shares for CPU usage [default=false]\n  - lxcfs.debug: Increase logging to debug level [default=false]\n  - minio.path: Path to the directory containing the minio and mc binaries to use with LXD [default=\"\"]\n  - openvswitch.builtin: Run a snap-specific OVS daemon [default=false]\n  - openvswitch.external: Use the system's OVS tools (ignores openvswitch.builtin) [default=false]\n  - ovn.builtin: Use snap-specific OVN configuration [default=false]\n  - ui.enable: Enable the web interface [default=true]\n\nFor system-wide configuration of the CLI, place your configuration in\n/var/snap/lxd/common/global-conf/ (config.yml and servercerts)",
+            "license": "AGPL-3.0",
+            "links": {
+                "contact": [
+                    "mailto:lxd@lists.canonical.com"
+                ],
+                "issues": [
+                    "https://github.com/canonical/lxd/issues"
+                ],
+                "source": [
+                    "https://github.com/canonical/lxd"
+                ],
+                "website": [
+                    "https://ubuntu.com/lxd"
+                ]
+            },
+            "media": [
+                {
+                    "height": 400.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2023/07/lxd_tag.png",
+                    "width": 400.0
+                },
+                {
+                    "height": 592.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2018/10/Screenshot_from_2018-10-26_12-57-24.png",
+                    "width": 977.0
+                },
+                {
+                    "height": 592.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2018/10/Screenshot_from_2018-10-26_14-20-14.png",
+                    "width": 1003.0
+                },
+                {
+                    "height": 592.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2018/10/Screenshot_from_2018-10-26_14-21-43.png",
+                    "width": 1003.0
+                },
+                {
+                    "height": null,
+                    "type": "video",
+                    "url": "https://asciinema.org/a/226224",
+                    "width": null
+                }
+            ],
+            "name": "lxd",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "LXD - container and VM manager",
+            "title": "lxd",
+            "unlisted": null,
+            "website": "https://ubuntu.com/lxd"
+        },
+        {
+            "base": "core18",
+            "channel": "stable",
+            "common_ids": [
+                "org.videolan.vlc"
+            ],
+            "confinement": "strict",
+            "download": null,
+            "revision": "3777",
+            "type": "app",
+            "version": "3.0.20-1-g2617de71b6",
+            "apps": [
+                {
+                    "snap": "vlc",
+                    "name": "vlc",
+                    "desktop_file": "/var/lib/snapd/desktop/applications/vlc_vlc.desktop",
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": "org.videolan.vlc"
+                }
+            ],
+            "developer": "videolan",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2016/07/vlc.png",
+            "id": "RT9mcUhVsRYrDLG8qnvGiy26NKvv6Qkd",
+            "ignore_validation": false,
+            "install_date": "2024-09-12T19:45:47.256698-04:00",
+            "installed_size": 336699392,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/vlc_3777.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "https://www.videolan.org/support/",
+            "description": "VLC is the VideoLAN project's media player.\n\nCompletely open source and privacy-friendly, it plays every multimedia file and streams.\n\nIt notably plays MKV, MP4, MPEG, MPEG-2, MPEG-4, DivX, MOV, WMV, QuickTime, WebM, FLAC, MP3, Ogg/Vorbis files, BluRays, DVDs, VCDs, podcasts, and multimedia streams from various network sources. It supports subtitles, closed captions and is translated in numerous languages.",
+            "license": "unset",
+            "links": {
+                "contact": [
+                    "https://www.videolan.org/support/"
+                ],
+                "website": [
+                    "https://www.videolan.org/vlc/"
+                ]
+            },
+            "media": [
+                {
+                    "height": 256.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2016/07/vlc.png",
+                    "width": 256.0
+                },
+                {
+                    "height": 690.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2016/07/vlc-2.0-poney.jpg",
+                    "width": 1000.0
+                },
+                {
+                    "height": 236.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2018/04/banner_32i5K4c.png",
+                    "width": 1200.0
+                },
+                {
+                    "height": 143.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2018/04/banner-icon.png",
+                    "width": 132.0
+                },
+                {
+                    "height": 899.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2018/04/2018-04-26-161203_1126x899_scrot_yBFL55L.png",
+                    "width": 1126.0
+                }
+            ],
+            "name": "vlc",
+            "private": false,
+            "publisher": {
+                "display_name": "VideoLAN",
+                "id": "yBzXLuxwoWh5b2tgI8gxjziVNEHLm64z",
+                "username": "videolan",
+                "validation": "verified"
+            },
+            "summary": "The ultimate media player",
+            "title": "VLC",
+            "unlisted": null,
+            "website": "https://www.videolan.org/vlc/"
+        },
+        {
+            "base": "bare",
+            "channel": "",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "1535",
+            "type": "app",
+            "version": "0.1-81-g442e511",
+            "apps": [],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": null,
+            "id": "jZLfBRzf1cYlYysIjD2bwSzNtngY0qit",
+            "ignore_validation": false,
+            "install_date": "2024-08-27T11:42:15-04:00",
+            "installed_size": 96141312,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/gtk-common-themes_1535.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable/ubuntu-24.04",
+            "contact": "",
+            "description": "A snap that exports the GTK and icon themes used on various Linux distros.\n",
+            "license": "unset",
+            "links": null,
+            "media": null,
+            "name": "gtk-common-themes",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "All the (common) themes",
+            "title": null,
+            "unlisted": null,
+            "website": null
+        },
+        {
+            "base": "core22",
+            "channel": "latest/stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "253",
+            "type": "app",
+            "version": "0.9",
+            "apps": [
+                {
+                    "snap": "snapd-desktop-integration",
+                    "name": "snapd-desktop-integration",
+                    "desktop_file": "/var/lib/snapd/desktop/applications/snapd-desktop-integration_snapd-desktop-integration.desktop",
+                    "daemon": "simple",
+                    "enabled": true,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2023/07/snapd.png",
+            "id": "IrwRHakqtzhFRHJOOPxKVPU0Kk7Erhcu",
+            "ignore_validation": false,
+            "install_date": "2024-10-11T15:19:14.389034-04:00",
+            "installed_size": 581632,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/snapd-desktop-integration_253.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable/ubuntu-24.04",
+            "contact": "https://github.com/snapcore/snapd-desktop-integration",
+            "description": "Provides a user session daemon used to provide a bridge between the user's session and snapd.  Used for things like automatic theme installation.",
+            "license": "unset",
+            "links": {
+                "contact": [
+                    "https://github.com/snapcore/snapd-desktop-integration"
+                ],
+                "website": [
+                    "https://github.com/snapcore/snapd-desktop-integration"
+                ]
+            },
+            "media": [
+                {
+                    "height": 460.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2023/07/snapd.png",
+                    "width": 460.0
+                }
+            ],
+            "name": "snapd-desktop-integration",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "Desktop Integration for snapd",
+            "title": "snapd-desktop-integration",
+            "unlisted": null,
+            "website": "https://github.com/snapcore/snapd-desktop-integration"
+        },
+        {
+            "base": "core22",
+            "channel": "2/stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "1244",
+            "type": "app",
+            "version": "0+git.6c6a0d96",
+            "apps": [
+                {
+                    "snap": "snap-store",
+                    "name": "show-updates",
+                    "desktop_file": "/var/lib/snapd/desktop/applications/snap-store_show-updates.desktop",
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "snap-store",
+                    "name": "snap-store",
+                    "desktop_file": "/var/lib/snapd/desktop/applications/snap-store_snap-store.desktop",
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2024/08/App-Center.svg.png",
+            "id": "gjf3IPXoRiipCu9K0kVu52f0H56fIksg",
+            "ignore_validation": false,
+            "install_date": "2024-11-26T13:27:18.574529-05:00",
+            "installed_size": 11280384,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/snap-store_1244.snap",
+            "status": "active",
+            "tracking_channel": "2/stable/ubuntu-24.04",
+            "contact": "https://bugs.launchpad.net/snap-store/",
+            "description": "Snap Store showcases featured and popular applications with useful descriptions, ratings, reviews and screenshots.\n\nApplications can be found either through browsing categories or by searching.\n\nSnap Store can also be used to switch channels, view and alter snap permissions and view and submit reviews and ratings.\n\nSnap Store is based on GNOME Software, optimized for the Snap experience.",
+            "license": "unset",
+            "links": {
+                "contact": [
+                    "https://bugs.launchpad.net/snap-store/"
+                ]
+            },
+            "media": [
+                {
+                    "height": 512.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/08/App-Center.svg.png",
+                    "width": 512.0
+                },
+                {
+                    "height": 664.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2019/05/snap-store-1.png",
+                    "width": 1018.0
+                },
+                {
+                    "height": 664.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2019/05/snap-store-2.png",
+                    "width": 1018.0
+                },
+                {
+                    "height": 664.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2019/05/snap-store-3.png",
+                    "width": 1018.0
+                },
+                {
+                    "height": 664.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2019/05/snap-store-4.png",
+                    "width": 1018.0
+                }
+            ],
+            "name": "snap-store",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "Snap Store is a graphical desktop application for discovering, installing and managing snaps on Linux.",
+            "title": "Snap Store",
+            "unlisted": null,
+            "website": null
+        },
+        {
+            "base": "core24",
+            "channel": "stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "48",
+            "type": "app",
+            "version": "0+git.5d6be1b",
+            "apps": [],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2024/05/icon.png",
+            "id": "ew7OxpbRTxfK7ImpIygRR85lkxvU7Pzt",
+            "ignore_validation": false,
+            "install_date": "2024-09-03T10:45:41.428391-04:00",
+            "installed_size": 425996288,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/gnome-46-2404_48.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "https://github.com/ubuntu/gnome-sdk/issues",
+            "description": "This snap provides the GNOME 46 stack to other snaps that use it. It shares the base GNOME libraries and desktop integration components through the content interface. This helps reduce the size of snaps and helps developers to easily snap desktop applications.\n\n**For users**\n\nThis snap is automatically installed and removed when needed. **Manually adding or removing this snap is not recommended** and might break things.\n\n* If you are having issues with **snaps** using GNOME, please contact the experts on the Snapcraft forum: https://forum.snapcraft.io/\n* If you want to install the GNOME Desktop Environment, then you are in the wrong place. Please take a look at https://www.gnome.org/ for more information on how to get it.\n\n**For developers**\n\n* The `gnome` extension is the recommended way to use this in your own snap: https://snapcraft.io/docs/gnome-extension\n* You can report issues with this content snap on GitHub: https://github.com/ubuntu/gnome-sdk/issues\n* The source code of this snap is available on GitHub in the `gnome-46-2404` branch: https://github.com/ubuntu/gnome-sdk/tree/gnome-46-2404",
+            "license": "unset",
+            "links": {
+                "contact": [
+                    "https://github.com/ubuntu/gnome-sdk/issues"
+                ],
+                "source-code": [
+                    "https://github.com/ubuntu/gnome-sdk/tree/gnome-46-2404"
+                ]
+            },
+            "media": [
+                {
+                    "height": 256.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/05/icon.png",
+                    "width": 256.0
+                }
+            ],
+            "name": "gnome-46-2404",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "Shared GNOME 46 Ubuntu stack",
+            "title": "gnome-46-2404",
+            "unlisted": null,
+            "website": null
+        },
+        {
+            "base": null,
+            "channel": "latest/stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "23258",
+            "type": "snapd",
+            "version": "2.66.1",
+            "apps": [],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2019/09/snapd.png",
+            "id": "PMrrV4ml8uWuEUDBT8dSGnKUYbevVhc4",
+            "ignore_validation": false,
+            "install_date": "2024-11-27T12:47:30.586153-05:00",
+            "installed_size": 46448640,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/snapd_23258.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "https://github.com/snapcore/snapd/issues",
+            "description": "Install, configure, refresh and remove snap packages. Snaps are\n'universal' packages that work across many different Linux systems,\nenabling secure distribution of the latest apps and utilities for\ncloud, servers, desktops and the internet of things.\n\nStart with 'snap list' to see installed snaps.",
+            "license": "GPL-3.0",
+            "links": {
+                "contact": [
+                    "https://github.com/snapcore/snapd/issues"
+                ],
+                "website": [
+                    "https://snapcraft.io"
+                ]
+            },
+            "media": [
+                {
+                    "height": 460.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2019/09/snapd.png",
+                    "width": 460.0
+                },
+                {
+                    "height": 648.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2019/09/Screenshot_20190924_115756_hLcyetO.png",
+                    "width": 956.0
+                },
+                {
+                    "height": 648.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2019/09/Screenshot_20190924_115824_2v3y6l8.png",
+                    "width": 956.0
+                },
+                {
+                    "height": 834.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2019/09/Screenshot_20190924_115055_Uuq7KIb.png",
+                    "width": 1023.0
+                },
+                {
+                    "height": 648.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2019/09/Screenshot_20190924_125944.png",
+                    "width": 956.0
+                }
+            ],
+            "name": "snapd",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "Daemon and tooling that enable snap packages",
+            "title": "snapd",
+            "unlisted": null,
+            "website": "https://snapcraft.io"
+        },
+        {
+            "base": "core22",
+            "channel": "stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "3",
+            "type": "app",
+            "version": "5.110",
+            "apps": [],
+            "developer": "kde",
+            "devmode": false,
+            "icon": "/v2/icons/kf5-5-110-qt-5-15-11-core22/icon",
+            "id": "SsrbavY341ws6REFlfh52aharom59IAC",
+            "ignore_validation": false,
+            "install_date": "2024-10-03T13:38:23.356008-04:00",
+            "installed_size": 459575296,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/kf5-5-110-qt-5-15-11-core22_3.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "",
+            "description": "KDE Frameworks are addons and useful extensions to Qt",
+            "license": "unset",
+            "links": null,
+            "media": [
+                {
+                    "height": null,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2023/10/icon_d4QJPHX.png",
+                    "width": null
+                }
+            ],
+            "name": "kf5-5-110-qt-5-15-11-core22",
+            "private": false,
+            "publisher": {
+                "display_name": "KDE",
+                "id": "2rsYZu6kqYVFsSejExu4YENdXQEO40Xb",
+                "username": "kde",
+                "validation": "verified"
+            },
+            "summary": "KDE Frameworks 5",
+            "title": "kf5-5-110-qt-5-15-11-core22",
+            "unlisted": null,
+            "website": null
+        },
+        {
+            "base": null,
+            "channel": "latest/stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "2434",
+            "type": "base",
+            "version": "20240911",
+            "apps": [],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2024/06/core-icon-large_Di4xmvQ.png",
+            "id": "DLqre5XGLbDqg9jPtiAhRRjDuPVa5X1q",
+            "ignore_validation": false,
+            "install_date": "2024-10-28T07:27:07.476357-04:00",
+            "installed_size": 66789376,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/core20_2434.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "",
+            "description": "Base snaps are a specific type of snap that include libraries and dependencies common to many applications. They provide a consistent and reliable execution environment for the snap packages that use them.\n\nThe core20 base snap provides a runtime environment based on Ubuntu 20.04 LTS (Focal Fossa).\n\nOther Ubuntu environment base snaps include:\n-   Core 18: <https://snapcraft.io/core18>\n-   Core 22: <https://snapcraft.io/core22> \n-   Core 24: <https://snapcraft.io/core24>\n\n**Using a base snap**\n\nBase snaps are installed automatically when a snap package requires them. Only one of each type of base snap is ever installed.\n\nManually removing a base snap may affect the stability of your system.\n\n**Building snaps with core20**\n\nSnap developers can use this base in their own snaps by adding the following to the snap's snapcraft.yaml:\n\n    base: core20\n\n**Additional Information***\n\nFor more details, and guidance on using base snaps, see our documentation: <https://snapcraft.io/docs/base-snaps>",
+            "license": "unset",
+            "links": {
+                "issues": [
+                    "https://github.com/snapcore/core20/issues"
+                ],
+                "source": [
+                    "https://github.com/snapcore/core20"
+                ],
+                "website": [
+                    "https://snapcraft.io"
+                ]
+            },
+            "media": [
+                {
+                    "height": 498.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/06/core-icon-large_Di4xmvQ.png",
+                    "width": 498.0
+                },
+                {
+                    "height": 932.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/06/core-01-1718724250.png",
+                    "width": 568.0
+                },
+                {
+                    "height": 932.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/06/core-02-1718724250.png",
+                    "width": 568.0
+                },
+                {
+                    "height": 932.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/06/core-03-1718724250.png",
+                    "width": 568.0
+                }
+            ],
+            "name": "core20",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "Snap runtime environment",
+            "title": "Core 20 base snap",
+            "unlisted": null,
+            "website": "https://snapcraft.io"
+        },
+        {
+            "base": null,
+            "channel": "latest/stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "1722",
+            "type": "base",
+            "version": "20241119",
+            "apps": [],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2024/06/core-icon-large_gbZyLDk.png",
+            "id": "amcUKQILKXHHTlmSa7NMdnXSx02dNeeT",
+            "ignore_validation": false,
+            "install_date": "2024-12-02T12:52:35.622164-05:00",
+            "installed_size": 77459456,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/core22_1722.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "",
+            "description": "Base snaps are a specific type of snap that include libraries and dependencies common to many applications. They provide a consistent and reliable execution environment for the snap packages that use them.\n\nThe core22 base snap provides a runtime environment based on Ubuntu 22.04 LTS (Jammy Jellyfish).\n\nOther Ubuntu environment base snaps include:\n-   Core 18: <https://snapcraft.io/core18>\n-   Core 20: <https://snapcraft.io/core20> \n-   Core 24: <https://snapcraft.io/core24>\n\n**Using a base snap**\n\nBase snaps are installed automatically when a snap package requires them. Only one of each type of base snap is ever installed.\n\nManually removing a base snap may affect the stability of your system.\n\n**Building snaps with core22**\n\nSnap developers can use this base in their own snaps by adding the following to the snap's snapcraft.yaml:\n\n    base: core22\n\n**Additional Information***\n\nFor more details, and guidance on using base snaps, see our documentation: <https://snapcraft.io/docs/base-snaps>",
+            "license": "unset",
+            "links": {
+                "issues": [
+                    "https://github.com/snapcore/core20/issues"
+                ],
+                "source": [
+                    "https://github.com/snapcore/core22"
+                ],
+                "website": [
+                    "https://snapcraft.io/"
+                ]
+            },
+            "media": [
+                {
+                    "height": 498.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/06/core-icon-large_gbZyLDk.png",
+                    "width": 498.0
+                },
+                {
+                    "height": 932.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/06/core-01-1718731364.png",
+                    "width": 568.0
+                },
+                {
+                    "height": 932.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/06/core-02-1718731364.png",
+                    "width": 568.0
+                },
+                {
+                    "height": 932.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/06/core-03-1718731364.png",
+                    "width": 568.0
+                }
+            ],
+            "name": "core22",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "Snap runtime environment",
+            "title": "Core 22 base snap",
+            "unlisted": null,
+            "website": "https://snapcraft.io/"
+        },
+        {
+            "base": "core24",
+            "channel": "latest/stable",
+            "common_ids": null,
+            "confinement": "classic",
+            "download": null,
+            "revision": "755",
+            "type": "app",
+            "version": "1.10.0",
+            "apps": [
+                {
+                    "snap": "terraform",
+                    "name": "terraform",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "snapcrafters",
+            "devmode": false,
+            "icon": "/v2/icons/terraform/icon",
+            "id": "8vbHYTd6VDLMIlISfzZDxzCRUFeSdBqT",
+            "ignore_validation": false,
+            "install_date": "2024-11-27T10:52:50.578356-05:00",
+            "installed_size": 30076928,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/terraform_755.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "https://github.com/jnsgruk/terraform/issues",
+            "description": "Terraform enables you to safely and predictably create, change, and improve\ninfrastructure. It is an open source tool that codifies APIs into\ndeclarative configuration files that can be shared amongst team members,\ntreated as code, edited, reviewed, and versioned.\n\n**Are you having issues?**\n\nLet us know by creating a new issue here:\nhttps://github.com/snapcrafters/terraform/issues\n\n**Authors**\n\nThis snap is maintained by the Snapcrafters community, and is not\nnecessarily endorsed or officially maintained by the upstream developers.\n",
+            "license": "MPL-2.0",
+            "links": {
+                "contact": [
+                    "https://github.com/jnsgruk/terraform/issues"
+                ],
+                "issues": [
+                    "https://github.com/jnsgruk/terraform/issues"
+                ],
+                "source": [
+                    "https://github.com/jnsgruk/terraform"
+                ],
+                "website": [
+                    "https://terraform.io"
+                ]
+            },
+            "media": [
+                {
+                    "height": 512.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2022/04/terraform.png",
+                    "width": 512.0
+                },
+                {
+                    "height": 640.0,
+                    "type": "banner",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2022/04/image63.png",
+                    "width": 1920.0
+                }
+            ],
+            "name": "terraform",
+            "private": false,
+            "publisher": {
+                "display_name": "Snapcrafters",
+                "id": "eEoV9TnaNkCzfJBu9SRhr2678vzyYV43",
+                "username": "snapcrafters",
+                "validation": "starred"
+            },
+            "summary": "Terraform enables you to create, change, and improve infrastructure.",
+            "title": "terraform",
+            "unlisted": null,
+            "website": "https://terraform.io"
+        },
+        {
+            "base": null,
+            "channel": "stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "17200",
+            "type": "os",
+            "version": "16-2.61.4-20240607",
+            "apps": [],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2024/06/core-icon-large_JNhwVKU.png",
+            "id": "99T7MUlRhtI3U0QFgl5mXXESAiSwt776",
+            "ignore_validation": false,
+            "install_date": "2024-09-03T11:50:41.107650-04:00",
+            "installed_size": 109252608,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/core_17200.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "",
+            "description": "Base snaps are a specific type of snap that include libraries and dependencies common to many applications. They provide a consistent and reliable execution environment for the snap packages that use them.\n\nThis core base snap additionally includes the snapd binaries, which in later releases are installed separately as the snapd snap. For more details on the snapd snap, see https://snapcraft.io/snapd.\n\nThe core base snap provides a runtime environment based on Ubuntu 18.04 LTS (Xenial Xerus).\n\nOther Ubuntu environment base snaps include:\n-   Core 20: <https://snapcraft.io/core20>\n-   Core 22: <https://snapcraft.io/core22> \n-   Core 24: <https://snapcraft.io/core24>\n\n**Using a base snap**\n\nBase snaps are installed automatically when a snap package requires them. Only one of each type of base snap is ever installed.\n\nManually removing a base snap may affect the stability of your system.\n\n**Building snaps with core**\n\nSnap developers can use this base in their own snaps by adding the following to the snap's snapcraft.yaml:\n\n    base: core\n\n**Additional Information***\n\nFor more details, and guidance on using base snaps, see our documentation: <https://snapcraft.io/docs/base-snaps>",
+            "license": "unset",
+            "links": {
+                "issues": [
+                    "https://github.com/snapcore/core/issues"
+                ],
+                "source": [
+                    "https://github.com/snapcore/core"
+                ],
+                "website": [
+                    "https://snapcraft.io"
+                ]
+            },
+            "media": [
+                {
+                    "height": 498.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/06/core-icon-large_JNhwVKU.png",
+                    "width": 498.0
+                },
+                {
+                    "height": 932.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/06/core-01-1718731991.png",
+                    "width": 568.0
+                },
+                {
+                    "height": 932.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/06/core-02-1718731991.png",
+                    "width": 568.0
+                },
+                {
+                    "height": 932.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/06/core-03-1718731991.png",
+                    "width": 568.0
+                }
+            ],
+            "name": "core",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "Snap runtime environment",
+            "title": "Core base snap",
+            "unlisted": null,
+            "website": "https://snapcraft.io"
+        },
+        {
+            "base": "core22",
+            "channel": "1/stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "147",
+            "type": "app",
+            "version": "0+git.7983059",
+            "apps": [
+                {
+                    "snap": "firmware-updater",
+                    "name": "firmware-notifier",
+                    "desktop_file": null,
+                    "daemon": "simple",
+                    "enabled": true,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "firmware-updater",
+                    "name": "firmware-updater",
+                    "desktop_file": "/var/lib/snapd/desktop/applications/firmware-updater_firmware-updater.desktop",
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "firmware-updater",
+                    "name": "firmware-updater-app",
+                    "desktop_file": "/var/lib/snapd/desktop/applications/firmware-updater_firmware-updater-app.desktop",
+                    "daemon": "dbus",
+                    "enabled": true,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": "/v2/icons/firmware-updater/icon",
+            "id": "EI0D1KHjP8XiwMZKqSjuh6W8zvcowUVP",
+            "ignore_validation": false,
+            "install_date": "2024-10-15T10:45:56.747873-04:00",
+            "installed_size": 11649024,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/firmware-updater_147.snap",
+            "status": "active",
+            "tracking_channel": "1/stable/ubuntu-24.04",
+            "contact": "https://github.com/canonical/firmware-updater/",
+            "description": "Update Firmware",
+            "license": "GPL-3.0+",
+            "links": {
+                "contact": [
+                    "https://github.com/canonical/firmware-updater/"
+                ],
+                "website": [
+                    "https://github.com/canonical/firmware-updater/"
+                ]
+            },
+            "media": [
+                {
+                    "height": 256.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2022/01/system-component-firmware.png",
+                    "width": 256.0
+                },
+                {
+                    "height": 1275.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2022/02/firmware-updater.png",
+                    "width": 752.0
+                }
+            ],
+            "name": "firmware-updater",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "Firmware Updater",
+            "title": "firmware-updater",
+            "unlisted": null,
+            "website": "https://github.com/canonical/firmware-updater/"
+        },
+        {
+            "base": "core22",
+            "channel": "latest/stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "77",
+            "type": "app",
+            "version": "v0.54.0",
+            "apps": [
+                {
+                    "snap": "tflint",
+                    "name": "tflint",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "tingdahl-private",
+            "devmode": false,
+            "icon": null,
+            "id": "WEQ0jPHnY6D9WVM2plYnE35xFfhs6INO",
+            "ignore_validation": false,
+            "install_date": "2024-11-11T14:38:49.000773-05:00",
+            "installed_size": 16859136,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/tflint_77.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "https://github.com/tingdahl/tflint",
+            "description": "The tflint from https://github.com/terraform-linters/tflint .  The the snap should follow the upstream project.\n",
+            "license": "MPL-2.0",
+            "links": {
+                "contact": [
+                    "https://github.com/tingdahl/tflint"
+                ],
+                "source": [
+                    "https://github.com/tingdahl/tflint.git"
+                ],
+                "website": [
+                    "https://github.com/tingdahl/tflint"
+                ]
+            },
+            "media": null,
+            "name": "tflint",
+            "private": false,
+            "publisher": {
+                "display_name": "Kristofer Tingdahl",
+                "id": "rJpw3gXm5LdNLyVf0OFgBTGeXRIQROUP",
+                "username": "tingdahl-private",
+                "validation": "unproven"
+            },
+            "summary": "Linter for terraform definitions",
+            "title": "tflint",
+            "unlisted": null,
+            "website": "https://github.com/tingdahl/tflint"
+        },
+        {
+            "base": null,
+            "channel": "",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "5",
+            "type": "base",
+            "version": "1.0",
+            "apps": [],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": null,
+            "id": "EISPgh06mRh1vordZY9OZ34QHdd7OrdR",
+            "ignore_validation": false,
+            "install_date": "2024-08-27T11:42:09-04:00",
+            "installed_size": 4096,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/bare_5.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "",
+            "description": "",
+            "license": "unset",
+            "links": null,
+            "media": null,
+            "name": "bare",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "Empty base snap, useful for testing and fully statically linked snaps",
+            "title": null,
+            "unlisted": null,
+            "website": null
+        },
+        {
+            "base": "core20",
+            "channel": "stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "143",
+            "type": "app",
+            "version": "0+git.efb213a",
+            "apps": [],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": "/v2/icons/gnome-3-38-2004/icon",
+            "id": "rw36mkAjdIKl13dzfwyxP87cejpyIcct",
+            "ignore_validation": false,
+            "install_date": "2024-09-03T11:50:43.429680-04:00",
+            "installed_size": 366682112,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/gnome-3-38-2004_143.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "",
+            "description": "This snap includes a GNOME 3.38 stack (the base libraries and desktop \nintegration components) and shares it through the content interface. \n",
+            "license": "unset",
+            "links": null,
+            "media": [
+                {
+                    "height": null,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2021/01/icon_FvbmexL.png",
+                    "width": null
+                }
+            ],
+            "name": "gnome-3-38-2004",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "Shared GNOME 3.38 Ubuntu stack",
+            "title": "gnome-3-38-2004",
+            "unlisted": null,
+            "website": null
+        },
+        {
+            "base": "core22",
+            "channel": "latest/stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "206",
+            "type": "app",
+            "version": "1.0.0.81",
+            "apps": [
+                {
+                    "snap": "steam",
+                    "name": "glxgears",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "steam",
+                    "name": "glxinfo",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "steam",
+                    "name": "report",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "steam",
+                    "name": "steam",
+                    "desktop_file": "/var/lib/snapd/desktop/applications/steam_steam.desktop",
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "steam",
+                    "name": "test",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "steam",
+                    "name": "vkcube",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "steam",
+                    "name": "vulkaninfo",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2022/04/icon_TdeSI6F.png",
+            "id": "NeoQngJVBf2wKC48bxnF2xqmfEFGdVnx",
+            "ignore_validation": false,
+            "install_date": "2024-10-28T07:27:16.730093-04:00",
+            "installed_size": 225341440,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/steam_206.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "https://github.com/canonical/steam-snap",
+            "description": "Steam is a software distribution service with an online store, automated\ninstallation, automatic updates, achievements, SteamCloud synchronized\nsavegame and screenshot functionality, and many social features.\n\nThis package is maintained by Canonical and not officially supported by Valve. Please report any issues through the contact or website links.",
+            "license": "unset",
+            "links": {
+                "contact": [
+                    "https://github.com/canonical/steam-snap"
+                ],
+                "issues": [
+                    "https://github.com/canonical/steam-snap/issues"
+                ],
+                "website": [
+                    "https://github.com/canonical/steam-snap"
+                ]
+            },
+            "media": [
+                {
+                    "height": null,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2022/04/icon_TdeSI6F.png",
+                    "width": null
+                },
+                {
+                    "height": 994.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2023/04/dota-2.png",
+                    "width": 1399.0
+                },
+                {
+                    "height": 994.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2023/04/valheim.png",
+                    "width": 1399.0
+                },
+                {
+                    "height": 994.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2023/04/x4.png",
+                    "width": 1399.0
+                },
+                {
+                    "height": 994.0,
+                    "type": "screenshot",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2023/04/eldenring.png",
+                    "width": 1399.0
+                }
+            ],
+            "name": "steam",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "Launcher for the Steam software distribution service",
+            "title": "Steam",
+            "unlisted": null,
+            "website": "https://github.com/canonical/steam-snap"
+        },
+        {
+            "base": "core22",
+            "channel": "latest/stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "286",
+            "type": "app",
+            "version": "10.9.0",
+            "apps": [
+                {
+                    "snap": "canonical-livepatch",
+                    "name": "canonical-livepatch",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "canonical-livepatch",
+                    "name": "canonical-livepatchd",
+                    "desktop_file": null,
+                    "daemon": "simple",
+                    "enabled": true,
+                    "active": true,
+                    "common_id": null
+                }
+            ],
+            "developer": "canonical",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2016/08/pictogram-upgrade-orange-hex.svg.png",
+            "id": "b96UJ4vttpNhpbaCWctVzfduQcPwQ5wn",
+            "ignore_validation": false,
+            "install_date": "2024-10-16T13:36:12.145728-04:00",
+            "installed_size": 11251712,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/canonical-livepatch_286.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "mailto:snaps@canonical.com",
+            "description": "Canonical Livepatch patches high and critical linux kernel vulnerabilities removing the immediate need to reboot to upgrade the kernel, instead allowing the downtime to be scheduled. It is a part of the Ubuntu Pro offering.\n\nThe Canonical Livepatch Client is an application that runs on your machine and periodically checks for patches.\n\nSee our docs at https://ubuntu.com/security/livepatch/docs/livepatch",
+            "license": "unset",
+            "links": {
+                "contact": [
+                    "mailto:snaps@canonical.com"
+                ],
+                "issues": [
+                    "https://bugs.launchpad.net/canonical-livepatch-client/"
+                ],
+                "website": [
+                    "http://www.ubuntu.com/livepatch"
+                ]
+            },
+            "media": [
+                {
+                    "height": 256.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2016/08/pictogram-upgrade-orange-hex.svg.png",
+                    "width": 256.0
+                }
+            ],
+            "name": "canonical-livepatch",
+            "private": false,
+            "publisher": {
+                "display_name": "Canonical",
+                "id": "canonical",
+                "username": "canonical",
+                "validation": "verified"
+            },
+            "summary": "Canonical Livepatch Client",
+            "title": "canonical-livepatch",
+            "unlisted": null,
+            "website": "http://www.ubuntu.com/livepatch"
+        },
+        {
+            "base": "core22",
+            "channel": "stable",
+            "common_ids": null,
+            "confinement": "strict",
+            "download": null,
+            "revision": "1",
+            "type": "app",
+            "version": "0.2.1",
+            "apps": [
+                {
+                    "snap": "dns-check",
+                    "name": "dns-check",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "jsimpso",
+            "devmode": false,
+            "icon": null,
+            "id": "LJhgjqNonlUPsGYbHm7ot2zCpd4eX7AJ",
+            "ignore_validation": false,
+            "install_date": "2024-10-03T08:52:44.393982-04:00",
+            "installed_size": 15900672,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/dns-check_1.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "",
+            "description": "Test validity of dns zone files\n",
+            "license": "unset",
+            "links": {
+                "source": [
+                    "https://launchpad.net/canonical-is-dns"
+                ],
+                "website": [
+                    "https://launchpad.net/canonical-is-dns"
+                ]
+            },
+            "media": null,
+            "name": "dns-check",
+            "private": false,
+            "publisher": {
+                "display_name": "James Simpson",
+                "id": "UkY1EcAEfwTrKHHZ93BuobFFqODuS2w5",
+                "username": "jsimpso",
+                "validation": "unproven"
+            },
+            "summary": "Test validity of dns zone files",
+            "title": "dns-check",
+            "unlisted": null,
+            "website": "https://launchpad.net/canonical-is-dns"
+        },
+        {
+            "base": "core20",
+            "channel": "stable",
+            "common_ids": null,
+            "confinement": "classic",
+            "download": null,
+            "revision": "289",
+            "type": "app",
+            "version": "502.0.0",
+            "apps": [
+                {
+                    "snap": "google-cloud-cli",
+                    "name": "anthoscli",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "google-cloud-cli",
+                    "name": "bq",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "google-cloud-cli",
+                    "name": "docker-credential-gcloud",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "google-cloud-cli",
+                    "name": "gcloud",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "google-cloud-cli",
+                    "name": "gsutil",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                },
+                {
+                    "snap": "google-cloud-cli",
+                    "name": "kubectl",
+                    "desktop_file": null,
+                    "daemon": null,
+                    "enabled": null,
+                    "active": null,
+                    "common_id": null
+                }
+            ],
+            "developer": "google-cloud-sdk",
+            "devmode": false,
+            "icon": "https://dashboard.snapcraft.io/site_media/appmedia/2021/10/cloud_icon_256.png",
+            "id": "pcLToi6ZMhWz3VzItZIgJf7Qgc1AswoH",
+            "ignore_validation": false,
+            "install_date": "2024-11-25T15:17:48.695508-05:00",
+            "installed_size": 393322496,
+            "jailmode": false,
+            "mounted_from": "/var/lib/snapd/snaps/google-cloud-cli_289.snap",
+            "status": "active",
+            "tracking_channel": "latest/stable",
+            "contact": "https://cloud.google.com/sdk/docs/",
+            "description": "Command-line interface for Google Cloud Platform products and services",
+            "license": "unset",
+            "links": {
+                "contact": [
+                    "https://cloud.google.com/sdk/docs/"
+                ]
+            },
+            "media": [
+                {
+                    "height": 60.0,
+                    "type": "icon",
+                    "url": "https://dashboard.snapcraft.io/site_media/appmedia/2021/10/cloud_icon_256.png",
+                    "width": 60.0
+                }
+            ],
+            "name": "google-cloud-cli",
+            "private": false,
+            "publisher": {
+                "display_name": "Cloud SDK",
+                "id": "8jqpPuIFTqQqlIUH9g14nscj1im4BBnl",
+                "username": "google-cloud-sdk",
+                "validation": "verified"
+            },
+            "summary": "Google Cloud CLI",
+            "title": "google-cloud-cli",
+            "unlisted": null,
+            "website": null
+        }
+    ]
+}

@@ -3,7 +3,7 @@ from typing import Any, Dict, List, Optional
 from pydantic import AliasChoices, AwareDatetime, BaseModel, ConfigDict, Field
 
 from snap_python.schemas.common import Revision
-from snap_python.schemas.snaps import StoreSnap
+from snap_python.schemas.snaps import InstalledSnap, StoreSnap, StoreSnapFields
 
 VALID_SEARCH_CATEGORY_FIELDS = [
     "base",
@@ -82,16 +82,39 @@ class SnapDetails(BaseModel):
 
 
 class SearchResult(BaseModel):
-    model_config = ConfigDict(extra="forbid", exclude_unset=True, exclude_none=True)
+    model_config = ConfigDict(extra="forbid")
 
     name: str
     revision: Optional[Revision] = None
     snap: StoreSnap
     snap_id: str = Field(alias=AliasChoices("snap-id", "snap_id"))
 
+    @classmethod
+    def from_installed_snap(cls, installed_snap: InstalledSnap):
+        snap_info: dict = installed_snap.model_dump(mode="json")
+        revision_snap_fields = Revision.model_fields.keys()
+        revision_info = {}
+        for field in revision_snap_fields:
+            if field in snap_info:
+                revision_info[field] = snap_info.pop(field)
+
+        snap_id = snap_info.pop("id")
+        snap_name = snap_info.pop("name")
+
+        # get set of acceptable fields for StoreSnap
+        store_snap_fields = StoreSnapFields.model_fields.keys()
+        snap_info = {
+            key: value for key, value in snap_info.items() if key in store_snap_fields
+        }
+
+        snap_info = {"snap": snap_info, "snap-id": snap_id, "name": snap_name}
+        snap_info["revision"] = revision_info
+
+        return cls.model_validate(snap_info)
+
 
 class SearchResponse(BaseModel):
-    model_config = ConfigDict(extra="forbid", exclude_unset=True, exclude_none=True)
+    model_config = ConfigDict(extra="forbid")
 
     error_list: Optional[List[ErrorListItem]] = Field(None, alias="error-list")
     results: List[SearchResult]
