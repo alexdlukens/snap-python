@@ -6,7 +6,10 @@ import httpx
 
 from snap_python.schemas.changes import ChangesResponse
 from snap_python.schemas.common import AsyncResponse
-from snap_python.schemas.snaps import SingleSnapResponse, SnapListResponse
+from snap_python.schemas.snaps import (
+    InstalledSnapListResponse,
+    SingleInstalledSnapResponse,
+)
 from snap_python.utils import AbstractSnapsClient, going_to_reload_daemon
 
 logger = logging.getLogger("snap_python.components.snaps")
@@ -17,12 +20,12 @@ class SnapsEndpoints:
         self._client = client
         self.common_endpoint = "snaps"
 
-    async def list_installed_snaps(self) -> SnapListResponse:
+    async def list_installed_snaps(self) -> InstalledSnapListResponse:
         response: httpx.Response = await self._client.request(
             "GET", self.common_endpoint
         )
 
-        response = SnapListResponse.model_validate_json(response.content)
+        response = InstalledSnapListResponse.model_validate_json(response.content)
         if response.status_code > 299:
             raise httpx.HTTPStatusError(
                 request=response.request,
@@ -31,7 +34,7 @@ class SnapsEndpoints:
             )
         return response
 
-    async def get_snap_info(self, snap: str) -> SingleSnapResponse:
+    async def get_snap_info(self, snap: str) -> SingleInstalledSnapResponse:
         try:
             response: httpx.Response = await self._client.request(
                 "GET", f"{self.common_endpoint}/{snap}"
@@ -44,7 +47,7 @@ class SnapsEndpoints:
             )
             response = e.response
 
-        return SingleSnapResponse.model_validate_json(response.content)
+        return SingleInstalledSnapResponse.model_validate_json(response.content)
 
     async def is_snap_installed(self, snap: str) -> bool:
         snap_info = await self.get_snap_info(snap)

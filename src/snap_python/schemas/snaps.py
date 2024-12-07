@@ -1,27 +1,26 @@
+from typing import Optional
+
 from pydantic import AliasChoices, AwareDatetime, BaseModel, ConfigDict, Field
 
 from snap_python.schemas.common import (
     BaseErrorResult,
     BaseResponse,
     Media,
+    Publisher,
+    Revision,
     SnapApp,
-    SnapBaseVersion,
-    SnapConfinement,
 )
+from snap_python.schemas.store.categories import Category
 
 
-class Snap(BaseModel):
-    model_config = ConfigDict(extra="allow")
+class InstalledSnapFields(Revision):
     apps: list[SnapApp] = Field(default_factory=list)
-    base: SnapBaseVersion | None = None
-    channel: str
-    confinement: SnapConfinement
-    contact: str
-    description: str
-    developer: str
-    devmode: bool
-    icon: str | None = None
-    id: str
+    developer: Optional[str] = None
+    devmode: Optional[bool] = None
+    icon: Optional[str] = None
+    id: Optional[str] = Field(
+        None, validation_alias=AliasChoices("id", "snap-id"), serialization_alias="id"
+    )
     ignore_validation: bool = Field(
         validation_alias=AliasChoices("ignore-validation", "ignore_validation"),
         serialization_alias="ignore-validation",
@@ -35,36 +34,60 @@ class Snap(BaseModel):
         serialization_alias="installed-size",
     )
     jailmode: bool
-    license: str = "unset"
-    links: dict[str, list[str]] | None = None
-    media: list[Media] = Field(default_factory=list)
     mounted_from: str = Field(
         validation_alias=AliasChoices("mounted-from", "mounted_from"),
         serialization_alias="mounted-from",
     )
-    name: str
-    private: bool
-    publisher: dict[str, str] | None = None
-    revision: str
     status: str
-    summary: str
-    title: str | None = None
-    tracking_channel: str | None = Field(
+    tracking_channel: Optional[str] = Field(
         validation_alias=AliasChoices("tracking-channel", "tracking_channel"),
         serialization_alias="tracking-channel",
         default=None,
     )
-    type: str
-    version: str
-    website: str | None = None
 
 
-class SingleSnapResponse(BaseResponse):
-    result: Snap | BaseErrorResult
+class StoreSnapFields(BaseModel):
+    gated_snap_ids: Optional[list[str]] = Field(
+        None, alias=AliasChoices("gated-snap-ids", "gated_snap_ids")
+    )
+    categories: Optional[list[Category]] = None
+    prices: Optional[dict[str, str]] = None
+    snap_id: Optional[str] = Field(None, alias=AliasChoices("snap-id", "snap_id"))
+    store_url: Optional[str] = Field(None, alias=AliasChoices("store-url", "store_url"))
+    trending: Optional[bool] = None
 
 
-class SnapListResponse(BaseResponse):
-    result: list[Snap]
+class Snap(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    contact: Optional[str] = None
+    description: Optional[str] = None
+    license: str = "unset"
+    links: Optional[dict[str, list[str]]] = None
+    media: Optional[list[Media]] = None
+    name: Optional[str] = None
+    private: Optional[bool] = None
+    publisher: Optional[Publisher] = Field(None, description="The publisher.")
+    summary: Optional[str] = None
+    title: Optional[str] = None
+    unlisted: Optional[bool] = None
+    website: Optional[str] = None
+
+
+class StoreSnap(Snap, StoreSnapFields):
+    pass
+
+
+class InstalledSnap(Snap, InstalledSnapFields):
+    pass
+
+
+class SingleInstalledSnapResponse(BaseResponse):
+    result: InstalledSnap | BaseErrorResult
+
+
+class InstalledSnapListResponse(BaseResponse):
+    result: list[InstalledSnap]
 
     def __len__(self):
         return len(self.result)

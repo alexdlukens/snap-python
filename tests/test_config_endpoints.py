@@ -21,7 +21,7 @@ logger.propagate = True
 @pytest.fixture
 def setup_lxd_client(module_scope_container) -> SnapClient:
     container = module_scope_container
-    logger.info(f"Container ID: {container.name}")
+    logger.info("Container ID: %s", container.name)
     return SnapClient(version="v2", tcp_location="http://127.0.0.1:8181")
 
 

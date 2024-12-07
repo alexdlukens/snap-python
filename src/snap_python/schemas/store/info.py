@@ -6,7 +6,7 @@ from typing import List, Optional
 
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field
 
-from snap_python.schemas.store.search import Snap
+from snap_python.schemas.snaps import StoreSnap
 
 VALID_SNAP_INFO_FIELDS = [
     "architectures",
@@ -130,5 +130,5 @@ class InfoResponse(BaseModel):
     default_track: Optional[str] = Field(None, alias="default-track")
     error_list: Optional[List[ErrorListItem]] = Field(None, alias="error-list")
     name: str
-    snap: Snap
+    snap: StoreSnap
     snap_id: str = Field(..., alias="snap-id")
