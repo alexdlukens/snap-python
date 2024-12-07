@@ -13,10 +13,17 @@ from snap_python.schemas.common import (
 from snap_python.schemas.store.categories import Category
 
 
+class SnapHealth(BaseModel):
+    status: str
+    revision: str
+    timestamp: AwareDatetime
+
+
 class InstalledSnapFields(Revision):
     apps: list[SnapApp] = Field(default_factory=list)
     developer: Optional[str] = None
     devmode: Optional[bool] = None
+    health: Optional[SnapHealth] = None
     icon: Optional[str] = None
     id: Optional[str] = Field(
         None, validation_alias=AliasChoices("id", "snap-id"), serialization_alias="id"

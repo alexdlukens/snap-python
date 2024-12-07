@@ -40,4 +40,8 @@ def test_convert_store_snap():
             raise
     search_response = SearchResponse(results=converted_snaps)
 
+    for snap in search_response.results:
+        assert snap.snap.name is not None
+        assert snap.snap.description is not None
+
     assert len(search_response.results) == len(response.result)

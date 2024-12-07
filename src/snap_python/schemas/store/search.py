@@ -3,7 +3,7 @@ from typing import Any, Dict, List, Optional
 from pydantic import AliasChoices, AwareDatetime, BaseModel, ConfigDict, Field
 
 from snap_python.schemas.common import Revision
-from snap_python.schemas.snaps import InstalledSnap, StoreSnap, StoreSnapFields
+from snap_python.schemas.snaps import InstalledSnap, Snap, StoreSnap, StoreSnapFields
 
 VALID_SEARCH_CATEGORY_FIELDS = [
     "base",
@@ -99,15 +99,17 @@ class SearchResult(BaseModel):
                 revision_info[field] = snap_info.pop(field)
 
         snap_id = snap_info.pop("id")
-        snap_name = snap_info.pop("name")
+        snap_name = snap_info.get("name")
 
         # get set of acceptable fields for StoreSnap
-        store_snap_fields = StoreSnapFields.model_fields.keys()
-        snap_info = {
+        store_snap_fields = set(StoreSnapFields.model_fields.keys()).union(
+            Snap.model_fields.keys()
+        )
+        store_snap_info = {
             key: value for key, value in snap_info.items() if key in store_snap_fields
         }
 
-        snap_info = {"snap": snap_info, "snap-id": snap_id, "name": snap_name}
+        snap_info = {"snap": store_snap_info, "snap-id": snap_id, "name": snap_name}
         snap_info["revision"] = revision_info
 
         return cls.model_validate(snap_info)

@@ -193,3 +193,27 @@ async def test_install_snap_async_generator(setup_lxd_client: SnapClient):
 
     installed_snaps = await setup_lxd_client.snaps.list_installed_snaps()
     assert "hello-world" not in [snap.name for snap in installed_snaps.result]
+
+
+async def install_snap_edgecase_health(setup_lxd_client: SnapClient):
+    logger.debug("Running test_install_snap_edgecase_health")
+    microk8s_snap_name = "microk8s"
+
+    response = await setup_lxd_client.snaps.install_snap(microk8s_snap_name, wait=True)
+
+    # ensure snap shows up in list_installed_snaps
+    installed_snaps = await setup_lxd_client.snaps.list_installed_snaps()
+    assert microk8s_snap_name in [snap.name for snap in installed_snaps.result]
+
+    # ensure snap info can be retrieved using get_snap_info
+    snap_info = await setup_lxd_client.snaps.get_snap_info(microk8s_snap_name)
+    assert snap_info.status_code == 200
+
+    # ensure snap info has health information (this is the only snap I have
+    # seen that has the health key)
+    assert snap_info.result.health is not None
+
+    # remove snap
+    removal_response = await setup_lxd_client.snaps.remove_snap(
+        microk8s_snap_name, purge=True, terminate=True, wait=True
+    )
