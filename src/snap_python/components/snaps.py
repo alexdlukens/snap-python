@@ -60,6 +60,7 @@ class SnapsEndpoints:
         snap: str,
         channel: str = "stable",
         classic: bool = False,
+        dangerous: bool = False,
         devmode: bool = False,
         ignore_validation: bool = False,
         jailmode: bool = False,
@@ -76,6 +77,7 @@ class SnapsEndpoints:
             snap (str): name of the snap to install
             channel (str, optional): Channel to install. Defaults to "stable".
             classic (bool, optional): Install with classic confinement. Defaults to False.
+            dangerous (bool, optional): install the given snap files even if there are no pre-acknowledged signatures for them, meaning they are not verified and could be dangerous if true (optional, implied by devmode). Defaults to False.
             devmode (bool, optional): Install with devmode. Defaults to False.
             ignore_validation (bool, optional): _description_. Defaults to False.
             jailmode (bool, optional): Install snap with jailmode. Defaults to False.
@@ -93,6 +95,7 @@ class SnapsEndpoints:
             "action": "install",
             "channel": channel,
             "classic": classic,
+            "dangerous": dangerous,
             "devmode": devmode,
             "ignore_validation": ignore_validation,
             "jailmode": jailmode,
@@ -103,7 +106,10 @@ class SnapsEndpoints:
             # sideload
             if not Path(filename).exists():
                 raise FileNotFoundError(f"File {filename} does not exist")
-            request_data["dangerous"] = True
+            if request_data.get("dangerous") is not True:
+                raise ValueError(
+                    "Cannot sideload snap without dangerous flag set to True"
+                )
             raw_response: httpx.Response = await self._client.request(
                 "POST",
                 f"{self.common_endpoint}",

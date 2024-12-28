@@ -35,7 +35,7 @@ async def test_sideload_store_tui(setup_lxd_client: SnapClient):
     assert "store-tui" not in [snap.name for snap in snaps.result]
 
     sideload_response = await setup_lxd_client.snaps.install_snap(
-        "store-tui", filename=STORE_TUI_SNAP_FILE, wait=True
+        "store-tui", filename=STORE_TUI_SNAP_FILE, wait=True, dangerous=True
     )
 
     assert sideload_response.status_code == 200

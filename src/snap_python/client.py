@@ -27,6 +27,7 @@ class SnapClient(AbstractSnapsClient):
         tcp_location: str = None,
         store_base_url: str = "https://api.snapcraft.io",
         store_headers: dict[str, str] = None,
+        prompt_for_authentication: bool = False,
     ):
         if tcp_location and snapd_socket_location:
             raise ValueError(
@@ -40,14 +41,19 @@ class SnapClient(AbstractSnapsClient):
             self._transport = httpx.AsyncHTTPTransport(
                 uds=snapd_socket_location or SNAPD_SOCKET
             )
-
         if store_headers is None:
             store_headers = {"Snap-Device-Series": "16", "X-Ubuntu-Series": "16"}
+
+        snapd_headers = {}
+        if prompt_for_authentication:
+            snapd_headers = {"X-Allow-Interaction": "true"}
 
         self.version = version
         self.store_base_url = store_base_url
         self.store_headers = store_headers
-        self.snapd_client = httpx.AsyncClient(transport=self._transport)
+        self.snapd_client = httpx.AsyncClient(
+            transport=self._transport, headers=snapd_headers
+        )
         self.snaps = SnapsEndpoints(self)
         self.store = StoreEndpoints(
             base_url=self.store_base_url,
