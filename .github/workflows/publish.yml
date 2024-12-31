@@ -33,3 +33,6 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         files: dist/*.whl
+    - name: Publish package
+      run: |
+        poetry publish --username ${{ secrets.PYPI_USERNAME }} --password ${{ secrets.PYPI_PASSWORD }}
