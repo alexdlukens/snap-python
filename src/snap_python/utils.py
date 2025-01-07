@@ -7,11 +7,11 @@ from snap_python.schemas.changes import ChangesResponse
 
 class AbstractSnapsClient(ABC):  # pragma: no cover
     @abstractmethod
-    async def request(self) -> httpx.Response:
+    async def request(self, method: str, endpoint: str, **kwargs) -> httpx.Response:
         pass
 
     @abstractmethod
-    async def request_raw(self) -> httpx.Response:
+    async def request_raw(self, method: str, endpoint: str, **kwargs) -> httpx.Response:
         pass
 
     @abstractmethod

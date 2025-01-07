@@ -7,7 +7,6 @@ import pylxd.exceptions
 import pylxd.managers
 import pylxd.models
 import pylxd.models.container
-import pytest
 from pylxd.models import Container, Image, Project
 
 TEST_DIR = Path(__file__).parent.parent
@@ -233,20 +232,6 @@ def setup_lxd_container(
 
     logger.info("Container %s is ready", container.name)
     return container
-
-
-@pytest.fixture(scope="function")
-def function_scope_container() -> Container:
-    container = setup_lxd_container("snap-python-test", clean=True)
-    yield container
-    stop_container("snap-python-test", container.client, remove=False)
-
-
-@pytest.fixture(scope="module")
-def module_scope_container() -> Container:
-    container = setup_lxd_container("snap-python-test", clean=True)
-    yield container
-    stop_container("snap-python-test", container.client, remove=False)
 
 
 # socat cmd: socat TCP-LISTEN:8181,fork UNIX-CONNECT:/run/snapd.socket

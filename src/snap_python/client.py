@@ -44,15 +44,15 @@ class SnapClient(AbstractSnapsClient):
         if store_headers is None:
             store_headers = {"Snap-Device-Series": "16", "X-Ubuntu-Series": "16"}
 
-        snapd_headers = {}
+        self.snapd_headers = {}
         if prompt_for_authentication:
-            snapd_headers = {"X-Allow-Interaction": "true"}
+            self.snapd_headers = {"X-Allow-Interaction": "true"}
 
         self.version = version
         self.store_base_url = store_base_url
         self.store_headers = store_headers
         self.snapd_client = httpx.AsyncClient(
-            transport=self._transport, headers=snapd_headers
+            transport=self._transport, headers=self.snapd_headers
         )
         self.snaps = SnapsEndpoints(self)
         self.store = StoreEndpoints(
@@ -61,6 +61,7 @@ class SnapClient(AbstractSnapsClient):
             headers=self.store_headers,
         )
         self.config = ConfigEndpoints(self)
+        self.snapd_client = httpx.AsyncClient(transport=self._transport)
 
     @retry(httpx.HTTPError, tries=3, delay=1, backoff=1)
     async def request(self, method: str, endpoint: str, **kwargs) -> httpx.Response:
@@ -112,29 +113,52 @@ class SnapClient(AbstractSnapsClient):
         return response
 
     async def get_changes_by_id(self, change_id: str) -> ChangesResponse:
+        """
+        Asynchronously retrieves changes by their ID.
+        Args:
+            change_id (str): The ID of the change to retrieve.
+        Returns:
+            ChangesResponse: The response object containing the changes.
+        Raises:
+            httpx.HTTPStatusError: If the request results in an HTTP error.
+        """
+
         try:
             response = await self.request("GET", f"changes/{change_id}")
         except httpx.HTTPStatusError as e:
             logger.warning(
-                f"Bad response status code for get_changes_by_id: {e.response.status_code}"
+                "Bad response status code for get_changes_by_id: %s",
+                e.response.status_code,
             )
             response = e.response
-            pass
 
         return ChangesResponse.model_validate_json(response.content)
 
     async def get_changes_by_id_generator(
         self, change_id: str
     ) -> AsyncGenerator[ChangesResponse, None]:
+        """
+        Asynchronous generator to fetch changes by change ID.
+        This generator continuously requests changes from the server using the provided
+        change ID and yields the response as a ChangesResponse object. It includes error
+        handling for HTTP status errors and adds a small delay between requests to avoid
+        overwhelming the server.
+        Args:
+            change_id (str): The ID of the change to fetch.
+        Yields:
+            ChangesResponse: The response object containing the changes.
+        Raises:
+            httpx.HTTPStatusError: If the request fails with an HTTP status error.
+        """
         while True:
             try:
                 response = await self.request("GET", f"changes/{change_id}")
             except httpx.HTTPStatusError as e:
                 logger.warning(
-                    f"Bad response status code for get_changes_by_id: {e.response.status_code}"
+                    "Bad response status code for get_changes_by_id: %s",
+                    e.response.status_code,
                 )
                 response = e.response
-                pass
 
             change_response = ChangesResponse.model_validate_json(response.content)
             yield change_response
