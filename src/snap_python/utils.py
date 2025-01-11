@@ -5,6 +5,10 @@ import httpx
 from snap_python.schemas.changes import ChangesResponse
 
 
+class SnapdAPIError(Exception):
+    pass
+
+
 class AbstractSnapsClient(ABC):  # pragma: no cover
     @abstractmethod
     async def request(self, method: str, endpoint: str, **kwargs) -> httpx.Response:

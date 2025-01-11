@@ -10,7 +10,7 @@ from snap_python.schemas.snaps import (
     InstalledSnapListResponse,
     SingleInstalledSnapResponse,
 )
-from snap_python.utils import AbstractSnapsClient, going_to_reload_daemon
+from snap_python.utils import AbstractSnapsClient, SnapdAPIError, going_to_reload_daemon
 
 logger = logging.getLogger("snap_python.components.snaps")
 
@@ -84,7 +84,7 @@ class SnapsEndpoints:
             wait (bool, optional): Whether to wait for snap to install. If not waiting, will return async response with change id. Defaults to False.
 
         Raises:
-            Exception: If error occurs during snap install
+            SnapdAPIError: If error occurs during snap install
 
         Returns:
             AsyncResponse | ChangesResponse: If wait is True, will return ChangesResponse. Otherwise, will return AsyncResponse
@@ -135,7 +135,7 @@ class SnapsEndpoints:
                 if changes.ready:
                     break
                 if changes.result.err:
-                    raise Exception(f"Error in snap install: {changes.result.err}")
+                    raise SnapdAPIError(f"Error in snap remove: {changes.result.err}")
                 await asyncio.sleep(0.1)
                 previous_changes = changes
             return changes
@@ -148,6 +148,18 @@ class SnapsEndpoints:
         terminate: bool = False,
         wait: bool = False,
     ) -> AsyncResponse | ChangesResponse:
+        """
+        Asynchronously removes a snap package.
+        Args:
+            snap (str): The name of the snap package to remove.
+            purge (bool, optional): If True, purges the snap package. Defaults to False.
+            terminate (bool, optional): If True, terminates the snap package. Defaults to False.
+            wait (bool, optional): If True, waits for the removal process to complete. Defaults to False.
+        Returns:
+            AsyncResponse | ChangesResponse: The response from the snapd API, either an asynchronous response or a changes response if waiting for completion.
+        Raises:
+            SnapdAPIError: If there is an error in the snap removal process.
+        """
         request_data = {
             "action": "remove",
             "purge": purge,
@@ -165,7 +177,7 @@ class SnapsEndpoints:
             while True:
                 try:
                     changes = await self._client.get_changes_by_id(changes_id)
-                except httpx.HTTPError as e:
+                except httpx.HTTPError:
                     if going_to_reload_daemon(previous_changes):
                         logger.debug("Waiting for daemon to reload")
                         await asyncio.sleep(0.1)
@@ -173,7 +185,7 @@ class SnapsEndpoints:
                 if changes.ready:
                     break
                 if changes.result.err:
-                    raise Exception(f"Error in snap remove: {changes.result.err}")
+                    raise SnapdAPIError(f"Error in snap remove: {changes.result.err}")
                 await asyncio.sleep(0.1)
                 previous_changes = changes
             return changes
@@ -211,7 +223,7 @@ class SnapsEndpoints:
         Raises:
             FileNotFoundError: If the specified snap file does not exist.
             ValueError: If attempting to sideload without the dangerous flag set to True.
-            Exception: If there is an error during the snap refresh.
+            SnapdAPIError: If there is an error during the snap refresh.
         """
         request_data = {
             "action": "refresh",
@@ -260,7 +272,7 @@ class SnapsEndpoints:
                 if changes.ready:
                     break
                 if changes.result.err:
-                    raise Exception(f"Error in snap refresh: {changes.result.err}")
+                    raise SnapdAPIError(f"Error in snap remove: {changes.result.err}")
                 await asyncio.sleep(0.1)
                 previous_changes = changes
             return changes
