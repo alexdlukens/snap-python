@@ -78,7 +78,6 @@ class SnapsEndpoints:
             classic (bool, optional): Install with classic confinement. Defaults to False.
             dangerous (bool, optional): install the given snap files even if there are no pre-acknowledged signatures for them, meaning they are not verified and could be dangerous if true (optional, implied by devmode). Defaults to False.
             devmode (bool, optional): Install with devmode. Defaults to False.
-            ignore_validation (bool, optional): _description_. Defaults to False.
             jailmode (bool, optional): Install snap with jailmode. Defaults to False.
             revision (int, optional): install a specific revision of the snap. Defaults to None.
             filename (str, optional): Path to snap to sideload. Defaults to None.
@@ -194,6 +193,26 @@ class SnapsEndpoints:
         filename: str = None,
         wait: bool = False,
     ) -> AsyncResponse | ChangesResponse:
+        """
+        Refreshes a snap package.
+        Args:
+            snap (str): The name of the snap package to refresh.
+            channel (str, optional): The channel to refresh the snap from. Defaults to "stable".
+            classic (bool, optional): Whether to use classic confinement. Defaults to False.
+            dangerous (bool, optional): Whether to allow installation of unasserted snaps. Defaults to False.
+            devmode (bool, optional): Whether to use development mode. Defaults to False.
+            ignore_validation (bool, optional): Whether to ignore validation. Defaults to False.
+            jailmode (bool, optional): Whether to use jail mode. Defaults to False.
+            revision (int, optional): The specific revision to refresh to. Defaults to None.
+            filename (str, optional): The path to the snap file for sideloading. Defaults to None.
+            wait (bool, optional): Whether to wait for the refresh operation to complete. Defaults to False.
+        Returns:
+            AsyncResponse | ChangesResponse: The response from the refresh operation.
+        Raises:
+            FileNotFoundError: If the specified snap file does not exist.
+            ValueError: If attempting to sideload without the dangerous flag set to True.
+            Exception: If there is an error during the snap refresh.
+        """
         request_data = {
             "action": "refresh",
             "channel": channel,
