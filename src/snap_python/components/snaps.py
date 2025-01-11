@@ -62,7 +62,6 @@ class SnapsEndpoints:
         classic: bool = False,
         dangerous: bool = False,
         devmode: bool = False,
-        ignore_validation: bool = False,
         jailmode: bool = False,
         revision: int = None,
         filename: str = None,
@@ -97,7 +96,6 @@ class SnapsEndpoints:
             "classic": classic,
             "dangerous": dangerous,
             "devmode": devmode,
-            "ignore_validation": ignore_validation,
             "jailmode": jailmode,
         }
         if revision:
@@ -128,8 +126,8 @@ class SnapsEndpoints:
             while True:
                 try:
                     changes = await self._client.get_changes_by_id(changes_id)
-                    logger.debug(f"Progress: {changes.result.overall_progress}")
-                except httpx.HTTPError as e:
+                    logger.debug("Progress: %s", changes.result.overall_progress)
+                except httpx.HTTPError:
                     if going_to_reload_daemon(previous_changes):
                         logger.debug("Waiting for daemon to reload")
                         await asyncio.sleep(0.1)
@@ -181,4 +179,70 @@ class SnapsEndpoints:
                 previous_changes = changes
             return changes
 
+        return response
+
+    async def refresh_snap(
+        self,
+        snap: str,
+        channel: str = "stable",
+        classic: bool = False,
+        dangerous: bool = False,
+        devmode: bool = False,
+        ignore_validation: bool = False,
+        jailmode: bool = False,
+        revision: int = None,
+        filename: str = None,
+        wait: bool = False,
+    ) -> AsyncResponse | ChangesResponse:
+        request_data = {
+            "action": "refresh",
+            "channel": channel,
+            "classic": classic,
+            "dangerous": dangerous,
+            "devmode": devmode,
+            "ignore_validation": ignore_validation,
+            "jailmode": jailmode,
+        }
+        if revision:
+            request_data["revision"] = revision
+        if filename:
+            # sideload
+            if not Path(filename).exists():
+                raise FileNotFoundError(f"File {filename} does not exist")
+            if request_data.get("dangerous") is not True:
+                raise ValueError(
+                    "Cannot sideload snap without dangerous flag set to True"
+                )
+            raw_response: httpx.Response = await self._client.request(
+                "POST",
+                f"{self.common_endpoint}",
+                data=request_data,
+                files={"snap": open(filename, "rb")},
+            )
+        else:
+            # install from default snap store
+            raw_response: httpx.Response = await self._client.request(
+                "POST", f"{self.common_endpoint}/{snap}", json=request_data
+            )
+        response = AsyncResponse.model_validate_json(raw_response.content)
+        if wait:
+            changes_id = response.change
+            previous_changes = None
+            while True:
+                try:
+                    changes = await self._client.get_changes_by_id(changes_id)
+                    logger.debug("Progress: %s", changes.result.overall_progress)
+                except httpx.HTTPError:
+                    if going_to_reload_daemon(previous_changes):
+                        logger.debug("Waiting for daemon to reload")
+                        await asyncio.sleep(0.1)
+                        continue
+
+                if changes.ready:
+                    break
+                if changes.result.err:
+                    raise Exception(f"Error in snap refresh: {changes.result.err}")
+                await asyncio.sleep(0.1)
+                previous_changes = changes
+            return changes
         return response

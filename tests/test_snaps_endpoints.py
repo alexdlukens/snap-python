@@ -217,3 +217,27 @@ async def install_snap_edgecase_health(module_scope_client: SnapClient):
     removal_response = await module_scope_client.snaps.remove_snap(
         microk8s_snap_name, purge=True, terminate=True, wait=True
     )
+
+
+async def test_snap_refresh(module_scope_client: SnapClient):
+    snap_name = "usconstitution"
+
+    # ensure snap is not installed
+    snap_install_status = await module_scope_client.snaps.is_snap_installed(snap_name)
+    assert snap_install_status is False
+
+    # install revision
+    install_response = await module_scope_client.snaps.install_snap(
+        snap_name, channel="latest/stable", revision=96, wait=True
+    )
+    assert install_response.result.status == "Done"
+
+    # ensure snap is installed
+    snap_install_status = await module_scope_client.snaps.is_snap_installed(snap_name)
+    assert snap_install_status is True
+
+    # refresh snap
+    refresh_response = await module_scope_client.snaps.refresh_snap(
+        snap_name, revision=96, channel="latest/edge", wait=True
+    )
+    assert refresh_response.result.status == "Done"
