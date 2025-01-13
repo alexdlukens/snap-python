@@ -30,7 +30,7 @@ async def test_snap_client_list_snaps(module_scope_client: SnapClient):
         pytest.fail(
             f"List installed snaps failed with status code {e.response.status_code}"
         )
-    assert len(installed_snaps) == 0
+    assert len(installed_snaps) == 1  # snapd snap installed during fixture setup
 
 
 @pytest.mark.asyncio

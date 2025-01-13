@@ -32,7 +32,7 @@ def list_images_on_machine(client: pylxd.Client = None):
 
 def add_image_to_system(
     name: str,
-    version: str = "sid",
+    version: str = "bookworm",
     variant: str = "default",
     client: pylxd.Client = None,
 ) -> str:
@@ -142,6 +142,20 @@ def ensure_snapd_clean_install(container: Container):
     with open(SOCAT_SERVICE_FILE, "rb") as f:
         container.files.put("/etc/systemd/system/socat_snapd.service", f.read())
 
+    # ensure snapd is up to date
+    container.execute(
+        ["sudo", "snap", "install", "snapd"],
+        stdout_handler=logger.debug,
+        stderr_handler=logger.error,
+    )
+
+    # ensure snapd is up to date
+    container.execute(
+        ["sudo", "snap", "refresh", "snapd"],
+        stdout_handler=logger.debug,
+        stderr_handler=logger.error,
+    )
+
     logger.info("Starting socat service")
     # ensure socat service is enabled
     container.execute(
@@ -169,7 +183,7 @@ def ensure_snapd_clean_install(container: Container):
 def setup_lxd_container(
     container_name: str,
     container_os: str = "debian",
-    version: str = "sid",
+    version: str = "bookworm",
     variant: str = "default",
     project: str = "snap-python",
     clean: bool = False,
