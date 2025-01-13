@@ -129,13 +129,12 @@ class SnapsEndpoints:
                 except httpx.HTTPError:
                     if going_to_reload_daemon(previous_changes):
                         logger.debug("Waiting for daemon to reload")
-                        await asyncio.sleep(0.1)
-                        continue
+                        changes = previous_changes
 
                 if changes.ready:
                     break
                 if changes.result.err:
-                    raise SnapdAPIError(f"Error in snap remove: {changes.result.err}")
+                    raise SnapdAPIError(f"Error in snap install: {changes.result.err}")
                 await asyncio.sleep(0.1)
                 previous_changes = changes
             return changes
