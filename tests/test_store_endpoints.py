@@ -118,3 +118,14 @@ async def test_get_category_by_name_not_found(setup_snaps_api: StoreEndpoints):
         pytest.fail("Expected HTTPStatusError")
     except HTTPError:
         pass
+
+
+@pytest.mark.asyncio
+async def test_get_category_by_name_bad_field(setup_snaps_api: StoreEndpoints):
+    try:
+        response = await setup_snaps_api.get_category_by_name(
+            name="banana", fields=["bad-field", "name"]
+        )
+        pytest.fail("Expected ValueError for bad field")
+    except ValueError:
+        pass
