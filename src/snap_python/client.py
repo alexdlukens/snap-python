@@ -112,6 +112,7 @@ class SnapClient(AbstractSnapsClient):
 
         return response
 
+    @retry(httpx.HTTPError, tries=3, delay=0.5)
     async def get_changes_by_id(self, change_id: str) -> ChangesResponse:
         """
         Asynchronously retrieves changes by their ID.
