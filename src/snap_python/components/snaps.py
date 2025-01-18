@@ -21,6 +21,15 @@ class SnapsEndpoints:
         self.common_endpoint = "snaps"
 
     async def list_installed_snaps(self) -> InstalledSnapListResponse:
+        """
+        Asynchronously retrieves a list of installed snaps.
+
+        :returns: The response containing the list of installed snaps.
+        :rtype: InstalledSnapListResponse
+
+        :raises httpx.HTTPStatusError: If the response status code does not indicate success.
+        """
+
         response: httpx.Response = await self._client.request(
             "GET", self.common_endpoint
         )
@@ -35,6 +44,17 @@ class SnapsEndpoints:
         return response
 
     async def get_snap_info(self, snap: str) -> SingleInstalledSnapResponse:
+        """
+        Retrieves information about a specific snap.
+
+        :param snap: The name of the snap to retrieve information for.
+        :type snap: str
+
+        :returns: The response containing information about the snap.
+        :rtype: SingleInstalledSnapResponse
+
+        :raises httpx.HTTPStatusError: If the response status code does not indicate success.
+        """
         try:
             response: httpx.Response = await self._client.request(
                 "GET", f"{self.common_endpoint}/{snap}"
@@ -50,6 +70,16 @@ class SnapsEndpoints:
         return SingleInstalledSnapResponse.model_validate_json(response.content)
 
     async def is_snap_installed(self, snap: str) -> bool:
+        """
+        Check if a snap package is installed.
+
+        :param snap: The name of the snap package to check.
+        :type snap: str
+
+        :returns: True if the snap package is installed, False otherwise.
+        :rtype: bool
+        """
+
         snap_info = await self.get_snap_info(snap)
         if snap_info.status == "OK":
             return True
@@ -67,27 +97,36 @@ class SnapsEndpoints:
         filename: str = None,
         wait: bool = False,
     ) -> AsyncResponse | ChangesResponse:
-        """Install or sideload a snap
+        """
+        Install or sideload a snap.
 
-        To sideload a snap, provide the filename parameter with the path to the snap file
+        To sideload a snap, provide the filename parameter with the path to the snap file.
 
+        :param snap: Name of the snap to install.
+        :type snap: str
+        :param channel: Channel to install, defaults to "stable".
+        :type channel: str, optional
+        :param classic: Install with classic confinement, defaults to False.
+        :type classic: bool, optional
+        :param dangerous: Install the given snap files even if there are no pre-acknowledged signatures for them, meaning they are not verified and could be dangerous if true (optional, implied by devmode), defaults to False.
+        :type dangerous: bool, optional
+        :param devmode: Install with devmode, defaults to False.
+        :type devmode: bool, optional
+        :param jailmode: Install snap with jailmode, defaults to False.
+        :type jailmode: bool, optional
+        :param revision: Install a specific revision of the snap, defaults to None.
+        :type revision: int, optional
+        :param filename: Path to snap to sideload, defaults to None.
+        :type filename: str, optional
+        :param wait: Whether to wait for snap to install. If not waiting, will return async response with change id, defaults to False.
+        :type wait: bool, optional
 
-        Args:
-            snap (str): name of the snap to install
-            channel (str, optional): Channel to install. Defaults to "stable".
-            classic (bool, optional): Install with classic confinement. Defaults to False.
-            dangerous (bool, optional): install the given snap files even if there are no pre-acknowledged signatures for them, meaning they are not verified and could be dangerous if true (optional, implied by devmode). Defaults to False.
-            devmode (bool, optional): Install with devmode. Defaults to False.
-            jailmode (bool, optional): Install snap with jailmode. Defaults to False.
-            revision (int, optional): install a specific revision of the snap. Defaults to None.
-            filename (str, optional): Path to snap to sideload. Defaults to None.
-            wait (bool, optional): Whether to wait for snap to install. If not waiting, will return async response with change id. Defaults to False.
+        :raises FileNotFoundError: If the specified snap file does not exist.
+        :raises ValueError: If attempting to sideload without the dangerous flag set to True.
+        :raises SnapdAPIError: If there is an error during the snap install.
 
-        Raises:
-            SnapdAPIError: If error occurs during snap install
-
-        Returns:
-            AsyncResponse | ChangesResponse: If wait is True, will return ChangesResponse. Otherwise, will return AsyncResponse
+        :returns: If wait is True, will return ChangesResponse. Otherwise, will return AsyncResponse.
+        :rtype: AsyncResponse | ChangesResponse
         """
         request_data = {
             "action": "install",
@@ -149,15 +188,20 @@ class SnapsEndpoints:
     ) -> AsyncResponse | ChangesResponse:
         """
         Asynchronously removes a snap package.
-        Args:
-            snap (str): The name of the snap package to remove.
-            purge (bool, optional): If True, purges the snap package. Defaults to False.
-            terminate (bool, optional): If True, terminates the snap package. Defaults to False.
-            wait (bool, optional): If True, waits for the removal process to complete. Defaults to False.
-        Returns:
-            AsyncResponse | ChangesResponse: The response from the snapd API, either an asynchronous response or a changes response if waiting for completion.
-        Raises:
-            SnapdAPIError: If there is an error in the snap removal process.
+
+        :param snap: The name of the snap package to remove.
+        :type snap: str
+        :param purge: If True, purges the snap package. Defaults to False.
+        :type purge: bool, optional
+        :param terminate: If True, terminates the snap package. Defaults to False.
+        :type terminate: bool, optional
+        :param wait: If True, waits for the removal process to complete. Defaults to False.
+        :type wait: bool, optional
+
+        :returns: The response from the snapd API, either an asynchronous response or a changes response if waiting for completion.
+        :rtype: AsyncResponse | ChangesResponse
+
+        :raises SnapdAPIError: If there is an error in the snap removal process.
         """
         request_data = {
             "action": "remove",
@@ -206,23 +250,34 @@ class SnapsEndpoints:
     ) -> AsyncResponse | ChangesResponse:
         """
         Refreshes a snap package.
-        Args:
-            snap (str): The name of the snap package to refresh.
-            channel (str, optional): The channel to refresh the snap from. Defaults to "stable".
-            classic (bool, optional): Whether to use classic confinement. Defaults to False.
-            dangerous (bool, optional): Whether to allow installation of unasserted snaps. Defaults to False.
-            devmode (bool, optional): Whether to use development mode. Defaults to False.
-            ignore_validation (bool, optional): Whether to ignore validation. Defaults to False.
-            jailmode (bool, optional): Whether to use jail mode. Defaults to False.
-            revision (int, optional): The specific revision to refresh to. Defaults to None.
-            filename (str, optional): The path to the snap file for sideloading. Defaults to None.
-            wait (bool, optional): Whether to wait for the refresh operation to complete. Defaults to False.
-        Returns:
-            AsyncResponse | ChangesResponse: The response from the refresh operation.
-        Raises:
-            FileNotFoundError: If the specified snap file does not exist.
-            ValueError: If attempting to sideload without the dangerous flag set to True.
-            SnapdAPIError: If there is an error during the snap refresh.
+
+        :param snap: The name of the snap package to refresh.
+        :type snap: str
+        :param channel: The channel to refresh the snap from. Defaults to "stable".
+        :type channel: str, optional
+        :param classic: Whether to use classic confinement. Defaults to False.
+        :type classic: bool, optional
+        :param dangerous: Whether to allow installation of unasserted snaps. Defaults to False.
+        :type dangerous: bool, optional
+        :param devmode: Whether to use development mode. Defaults to False.
+        :type devmode: bool, optional
+        :param ignore_validation: Whether to ignore validation. Defaults to False.
+        :type ignore_validation: bool, optional
+        :param jailmode: Whether to use jail mode. Defaults to False.
+        :type jailmode: bool, optional
+        :param revision: The specific revision to refresh to. Defaults to None.
+        :type revision: int, optional
+        :param filename: The path to the snap file for sideloading. Defaults to None.
+        :type filename: str, optional
+        :param wait: Whether to wait for the refresh operation to complete. Defaults to False.
+        :type wait: bool, optional
+
+        :returns: The response from the refresh operation.
+        :rtype: AsyncResponse | ChangesResponse
+
+        :raises FileNotFoundError: If the specified snap file does not exist.
+        :raises ValueError: If attempting to sideload without the dangerous flag set to True.
+        :raises SnapdAPIError: If there is an error during the snap refresh.
         """
         request_data = {
             "action": "refresh",
