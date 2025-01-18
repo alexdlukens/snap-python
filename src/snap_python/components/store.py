@@ -37,6 +37,19 @@ class StoreEndpoints:
             self.store_client.headers.update(headers)
 
     async def get_snap_details(self, snap_name: str, fields: list[str] | None = None):
+        """
+        Get details of a snap.
+
+        :param snap_name: The name of the snap.
+        :type snap_name: str
+        :param fields: The fields to include in the response.
+        :type fields: list[str], optional
+
+        :returns: The snap details.
+        :rtype: dict
+
+        :raises ValueError: If invalid fields are provided.
+        """
         query = {}
         if fields is not None:
             if not all(field in VALID_SEARCH_CATEGORY_FIELDS for field in fields):
@@ -52,6 +65,19 @@ class StoreEndpoints:
         return response.json()
 
     async def get_snap_info(self, snap_name: str, fields: list[str] | None = None):
+        """
+        Get information about a snap.
+
+        :param snap_name: The name of the snap.
+        :type snap_name: str
+        :param fields: The fields to include in the response.
+        :type fields: list[str], optional
+
+        :returns: The snap information.
+        :rtype: InfoResponse
+
+        :raises ValueError: If invalid fields are provided.
+        """
         query = {}
         if fields is not None:
             if not all(field in VALID_SNAP_INFO_FIELDS for field in fields):
@@ -69,6 +95,19 @@ class StoreEndpoints:
     async def get_categories(
         self, type: str | None = None, fields: list[str] | None = None
     ) -> CategoryResponse:
+        """
+        Get categories of snaps.
+
+        :param type: The type of categories.
+        :type type: str, optional
+        :param fields: The fields to include in the response.
+        :type fields: list[str], optional
+
+        :returns: The categories.
+        :rtype: CategoryResponse
+
+        :raises ValueError: If invalid fields are provided.
+        """
         query = {}
         if fields is not None:
             if not all(field in VALID_CATEGORY_FIELDS for field in fields):
@@ -86,6 +125,19 @@ class StoreEndpoints:
     async def get_category_by_name(
         self, name: str, fields: list[str] | None = None
     ) -> SingleCategoryResponse:
+        """
+        Get a category by name.
+
+        :param name: The name of the category.
+        :type name: str
+        :param fields: The fields to include in the response.
+        :type fields: list[str], optional
+
+        :returns: The category.
+        :rtype: SingleCategoryResponse
+
+        :raises ValueError: If invalid fields are provided.
+        """
         query = {}
         if fields is not None:
             if not all(field in VALID_CATEGORY_FIELDS for field in fields):
@@ -114,10 +166,39 @@ class StoreEndpoints:
         publisher: str | None = None,
         headers: dict[str, str] | None = None,
     ) -> SearchResponse:
-        """from https://api.snapcraft.io/docs/search.html#snaps_find
-        and https://snapcraft.io/docs/snapd-api#heading--find
         """
+        Search for snaps in the store.
 
+        :param query: The search query.
+        :type query: str, optional
+        :param fields: The fields to include in the response.
+        :type fields: str, optional
+        :param name_startswith: Filter snaps by name prefix.
+        :type name_startswith: str, optional
+        :param architecture: Filter snaps by architecture.
+        :type architecture: str, optional
+        :param common_id: Filter snaps by common ID.
+        :type common_id: str, optional
+        :param category: Filter snaps by category.
+        :type category: str, optional
+        :param channel: Filter snaps by channel.
+        :type channel: str, optional
+        :param confiement: Filter snaps by confinement.
+        :type confiement: str, optional
+        :param featured: Filter snaps by featured status.
+        :type featured: bool, optional
+        :param private: Filter snaps by private status.
+        :type private: bool, optional
+        :param publisher: Filter snaps by publisher.
+        :type publisher: str, optional
+        :param headers: Additional headers to include in the request.
+        :type headers: dict[str, str], optional
+
+        :returns: The search response.
+        :rtype: SearchResponse
+
+        :raises ValueError: If invalid fields are provided.
+        """
         route = "/snaps/find"
         query_dict: dict = {
             "q": query,
@@ -160,14 +241,45 @@ class StoreEndpoints:
 
     @retry.retry(Exception, tries=3, delay=2, backoff=2)
     async def retry_get_snap_info(self, snap_name: str, fields: list[str]):
+        """
+        Retry getting snap information.
+
+        :param snap_name: The name of the snap.
+        :type snap_name: str
+        :param fields: The fields to include in the response.
+        :type fields: list[str]
+
+        :returns: The snap information.
+        :rtype: InfoResponse
+        """
         return await self.get_snap_info(snap_name=snap_name, fields=fields)
 
     async def get_top_snaps_from_category(self, category: str) -> SearchResponse:
+        """
+        Get top snaps from a category.
+
+        :param category: The category name.
+        :type category: str
+
+        :returns: The search response.
+        :rtype: SearchResponse
+        """
         return await self.find(
             category=category, fields=["title", "store-url", "summary"]
         )
 
     async def get_all_snaps_for_arch(self, arch: str) -> ArchSearchResponse:
+        """
+        Get all snaps for a given architecture.
+
+        :param arch: The architecture.
+        :type arch: str
+
+        :returns: The search response.
+        :rtype: ArchSearchResponse
+
+        :raises ValueError: If invalid architecture is provided.
+        """
         # use the old "/api/v1/snaps/names" to get all snaps for a given architecture
 
         # ensure valid arch

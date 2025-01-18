@@ -67,14 +67,17 @@ class SnapClient(AbstractSnapsClient):
     async def request(self, method: str, endpoint: str, **kwargs) -> httpx.Response:
         """
         Sends an HTTP request to the specified endpoint using the given method and parameters.
-        Args:
-            method (str): The HTTP method to use for the request (e.g., 'GET', 'POST').
-            endpoint (str): The API endpoint to send the request to.
-            **kwargs: Additional keyword arguments to pass to the request.
-        Returns:
-            httpx.Response: The response object from the HTTP request.
-        Raises:
-            httpx.HTTPStatusError: If the response contains an HTTP status code indicating an error.
+
+        :param method: The HTTP method to use for the request (e.g., 'GET', 'POST').
+        :type method: str
+        :param endpoint: The API endpoint to send the request to.
+        :type endpoint: str
+        :param \*\*kwargs: Additional keyword arguments to pass to the request.
+
+        :returns: The response object from the HTTP request.
+        :rtype: httpx.Response
+
+        :raises httpx.HTTPStatusError: If the response contains an HTTP status code indicating an error.
         """
 
         response = await self.snapd_client.request(
@@ -87,14 +90,17 @@ class SnapClient(AbstractSnapsClient):
     async def request_raw(self, method: str, endpoint: str, **kwargs) -> httpx.Response:
         """
         Sends an HTTP request using the specified method and endpoint.
-        Args:
-            method (str): The HTTP method to use for the request (e.g., 'GET', 'POST').
-            endpoint (str): The endpoint URL to send the request to.
-            **kwargs: Additional keyword arguments to pass to the request.
-        Returns:
-            httpx.Response: The response object resulting from the HTTP request.
-        Raises:
-            httpx.HTTPStatusError: If the response contains an HTTP status code indicating an error.
+
+        :param method: The HTTP method to use for the request (e.g., 'GET', 'POST').
+        :type method: str
+        :param endpoint: The endpoint URL to send the request to.
+        :type endpoint: str
+        :param \*\*kwargs: Additional keyword arguments to pass to the request.
+
+        :returns: The response object resulting from the HTTP request.
+        :rtype: httpx.Response
+
+        :raises httpx.HTTPStatusError: If the response contains an HTTP status code indicating an error.
         """
 
         response = await self.snapd_client.request(method, endpoint, **kwargs)
@@ -103,10 +109,11 @@ class SnapClient(AbstractSnapsClient):
         return response
 
     async def ping(self) -> httpx.Response:
-        """Reserved for human-readable content describing the service.
+        """
+        Reserved for human-readable content describing the service.
 
-        Returns:
-            httpx.Response: _description_
+        :returns: The response from the ping request.
+        :rtype: httpx.Response
         """
         response = await self.snapd_client.get(f"{self._base_url}/")
 
@@ -116,12 +123,14 @@ class SnapClient(AbstractSnapsClient):
     async def get_changes_by_id(self, change_id: str) -> ChangesResponse:
         """
         Asynchronously retrieves changes by their ID.
-        Args:
-            change_id (str): The ID of the change to retrieve.
-        Returns:
-            ChangesResponse: The response object containing the changes.
-        Raises:
-            httpx.HTTPStatusError: If the request results in an HTTP error.
+
+        :param change_id: The ID of the change to retrieve.
+        :type change_id: str
+
+        :returns: The response object containing the changes.
+        :rtype: ChangesResponse
+
+        :raises httpx.HTTPStatusError: If the request results in an HTTP error.
         """
 
         try:
@@ -140,16 +149,19 @@ class SnapClient(AbstractSnapsClient):
     ) -> AsyncGenerator[ChangesResponse, None]:
         """
         Asynchronous generator to fetch changes by change ID.
+
         This generator continuously requests changes from the server using the provided
         change ID and yields the response as a ChangesResponse object. It includes error
         handling for HTTP status errors and adds a small delay between requests to avoid
         overwhelming the server.
-        Args:
-            change_id (str): The ID of the change to fetch.
-        Yields:
-            ChangesResponse: The response object containing the changes.
-        Raises:
-            httpx.HTTPStatusError: If the request fails with an HTTP status error.
+
+        :param change_id: The ID of the change to fetch.
+        :type change_id: str
+
+        :yields: The response object containing the changes.
+        :rtype: ChangesResponse
+
+        :raises httpx.HTTPStatusError: If the request fails with an HTTP status error.
         """
         while True:
             try:

@@ -6,6 +6,10 @@ from snap_python.schemas.changes import ChangesResponse
 
 
 class SnapdAPIError(Exception):
+    """
+    General Exception raised for errors in the Snapd API.
+    """
+
     pass
 
 
@@ -24,6 +28,16 @@ class AbstractSnapsClient(ABC):  # pragma: no cover
 
 
 def going_to_reload_daemon(changes: ChangesResponse | None) -> bool:
+    """
+    Determines if a daemon reload is required based on the provided changes.
+
+    :param changes: An instance of ChangesResponse or None.
+    :type changes: ChangesResponse | None
+
+    :returns: True if a daemon reload or restart is required, False otherwise.
+    :rtype: bool
+    """
+
     if changes is None or not isinstance(changes, ChangesResponse):
         return False
 

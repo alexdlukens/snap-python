@@ -5,7 +5,7 @@ description = "An api to interact with snapd and snap stores"
 authors = ["Alexander Lukens <alexdlukens@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-repository = "https://github.com/alexlukens/snap-python"
+repository = "https://github.com/alexdlukens/snap-python"
 
 [tool.poetry.dependencies]
 python = "^3.10"
