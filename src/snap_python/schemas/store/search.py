@@ -1,6 +1,13 @@
 from typing import Any, Dict, List, Optional
 
-from pydantic import AliasChoices, AwareDatetime, BaseModel, ConfigDict, Field
+from pydantic import (
+    AliasChoices,
+    AliasPath,
+    AwareDatetime,
+    BaseModel,
+    ConfigDict,
+    Field,
+)
 
 from snap_python.schemas.common import Revision
 from snap_python.schemas.snaps import InstalledSnap, Snap, StoreSnap, StoreSnapFields
@@ -120,3 +127,21 @@ class SearchResponse(BaseModel):
 
     error_list: Optional[List[ErrorListItem]] = Field(None, alias="error-list")
     results: List[SearchResult]
+
+
+class ArchSearchItem(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+
+    aliases: Optional[list[dict[str, str]]]
+    apps: list[str]
+    package_name: str
+    summary: str
+    title: str
+    version: str
+
+
+class ArchSearchResponse(BaseModel):
+    results: list[ArchSearchItem] = Field(
+        alias=AliasPath("_embedded", "clickindex:package")
+    )
+    arch: str

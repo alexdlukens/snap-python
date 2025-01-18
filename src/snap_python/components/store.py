@@ -11,6 +11,7 @@ from snap_python.schemas.store.categories import (
 from snap_python.schemas.store.info import VALID_SNAP_INFO_FIELDS, InfoResponse
 from snap_python.schemas.store.search import (
     VALID_SEARCH_CATEGORY_FIELDS,
+    ArchSearchResponse,
     SearchResponse,
 )
 
@@ -165,3 +166,30 @@ class StoreEndpoints:
         return await self.find(
             category=category, fields=["title", "store-url", "summary"]
         )
+
+    async def get_all_snaps_for_arch(self, arch: str) -> ArchSearchResponse:
+        # use the old "/api/v1/snaps/names" to get all snaps for a given architecture
+
+        # ensure valid arch
+        if arch not in [
+            "amd64",
+            "arm64",
+            "armhf",
+            "i386",
+            "ppc64el",
+            "s390x",
+            "riscv64",
+        ]:
+            raise ValueError(f"Invalid architecture: {arch}")
+
+        route = "/api/v1/snaps/names"
+        extra_headers = {"X-Ubuntu-Architecture": arch}
+
+        response = await self.store_client.get(
+            f"{self._raw_base_url}{route}", headers=extra_headers, timeout=60
+        )
+        response.raise_for_status()
+
+        response_json = response.json()
+        response_json["arch"] = arch
+        return ArchSearchResponse.model_validate(response_json)
