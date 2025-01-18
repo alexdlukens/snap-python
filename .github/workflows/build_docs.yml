@@ -28,12 +28,9 @@ jobs:
         poetry config virtualenvs.in-project true
         poetry install --with dev
 
-    - name: source poetry virtualenv
-      run: |
-        source $(poetry env info --path)/bin/activate
-
     - name: Build documentation
       run: |
+        source $(poetry env info --path)/bin/activate
         cd docs
         make html
 
