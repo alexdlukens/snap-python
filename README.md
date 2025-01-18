@@ -2,6 +2,8 @@
 
 snap-python provides an API client to interact with snapd
 
+[Click here to read the documentation](https://alexdlukens.github.io/snap-python/)
+
 ## Installation
 
 To install snap-python, you can use pip:
