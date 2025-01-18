@@ -17,17 +17,27 @@ pip install snap-python
 Here is a simple example of how to use snap-python:
 
 ```python
-# TODO
+# uses asyncio, must be run in an event loop
+>>> import asyncio
+>>> from snap_python.client import SnapClient
+>>> sc = SnapClient()
+>>> installed_snaps = asyncio.run(sc.snaps.list_installed_snaps())
+>>> [snap.name for snap in installed_snaps.result]
+[..., 'vlc', 'snapcraft', 'firefox', 'store-tui', 'gtk-common-themes', 'thunderbird', ...]
 ```
 
-## Create a Release
+Get details for installed snap `vlc`
 
-```bash
-git tag -a v0.x.x -m "Release v0.x.x"
-gh release create v0.x.x --title "Release v0.x.x"
+```python
+
+# uses asyncio, must be run in an event loop
+>>> import asyncio
+>>> from snap_python.client import SnapClient
+>>> sc = SnapClient()
+>>> vlc_snap = asyncio.run(sc.snaps.get_snap_info("vlc"))
+>>> vlc_snap.result.version
+'3.0.20-1-g2617de71b6'
 ```
-
-The automation will build a wheel and push it to pypi
 
 ## License
 
