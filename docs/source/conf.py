@@ -9,12 +9,20 @@
 project = "snap-python"
 copyright = "2025, Alexander Lukens"
 author = "Alexander Lukens"
-release = "v0.1.0"
+
+# get release from pyproject.toml
+from toml import load
+
+with open("../../pyproject.toml", "r") as f:
+    pyproject = load(f)
+
+release = pyproject["tool"]["poetry"]["version"]
+version = f"v{release}"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ["sphinx.ext.autodoc"]
+extensions = ["sphinx.ext.autodoc", "sphinx.ext.githubpages"]
 
 templates_path = ["_templates"]
 exclude_patterns = []
@@ -41,3 +49,13 @@ html_theme_options = {
 }
 
 html_static_path = ["_static"]
+
+# Add the "Edit on GitHub" button
+html_context = {
+    "display_github": True,  # Integrate GitHub
+    "github_user": "alexdlukens",  # Username
+    "github_repo": "snap-python",  # Repo name
+    "github_version": "master",  # Version
+    "conf_py_path": "/docs/source/",  # Path in the checkout to the docs root
+}
+github_url = "https://github.com/alexdlukens/snap-python/"
