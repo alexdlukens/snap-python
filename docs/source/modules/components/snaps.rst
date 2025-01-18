@@ -1,5 +1,5 @@
-snap\_python.components.snaps module
-====================================
+snap\_python.components.snaps
+=============================
 
 .. automodule:: snap_python.components.snaps
    :members:

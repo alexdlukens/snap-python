@@ -1,18 +1,18 @@
-# snap_python
+# snap-python
 
-snap_python provides an API client to interact with snapd
+snap-python provides an API client to interact with snapd
 
 ## Installation
 
-To install snap_python, you can use pip:
+To install snap-python, you can use pip:
 
 ```
-pip install snap_python
+pip install snap-python
 ```
 
 ## Usage
 
-Here is a simple example of how to use snap_python:
+Here is a simple example of how to use snap-python:
 
 ```python
 # TODO

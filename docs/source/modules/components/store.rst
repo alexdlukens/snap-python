@@ -1,5 +1,5 @@
-snap\_python.components.store module
-====================================
+snap\_python.components.store
+=============================
 
 .. automodule:: snap_python.components.store
    :members:

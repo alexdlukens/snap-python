@@ -65,14 +65,14 @@ class SnapClient(AbstractSnapsClient):
 
     @retry(httpx.HTTPError, tries=3, delay=1, backoff=1)
     async def request(self, method: str, endpoint: str, **kwargs) -> httpx.Response:
-        """
+        r"""
         Sends an HTTP request to the specified endpoint using the given method and parameters.
 
         :param method: The HTTP method to use for the request (e.g., 'GET', 'POST').
         :type method: str
         :param endpoint: The API endpoint to send the request to.
         :type endpoint: str
-        :param \*\*kwargs: Additional keyword arguments to pass to the request.
+        :param `**kwargs`: Additional keyword arguments to pass to the request.
 
         :returns: The response object from the HTTP request.
         :rtype: httpx.Response
@@ -88,14 +88,14 @@ class SnapClient(AbstractSnapsClient):
 
     @retry(httpx.HTTPError, tries=3, delay=1, backoff=1)
     async def request_raw(self, method: str, endpoint: str, **kwargs) -> httpx.Response:
-        """
+        r"""
         Sends an HTTP request using the specified method and endpoint.
 
         :param method: The HTTP method to use for the request (e.g., 'GET', 'POST').
         :type method: str
         :param endpoint: The endpoint URL to send the request to.
         :type endpoint: str
-        :param \*\*kwargs: Additional keyword arguments to pass to the request.
+        :param `**kwargs`: Additional keyword arguments to pass to the request.
 
         :returns: The response object resulting from the HTTP request.
         :rtype: httpx.Response
