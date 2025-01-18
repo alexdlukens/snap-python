@@ -1,3 +1,4 @@
+import json
 import pathlib
 from unittest.mock import AsyncMock, MagicMock
 
@@ -12,6 +13,7 @@ from snap_python.schemas.store.categories import (
     SingleCategoryResponse,
 )
 from snap_python.schemas.store.info import InfoResponse
+from snap_python.schemas.store.search import ArchSearchItem, ArchSearchResponse
 
 
 @pytest.fixture(scope="function")
@@ -127,5 +129,45 @@ async def test_get_category_by_name_bad_field(setup_snaps_api: StoreEndpoints):
             name="banana", fields=["bad-field", "name"]
         )
         pytest.fail("Expected ValueError for bad field")
+    except ValueError:
+        pass
+
+
+@pytest.mark.asyncio
+async def test_get_all_snaps_for_arch_success(setup_snaps_api: StoreEndpoints):
+    setup_snaps_api.store_client.get = AsyncMock()
+    setup_snaps_api.store_client.get.return_value.status_code = 200
+    with open(
+        pathlib.Path(__file__).parent / "data" / "arch_search_response.json", "rb"
+    ) as f:
+        response_content = f.read()
+
+    setup_snaps_api.store_client.get.return_value.content = response_content
+    response_json = json.loads(response_content)
+    setup_snaps_api.store_client.get.return_value.json = MagicMock()
+    setup_snaps_api.store_client.get.return_value.json.return_value = response_json
+    setup_snaps_api.store_client.get.return_value.raise_for_status = MagicMock()
+
+    response_items = response_json["_embedded"]["clickindex:package"]
+    assert len(response_items) == 6456
+    response = await setup_snaps_api.get_all_snaps_for_arch(arch="amd64")
+
+    assert isinstance(response, ArchSearchResponse)
+    assert response.arch == "amd64"
+    assert len(response.results) == 6456
+    for item in response.results:
+        assert isinstance(item, ArchSearchItem)
+
+    # sanity check, store-tui is my package that should be accessible via the snap-store
+    assert any(item.package_name == "store-tui" for item in response.results)
+
+
+@pytest.mark.asyncio
+async def test_get_all_snaps_for_arch_invalid_arch(setup_snaps_api: StoreEndpoints):
+    try:
+        response = await setup_snaps_api.get_all_snaps_for_arch(
+            arch="test-unknown-arch"
+        )
+        pytest.fail("Expected ValueError for invalid arch")
     except ValueError:
         pass
