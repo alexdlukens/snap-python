@@ -1,11 +1,12 @@
 [tool.poetry]
 name = "snap-python"
-version = "0.1.0"
-description = "An api to interact with snapd and snap stores"
+version = "0.1.1"
+description = "Interact with snapd and snapstore(s) from Python"
 authors = ["Alexander Lukens <alexdlukens@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/alexdlukens/snap-python"
+documentation = "https://alexdlukens.github.io/snap-python/"
 
 [tool.poetry.dependencies]
 python = "^3.10"
