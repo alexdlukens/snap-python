@@ -1,0 +1,9 @@
+VALID_SNAP_ARCHITECTURES = [
+    "amd64",
+    "arm64",
+    "armhf",
+    "i386",
+    "ppc64el",
+    "s390x",
+    "riscv64",
+]

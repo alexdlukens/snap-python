@@ -14,6 +14,7 @@ from snap_python.schemas.store.search import (
     ArchSearchResponse,
     SearchResponse,
 )
+from snap_python.schemas.store.utils import VALID_SNAP_ARCHITECTURES
 
 
 class StoreEndpoints:
@@ -285,15 +286,7 @@ class StoreEndpoints:
         # use the old "/api/v1/snaps/names" to get all snaps for a given architecture
 
         # ensure valid arch
-        if arch not in [
-            "amd64",
-            "arm64",
-            "armhf",
-            "i386",
-            "ppc64el",
-            "s390x",
-            "riscv64",
-        ]:
+        if arch not in VALID_SNAP_ARCHITECTURES:
             raise ValueError(f"Invalid architecture: {arch}")
 
         route = "/api/v1/snaps/names"
