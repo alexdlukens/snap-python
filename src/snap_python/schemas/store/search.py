@@ -142,6 +142,6 @@ class ArchSearchItem(BaseModel):
 
 class ArchSearchResponse(BaseModel):
     results: list[ArchSearchItem] = Field(
-        alias=AliasPath("_embedded", "clickindex:package")
+        alias=AliasChoices(AliasPath("_embedded", "clickindex:package"), "results")
     )
     arch: str

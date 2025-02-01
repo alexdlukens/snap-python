@@ -64,7 +64,9 @@ class StoreEndpoints:
         response.raise_for_status()
         return response.json()
 
-    async def get_snap_info(self, snap_name: str, fields: list[str] | None = None):
+    async def get_snap_info(
+        self, snap_name: str, fields: list[str] | None = None
+    ) -> InfoResponse:
         """
         Get information about a snap.
 

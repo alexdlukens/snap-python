@@ -1,10 +1,14 @@
 # %%
 import logging
+import tempfile
 from pathlib import Path
 
 import pydantic
 
 from snap_python.schemas.snaps import InstalledSnapListResponse
+from snap_python.schemas.store.info import (
+    InfoResponse,
+)
 from snap_python.schemas.store.search import (
     SearchResponse,
     SearchResult,
@@ -45,3 +49,20 @@ def test_convert_store_snap():
         assert snap.snap.description is not None
 
     assert len(search_response.results) == len(response.result)
+
+
+def test_serdes_info_response():
+    INFO_RESPONSE_FILE = TEST_DATA_DIR / "snap_info_response_success.json"
+
+    with open(INFO_RESPONSE_FILE, "r") as f:
+        response = InfoResponse.model_validate_json(f.read())
+
+    # open temp file to write to
+    with tempfile.NamedTemporaryFile(mode="w", delete=True) as f:
+        f.write(response.model_dump_json())
+        f.flush()
+        f.seek(0)
+
+        # assert file contents are the same
+        with open(f.name, "r") as f2:
+            assert f2.read() == response.model_dump_json()
