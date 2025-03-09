@@ -6,6 +6,25 @@ from snap_python.schemas.store.refresh import VALID_SNAP_REFRESH_FIELDS
 
 
 def get_highest_revision(channel_map: list[ChannelMapItem]) -> ChannelMapItem:
+    """Find the ChannelMapItem with the highest revision number from a list of ChannelMapItems.
+
+    Find the highest revision in a provided channel map
+
+    Parameters:
+        channel_map (list[ChannelMapItem]): A list of ChannelMapItem objects to search through.
+
+    Returns:
+        ChannelMapItem: The item with the highest revision number
+
+    Example:
+
+        >>> items = [ChannelMapItem(revision=1), ChannelMapItem(revision=5), ChannelMapItem(revision=3)]
+        >>> highest = get_highest_revision(items)
+        >>> highest.revision
+        5
+
+    """
+
     print(channel_map)
     return max(channel_map, key=lambda x: x.revision)
 
@@ -15,6 +34,21 @@ async def download_snap_file(
     snap_revision_download: str,
     snap_revision_download_path: pathlib.Path,
 ):
+    """Asynchronously downloads a snap file from the Snap Store.
+
+    This function streams the snap file from the specified URL and writes it to
+    the specified path on disk.
+
+    Parameters:
+        snap_client (SnapClient): The client for interacting with the Snap Store.
+        snap_revision_download (str): The URL to download the snap file from.
+        snap_revision_download_path (pathlib.Path): The path where the downloaded snap file will be saved.
+
+    Returns:
+        None
+
+    """
+
     store_client = snap_client.store.store_client
     async with store_client.stream(
         "GET", snap_revision_download, follow_redirects=True
@@ -31,6 +65,28 @@ async def get_all_snap_content(
     start_revision: int = 1,
     with_snap_files: bool = False,
 ):
+    """
+    Asynchronously fetches and downloads all content for a specified snap package across multiple revisions.
+
+    This function retrieves metadata for each revision of a snap package and optionally downloads
+    the snap files themselves. All content is organized into directories by revision number.
+
+    Parameters:
+        snap_client (SnapClient): Initialized Snap client instance for API interactions.
+        snap_name (str): Name of the snap package to process.
+        output_dir (pathlib.Path | str): Directory where snap content will be saved.
+        start_revision (int, optional): First revision to process. Defaults to 1.
+        with_snap_files (bool, optional): Whether to download the actual snap package files. Defaults to False.
+
+    Returns:
+        None
+
+    Notes:
+        - Creates a directory structure where each revision has its own subdirectory
+        - Saves metadata as data.json in each revision directory
+        - When with_snap_files=True, also downloads the snap package file for each revision
+
+    """
     if not isinstance(output_dir, pathlib.Path):
         output_dir = pathlib.Path(output_dir)
 
