@@ -6,4 +6,5 @@ Reference
 
    snap_python.components
    client
+   scrape
    utils

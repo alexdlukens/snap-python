@@ -13,7 +13,14 @@ from snap_python.schemas.store.categories import (
     SingleCategoryResponse,
 )
 from snap_python.schemas.store.info import InfoResponse
+from snap_python.schemas.store.refresh import (
+    VALID_SNAP_REFRESH_FIELDS,
+    RefreshRevisionResponse,
+)
 from snap_python.schemas.store.search import ArchSearchItem, ArchSearchResponse
+
+TEST_DIR = pathlib.Path(__file__).parent
+DATA_DIR = TEST_DIR / "data"
 
 
 @pytest.fixture(scope="function")
@@ -171,3 +178,45 @@ async def test_get_all_snaps_for_arch_invalid_arch(setup_snaps_api: StoreEndpoin
         pytest.fail("Expected ValueError for invalid arch")
     except ValueError:
         pass
+
+
+@pytest.mark.asyncio
+async def test_get_snap_revision_info(setup_snaps_api: StoreEndpoints):
+    setup_snaps_api.store_client.post = AsyncMock()
+    setup_snaps_api.store_client.post.return_value.status_code = 200
+    with open(DATA_DIR / "store_tui_refresh_response.json", "rb") as f:
+        response_content = f.read()
+
+    setup_snaps_api.store_client.post.return_value.content = response_content
+    response_json = json.loads(response_content)
+    setup_snaps_api.store_client.post.return_value.json = MagicMock()
+    setup_snaps_api.store_client.post.return_value.json.return_value = response_json
+    setup_snaps_api.store_client.post.return_value.raise_for_status = MagicMock()
+
+    setup_snaps_api.store_client.get = AsyncMock()
+    setup_snaps_api.store_client.get.return_value.status_code = 200
+    with open(DATA_DIR / "store_tui_info_response.json", "rb") as f:
+        response_content = f.read()
+
+    setup_snaps_api.store_client.get.return_value.content = response_content
+    response_json = json.loads(response_content)
+    setup_snaps_api.store_client.get.return_value.json = MagicMock()
+    setup_snaps_api.store_client.get.return_value.json.return_value = response_json
+    setup_snaps_api.store_client.get.return_value.raise_for_status = MagicMock()
+
+    response = await setup_snaps_api.get_snap_revision_info(
+        "store-tui", 20, "amd64", fields=VALID_SNAP_REFRESH_FIELDS
+    )
+
+    assert isinstance(response, RefreshRevisionResponse)
+    assert len(response.results) == 1
+    refresh_response = response.results[0]
+    refresh_response.snap_id == "7Ws3Vp3plo1viRF1MBkoU5OSX24VXPl6"
+    assert refresh_response.snap.revision == 20
+    assert refresh_response.snap.name == "store-tui"
+    assert refresh_response.snap.architectures == ["arm64"]
+    assert refresh_response.snap.common_ids == []
+    assert refresh_response.snap.confinement == "strict"
+    assert refresh_response.snap.contact == None
+    assert refresh_response.snap.license == "MIT"
+    assert refresh_response.snap.snap_id == "7Ws3Vp3plo1viRF1MBkoU5OSX24VXPl6"
