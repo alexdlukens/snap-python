@@ -10,11 +10,26 @@ def get_highest_revision(channel_map: list[ChannelMapItem]) -> ChannelMapItem:
     return max(channel_map, key=lambda x: x.revision)
 
 
+async def download_snap_file(
+    snap_client: SnapClient,
+    snap_revision_download: str,
+    snap_revision_download_path: pathlib.Path,
+):
+    store_client = snap_client.store.store_client
+    async with store_client.stream(
+        "GET", snap_revision_download, follow_redirects=True
+    ) as response:
+        with open(snap_revision_download_path, "wb") as f:
+            async for chunk in response.aiter_bytes():
+                f.write(chunk)
+
+
 async def get_all_snap_content(
     snap_client: SnapClient,
     snap_name: str,
     output_dir: pathlib.Path | str,
     start_revision: int = 1,
+    with_snap_files: bool = False,
 ):
     if not isinstance(output_dir, pathlib.Path):
         output_dir = pathlib.Path(output_dir)
@@ -53,10 +68,7 @@ async def get_all_snap_content(
             revision_dir / snap_revision_download.split("/")[-1]
         )
 
-        store_client = snap_client.store.store_client
-        async with store_client.stream(
-            "GET", snap_revision_download, follow_redirects=True
-        ) as response:
-            with open(snap_revision_download_path, "wb") as f:
-                async for chunk in response.aiter_bytes():
-                    f.write(chunk)
+        if with_snap_files:
+            await download_snap_file(
+                snap_client, snap_revision_download, snap_revision_download_path
+            )
