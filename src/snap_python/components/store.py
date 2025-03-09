@@ -1,14 +1,22 @@
 import functools
+import uuid
 
 import retry
-from httpx import AsyncClient
+from httpx import AsyncClient, Response
 
 from snap_python.schemas.store.categories import (
     VALID_CATEGORY_FIELDS,
     CategoryResponse,
     SingleCategoryResponse,
 )
-from snap_python.schemas.store.info import VALID_SNAP_INFO_FIELDS, InfoResponse
+from snap_python.schemas.store.info import (
+    VALID_SNAP_INFO_FIELDS,
+    InfoResponse,
+)
+from snap_python.schemas.store.refresh import (
+    VALID_SNAP_REFRESH_FIELDS,
+    RefreshRevisionResponse,
+)
 from snap_python.schemas.store.search import (
     VALID_SEARCH_CATEGORY_FIELDS,
     ArchSearchResponse,
@@ -307,3 +315,84 @@ class StoreEndpoints:
         response_json = response.json()
         response_json["arch"] = arch
         return ArchSearchResponse.model_validate(response_json)
+
+    async def snap_refresh(
+        self, snap_name: str, payload: dict, extra_headers: dict = None
+    ) -> Response:
+        """Query the Store's "snap_refresh" endpoint.
+
+        Useful for more than refreshing a snap. Notably some snap information is only retrievable from this endpoint. E.g. old revision information
+
+        :param snap_name: The name of the snap.
+        :type snap_name: str
+        """
+        route = "/snaps/refresh"
+        if extra_headers is None:
+            extra_headers = {}
+        query = {}
+        response = await self.store_client.post(
+            f"{self.base_url}{route}", json=payload, headers=extra_headers, params=query
+        )
+
+        if not response.is_success:
+            # TODO: Add logging here
+            pass
+        return response
+
+    async def get_snap_revision_info(
+        self, snap_name: str, revision: int, arch: str, fields=None
+    ) -> RefreshRevisionResponse:
+        """Get information about a snap revision.
+
+        :param snap_name: The name of the snap.
+        :type snap_name: str
+        :param revision: The revision of the snap.
+        :type revision: int
+        :param arch: The architecture of the snap to retrieve details about (e.g. amd64, arm64, riscv64, etc).
+        :type arch: str
+
+        :returns: The snap revision information.
+        :rtype: RefreshRevisionResponse
+        """
+
+        # cast revision to int
+        revision = int(revision)
+        extra_headers = {"Snap-Device-Architecture": arch}
+        snap_info = await self.get_snap_info(snap_name=snap_name)
+
+        # I don't think this matters for the "context" field, so using info from the first available
+        channel_map_item = snap_info.channel_map[0]
+
+        payload = {
+            "context": [
+                {
+                    "tracking-channel": "stable",
+                    "snap-id": snap_info.snap_id,
+                    "revision": channel_map_item.revision,
+                    "instance-key": str(uuid.uuid4()),
+                }
+            ],
+            "actions": [
+                {
+                    "action": "download",
+                    "name": snap_name,
+                    "revision": revision,
+                    "instance-key": str(uuid.uuid4()),
+                }
+            ],
+        }
+
+        if fields is not None:
+            if not all(field in VALID_SNAP_REFRESH_FIELDS for field in fields):
+                raise ValueError(
+                    f"Invalid fields. Allowed fields: {VALID_SNAP_REFRESH_FIELDS}"
+                )
+        payload["fields"] = fields
+
+        response = await self.snap_refresh(
+            snap_name=snap_name,
+            payload=payload,
+            extra_headers=extra_headers,
+        )
+        response.raise_for_status()
+        return RefreshRevisionResponse.model_validate_json(response.content)

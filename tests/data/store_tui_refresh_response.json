@@ -1,0 +1,80 @@
+{
+  "error_list": [],
+  "results": [
+    {
+      "default_track": null,
+      "name": "store-tui",
+      "snap": {
+        "architectures": [
+          "arm64"
+        ],
+        "base": "core24",
+        "common_ids": [],
+        "confinement": "strict",
+        "created_at": "2024-10-27T14:42:17.794081Z",
+        "download": {
+          "deltas": [],
+          "sha3_384": "de29d73509c0ced12a02fbabf65ba09b090aff6332ab2ce594c7e8536f71cab53a7da8add79a98f753b6caeab66e484c",
+          "size": 30048256.0,
+          "url": "https://api.snapcraft.io/api/v1/snaps/download/7Ws3Vp3plo1viRF1MBkoU5OSX24VXPl6_20.snap"
+        },
+        "epoch": {
+          "read": [
+            0
+          ],
+          "write": [
+            0
+          ]
+        },
+        "gated_snap_ids": [],
+        "license": "MIT",
+        "prices": {},
+        "resources": [],
+        "revision": 20,
+        "snap_id": "7Ws3Vp3plo1viRF1MBkoU5OSX24VXPl6",
+        "snap_yaml": "name: store-tui\nversion: 0.1.2\nsummary: Navigate the Snap Store from the terminal\ndescription: |\n  A TUI for for navigating the Snap Store.\n\n  Designed using the \"Textual\" Python Library - https://github.com/textualize/textual/\n\n  - [✅] Browse the Snap Store\n  - [✅] Search for Snaps\n  - [✅] View Snap Details\n  - [✅] Open Store URL in Browser\n  - [❌] Install/Modify Snaps directly from the TUI\n  - [❌] View Installed Snaps\n  - [❌] View Snap Channels and Revisions\n  - [❌] Sort and Filter Snaps\nlicense: MIT\narchitectures:\n- arm64\nbase: core24\napps:\n  store-tui:\n    command: bin/python3 $SNAP/store_tui/main.py\n    plugs:\n    - network\n    - network-bind\n    - desktop\n    environment:\n      PYTHONPATH: $PYTHONPATH:$SNAP\nconfinement: strict\ngrade: devel\nenvironment:\n  LD_LIBRARY_PATH: ${SNAP_LIBRARY_PATH}${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}:$SNAP/lib\n  PATH: $SNAP/usr/sbin:$SNAP/usr/bin:$SNAP/sbin:$SNAP/bin:$PATH\nlinks:\n  contact:\n  - alexdlukens@gmail.com\n  website:\n  - https://github.com/alexdlukens/snap-store-tui\n",
+        "type": "app",
+        "version": "0.1.2",
+        "contact": null,
+        "description": "A TUI for for navigating the Snap Store.\n\nDesigned using the \"Textual\" Python Library - https://github.com/textualize/textual/\n\n- [✅] Browse the Snap Store\n- [✅] Search for Snaps\n- [✅] View Snap Details\n- [✅] Open Store URL in Browser\n- [❌] Install/Modify Snaps directly from the TUI\n- [❌] View Installed Snaps\n- [❌] View Snap Channels and Revisions\n- [❌] Sort and Filter Snaps",
+        "links": {},
+        "media": [
+          {
+            "height": 256.0,
+            "type": "icon",
+            "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/12/store-tui_DCVmndp.png",
+            "width": 256.0
+          },
+          {
+            "height": 551.0,
+            "type": "screenshot",
+            "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/10/Screenshot_from_2024-10-19_16-02-25-1729368174.png",
+            "width": 1029.0
+          },
+          {
+            "height": 551.0,
+            "type": "screenshot",
+            "url": "https://dashboard.snapcraft.io/site_media/appmedia/2024/10/Screenshot_from_2024-10-19_16-02-18-1729368174.png",
+            "width": 1029.0
+          }
+        ],
+        "name": "store-tui",
+        "private": false,
+        "publisher": {
+          "display_name": "Alexander Lukens",
+          "id": "8BowliyePp27bAXZ6jvMrilu4YNchbVq",
+          "username": "alexdlukens",
+          "validation": "unproven"
+        },
+        "summary": "Navigate the Snap Store from the terminal",
+        "title": "store-tui",
+        "unlisted": null,
+        "website": null
+      },
+      "instance_key": "512c5216-d33f-4541-9650-25c237321967",
+      "released_at": null,
+      "result": "download",
+      "snap_id": "7Ws3Vp3plo1viRF1MBkoU5OSX24VXPl6"
+    }
+  ]
+}
