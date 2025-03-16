@@ -72,6 +72,12 @@ class StoreRefreshSnap(Snap, SnapRefreshFields):
     pass
 
 
+class RefreshResultError(BaseModel):
+    code: str
+    message: str
+    extra: Optional[dict] = None
+
+
 class RefreshResultData(BaseModel):
     model_config = ConfigDict(extra="forbid", exclude_unset=True)
 
@@ -98,6 +104,13 @@ class RefreshResultData(BaseModel):
     snap_id: str = Field(
         ..., alias=AliasChoices("snap-id", "snap_id"), serialization_alias="snap-id"
     )
+    error: RefreshResultError | None = None
+
+    @property
+    def is_error(self) -> bool:
+        if self.error:
+            return True
+        return False
 
 
 class RefreshRevisionResponse(BaseModel):
