@@ -8,6 +8,7 @@ and make a corresponding github release
 
 ```bash
 git tag -a v0.x.x -m "Release v0.x.x"
+git push --tags
 gh release create v0.x.x --title "Release v0.x.x"
 ```
 

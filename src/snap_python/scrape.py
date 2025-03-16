@@ -25,7 +25,6 @@ def get_highest_revision(channel_map: list[ChannelMapItem]) -> ChannelMapItem:
 
     """
 
-    print(channel_map)
     return max(channel_map, key=lambda x: x.revision)
 
 
