@@ -396,3 +396,69 @@ class StoreEndpoints:
         )
         response.raise_for_status()
         return RefreshRevisionResponse.model_validate_json(response.content)
+
+    async def get_many_snap_revision_info(
+        self,
+        snap_name: str,
+        from_revision: int,
+        to_revision: int,
+        arch: str,
+        fields=None,
+    ) -> RefreshRevisionResponse:
+        """Get information about a snap revision.
+
+        :param snap_name: The name of the snap.
+        :type snap_name: str
+        :param revision: The revision of the snap.
+        :type revision: int
+        :param arch: The architecture of the snap to retrieve details about (e.g. amd64, arm64, riscv64, etc).
+        :type arch: str
+
+        :returns: The snap revision information.
+        :rtype: RefreshRevisionResponse
+        """
+
+        # cast revision to int
+        from_revision = int(from_revision)
+        to_revision = int(to_revision)
+        extra_headers = {"Snap-Device-Architecture": arch}
+        snap_info = await self.get_snap_info(snap_name=snap_name)
+
+        # I don't think this matters for the "context" field, so using info from the first available
+        channel_map_item = snap_info.channel_map[0]
+
+        payload = {
+            "context": [
+                {
+                    "tracking-channel": "stable",
+                    "snap-id": snap_info.snap_id,
+                    "revision": channel_map_item.revision,
+                    "instance-key": str(uuid.uuid4()),
+                }
+            ],
+            "actions": [],
+        }
+        for revision in range(from_revision, to_revision + 1):
+            payload["actions"].append(
+                {
+                    "action": "download",
+                    "name": snap_name,
+                    "revision": revision,
+                    "instance-key": str(uuid.uuid4()),
+                }
+            )
+
+        if fields is not None:
+            if not all(field in VALID_SNAP_REFRESH_FIELDS for field in fields):
+                raise ValueError(
+                    f"Invalid fields. Allowed fields: {VALID_SNAP_REFRESH_FIELDS}"
+                )
+        payload["fields"] = fields
+
+        response = await self.snap_refresh(
+            snap_name=snap_name,
+            payload=payload,
+            extra_headers=extra_headers,
+        )
+        response.raise_for_status()
+        return RefreshRevisionResponse.model_validate_json(response.content)
