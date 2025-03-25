@@ -10,11 +10,11 @@ def get_highest_revision(channel_map: list[ChannelMapItem]) -> ChannelMapItem:
 
     Find the highest revision in a provided channel map
 
-    Parameters:
-        channel_map (list[ChannelMapItem]): A list of ChannelMapItem objects to search through.
+    :param channel_map: A list of ChannelMapItem objects to search through.
+    :type channel_map: list[ChannelMapItem]
 
-    Returns:
-        ChannelMapItem: The item with the highest revision number
+    :returns: The item with the highest revision number
+    :rtype: ChannelMapItem 
 
     Example:
 
@@ -38,11 +38,12 @@ async def download_snap_file(
     This function streams the snap file from the specified URL and writes it to
     the specified path on disk.
 
-    Parameters:
-        snap_client (SnapClient): The client for interacting with the Snap Store.
-        snap_revision_download (str): The URL to download the snap file from.
-        snap_revision_download_path (pathlib.Path): The path where the downloaded snap file will be saved.
-
+    :param snap_client: The client for interacting with the Snap Store.
+    :type snap_client:  SnapClient
+    :param snap_revision_download: The URL to download the snap file from.
+    :type snap_revision_download:  str
+    :param snap_revision_download_path: The path where the downloaded snap file will be saved.
+    :type snap_revision_download_path:  pathlib.Path
     Returns:
         None
 
@@ -70,15 +71,17 @@ async def get_all_snap_content(
     This function retrieves metadata for each revision of a snap package and optionally downloads
     the snap files themselves. All content is organized into directories by revision number.
 
-    Parameters:
-        snap_client (SnapClient): Initialized Snap client instance for API interactions.
-        snap_name (str): Name of the snap package to process.
-        output_dir (pathlib.Path | str): Directory where snap content will be saved.
-        start_revision (int, optional): First revision to process. Defaults to 1.
-        with_snap_files (bool, optional): Whether to download the actual snap package files. Defaults to False.
+    :param snap_client: Initialized Snap client instance for API interactions.
+    :type snap_client: SnapClient
+    :param snap_name: Name of the snap package to process.
+    :type snap_name: str
+    :param output_dir: Directory where snap content will be saved.
+    :type output_dir: pathlib.Path | str
+    :param start_revision: First revision to process. Defaults to 1.
+    :type start_revision: int
+    :param with_snap_files: Whether to download the actual snap package files. Defaults to False.
+    :type with_snap_files: bool
 
-    Returns:
-        None
 
     Notes:
         - Creates a directory structure where each revision has its own subdirectory
