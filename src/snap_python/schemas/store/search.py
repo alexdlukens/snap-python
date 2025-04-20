@@ -7,6 +7,7 @@ from pydantic import (
     BaseModel,
     ConfigDict,
     Field,
+    computed_field,
 )
 
 from snap_python.schemas.common import Revision
@@ -144,4 +145,35 @@ class ArchSearchResponse(BaseModel):
     results: list[ArchSearchItem] = Field(
         alias=AliasChoices(AliasPath("_embedded", "clickindex:package"), "results")
     )
-    arch: str
+    arch: str = "wide"
+
+
+class PaginatedResponse(BaseModel):
+    total: int
+    page: int = Field(ge=0)
+    limit: int = Field(ge=1, le=100)
+
+    @computed_field
+    @property
+    def next_page(self) -> Optional[int]:
+        if self.page * self.limit + self.limit < self.total:
+            return self.page + 1
+        return None
+
+    @computed_field
+    @property
+    def previous_page(self) -> Optional[int]:
+        if self.page > 0:
+            return self.page - 1
+        return None
+
+    @computed_field
+    @property
+    def has_more(self) -> bool:
+        return self.page * self.limit + self.limit < self.total
+
+
+class PaginatedSnapSearchResponse(PaginatedResponse):
+    results: list[ArchSearchItem] = Field(
+        alias=AliasChoices(AliasPath("_embedded", "clickindex:package"), "results")
+    )
