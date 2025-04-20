@@ -20,6 +20,7 @@ from snap_python.schemas.store.refresh import (
 from snap_python.schemas.store.search import (
     VALID_SEARCH_CATEGORY_FIELDS,
     ArchSearchResponse,
+    PaginatedSnapSearchResponse,
     SearchResponse,
 )
 
@@ -462,3 +463,34 @@ class StoreEndpoints:
         )
         response.raise_for_status()
         return RefreshRevisionResponse.model_validate_json(response.content)
+
+    async def get_snap_search_paginated(
+        self,
+        q: str = "",
+        scope: str = "wide",
+        arch: str = "wide",
+        page: int = 1,
+        limit: int = 100,
+        confinement: str = "strict,classic",
+    ) -> PaginatedSnapSearchResponse:
+        payload = {
+            "scope": scope,
+            "arch": arch,
+            "page": page,
+            "size": limit,
+            "confinement": confinement,
+        }
+        if q:
+            payload["q"] = q
+
+        response = await self.store_client.get(
+            f"{self._raw_base_url}/api/v1/snaps/search",
+            params=payload,
+        )
+
+        response.raise_for_status()
+        response_json = response.json()
+        response_json["page"] = page
+        response_json["limit"] = limit
+
+        return PaginatedSnapSearchResponse.model_validate(response_json)
