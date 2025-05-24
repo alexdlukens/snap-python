@@ -32,7 +32,8 @@ class InstalledSnapFields(Revision):
         validation_alias=AliasChoices("ignore-validation", "ignore_validation"),
         serialization_alias="ignore-validation",
     )
-    install_date: AwareDatetime = Field(
+    install_date: Optional[AwareDatetime] = Field(
+        default=None,
         validation_alias=AliasChoices("install-date", "install_date"),
         serialization_alias="install-date",
     )
