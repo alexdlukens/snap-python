@@ -1,12 +1,14 @@
 import asyncio
 import logging
 from pathlib import Path
+from typing import Any
 
 import httpx
 
 from snap_python.schemas.changes import ChangesResponse
-from snap_python.schemas.common import AsyncResponse
+from snap_python.schemas.common import AsyncResponse, BaseErrorResult
 from snap_python.schemas.snaps import (
+    AppsResponse,
     InstalledSnapListResponse,
     SingleInstalledSnapResponse,
 )
@@ -34,14 +36,13 @@ class SnapsEndpoints:
             "GET", self.common_endpoint
         )
 
-        response = InstalledSnapListResponse.model_validate_json(response.content)
         if response.status_code > 299:
             raise httpx.HTTPStatusError(
                 request=response.request,
                 response=response,
                 message=f"Invalid status code in response: {response.status_code}",
             )
-        return response
+        return InstalledSnapListResponse.model_validate_json(response.content)
 
     async def get_snap_info(self, snap: str) -> SingleInstalledSnapResponse:
         """
@@ -331,3 +332,135 @@ class SnapsEndpoints:
                 previous_changes = changes
             return changes
         return response
+
+    async def disable_snap(
+        self,
+        snap: str,
+        wait: bool = False,
+    ) -> AsyncResponse | ChangesResponse:
+        """
+        Disables a snap package.
+
+        :param snap: The name of the snap package to disable.
+        :type snap: str
+        :param wait: Whether to wait for the disable operation to complete. Defaults to False.
+        :type wait: bool, optional
+
+        :returns: The response from the disable operation.
+        :rtype: AsyncResponse | ChangesResponse
+
+        :raises SnapdAPIError: If there is an error during the snap disable operation.
+        """
+        request_data = {
+            "action": "disable",
+        }
+
+        raw_response: httpx.Response = await self._client.request(
+            "POST", f"{self.common_endpoint}/{snap}", json=request_data
+        )
+        response = AsyncResponse.model_validate_json(raw_response.content)
+
+        if wait:
+            changes_id = response.change
+            previous_changes = None
+            while True:
+                try:
+                    changes = await self._client.get_changes_by_id(changes_id)
+                except httpx.HTTPError:
+                    if going_to_reload_daemon(previous_changes):
+                        logger.debug("Waiting for daemon to reload")
+                        await asyncio.sleep(0.1)
+                        continue
+                    raise
+                if changes.ready:
+                    break
+                if isinstance(changes.result, BaseErrorResult):
+                    raise SnapdAPIError(
+                        f"Error in snap disable: {changes.result.message}"
+                    )
+                if changes.result.err:
+                    raise SnapdAPIError(f"Error in snap disable: {changes.result.err}")
+                await asyncio.sleep(0.1)
+                previous_changes = changes
+            return changes
+
+        return response
+
+    async def enable_snap(
+        self,
+        snap: str,
+        wait: bool = False,
+    ) -> AsyncResponse | ChangesResponse:
+        """
+        enables a snap package.
+
+        :param snap: The name of the snap package to enable.
+        :type snap: str
+        :param wait: Whether to wait for the enable operation to complete. Defaults to False.
+        :type wait: bool, optional
+
+        :returns: The response from the enable operation.
+        :rtype: AsyncResponse | ChangesResponse
+
+        :raises SnapdAPIError: If there is an error during the snap enable operation.
+        """
+        request_data = {
+            "action": "enable",
+        }
+
+        raw_response: httpx.Response = await self._client.request(
+            "POST", f"{self.common_endpoint}/{snap}", json=request_data
+        )
+        response = AsyncResponse.model_validate_json(raw_response.content)
+
+        if wait:
+            changes_id = response.change
+            previous_changes = None
+            while True:
+                try:
+                    changes = await self._client.get_changes_by_id(changes_id)
+                except httpx.HTTPError:
+                    if going_to_reload_daemon(previous_changes):
+                        logger.debug("Waiting for daemon to reload")
+                        await asyncio.sleep(0.1)
+                        continue
+                    raise
+                if changes.ready:
+                    break
+                if isinstance(changes.result, BaseErrorResult):
+                    raise SnapdAPIError(
+                        f"Error in snap enable: {changes.result.message}"
+                    )
+                if changes.result.err:
+                    raise SnapdAPIError(f"Error in snap enable: {changes.result.err}")
+                await asyncio.sleep(0.1)
+                previous_changes = changes
+            return changes
+
+        return response
+
+    async def get_snap_apps(
+        self,
+        snap: str,
+        services_only: bool = False,
+    ) -> AppsResponse:
+        """
+        Retrieves the applications associated with a specific snap.
+
+        :param snap: The name of the snap to retrieve applications for.
+        :type snap: str
+
+        :returns: The response containing the list of applications for the specified snap.
+        :rtype: AppsResponse
+        """
+
+        payload: dict[str, Any] = {"names": [snap]}
+        if services_only:
+            payload["select"] = "service"
+
+        response: httpx.Response = await self._client.request(
+            "GET", f"apps", params=payload
+        )
+        if response.status_code != 200:
+            raise SnapdAPIError(f"Failed to retrieve apps for snap: {snap}")
+        return AppsResponse.model_validate_json(response.content)
