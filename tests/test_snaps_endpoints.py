@@ -278,6 +278,10 @@ async def test_snap_disabled_get_info(module_scope_client: SnapClient):
     assert app.enabled is None
     assert app.name == "mediamtx"
 
+    # get snap info (this was failing before 83ea095f)
+    snap_info = await module_scope_client.snaps.get_snap_info(snap_name)
+    assert snap_info.status_code == 200
+
     # re-enable snap
     enable_response = await module_scope_client.snaps.enable_snap(snap_name, wait=True)
     assert enable_response.result.status == "Done"
