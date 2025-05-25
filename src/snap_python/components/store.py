@@ -165,7 +165,7 @@ class StoreEndpoints:
     async def find(
         self,
         query: str | None = None,
-        fields: str | None = None,
+        fields: list[str] | None = None,
         name_startswith: str | None = None,
         architecture: str | None = None,
         common_id: str | None = None,
@@ -183,7 +183,7 @@ class StoreEndpoints:
         :param query: The search query.
         :type query: str, optional
         :param fields: The fields to include in the response.
-        :type fields: str, optional
+        :type fields: list[str], optional
         :param name_startswith: Filter snaps by name prefix.
         :type name_startswith: str, optional
         :param architecture: Filter snaps by architecture.
