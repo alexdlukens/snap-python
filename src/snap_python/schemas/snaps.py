@@ -32,7 +32,8 @@ class InstalledSnapFields(Revision):
         validation_alias=AliasChoices("ignore-validation", "ignore_validation"),
         serialization_alias="ignore-validation",
     )
-    install_date: AwareDatetime = Field(
+    install_date: Optional[AwareDatetime] = Field(
+        default=None,
         validation_alias=AliasChoices("install-date", "install_date"),
         serialization_alias="install-date",
     )
@@ -98,3 +99,26 @@ class InstalledSnapListResponse(BaseResponse):
 
     def __len__(self):
         return len(self.result)
+
+
+class SnapAppInfo(BaseModel):
+    snap: Optional[str] = None
+    name: str
+    desktop_file: Optional[str] = Field(
+        default=None,
+        validation_alias=AliasChoices("desktop-file", "desktop_file"),
+        serialization_alias="desktop-file",
+    )
+    daemon: Optional[str] = None
+    enabled: Optional[bool] = None
+    active: Optional[bool] = None
+    common_id: Optional[str] = Field(
+        default=None,
+        validation_alias=AliasChoices("common-id", "common_id"),
+        serialization_alias="common-id",
+    )
+    activators: Optional[list[dict]] = None
+
+
+class AppsResponse(BaseResponse):
+    result: list[SnapAppInfo]

@@ -241,3 +241,65 @@ async def test_snap_refresh(module_scope_client: SnapClient):
         snap_name, revision=96, channel="latest/edge", wait=True
     )
     assert refresh_response.result.status == "Done"
+
+
+async def test_snap_disabled_get_info(module_scope_client: SnapClient):
+    snap_name = "mediamtx"
+
+    # ensure snap is not installed
+    snap_install_status = await module_scope_client.snaps.is_snap_installed(snap_name)
+    assert snap_install_status is False
+
+    # install revision
+    install_response = await module_scope_client.snaps.install_snap(
+        snap_name, channel="latest/stable", revision=162, wait=True
+    )
+    assert install_response.result.status == "Done"
+
+    # ensure snap is installed
+    snap_install_status = await module_scope_client.snaps.is_snap_installed(snap_name)
+    assert snap_install_status is True
+
+    # disable snap
+    disable_response = await module_scope_client.snaps.disable_snap(
+        snap_name, wait=True
+    )
+    assert disable_response.result.status == "Done"
+
+    # get installed snap apps info
+    snap_apps_info = await module_scope_client.snaps.get_snap_apps(
+        snap=snap_name, services_only=True
+    )
+    assert snap_apps_info.status_code == 200
+    assert len(snap_apps_info.result) == 1
+    app = snap_apps_info.result[0]
+    assert app.snap == "mediamtx"
+    assert app.active is None
+    assert app.enabled is None
+    assert app.name == "mediamtx"
+
+    # get snap info (this was failing before 83ea095f)
+    snap_info = await module_scope_client.snaps.get_snap_info(snap_name)
+    assert snap_info.status_code == 200
+
+    # re-enable snap
+    enable_response = await module_scope_client.snaps.enable_snap(snap_name, wait=True)
+    assert enable_response.result.status == "Done"
+
+    snap_apps_info = await module_scope_client.snaps.get_snap_apps(
+        snap=snap_name, services_only=True
+    )
+    assert snap_apps_info.status_code == 200
+    assert len(snap_apps_info.result) == 1
+    app = snap_apps_info.result[0]
+    assert app.snap == "mediamtx"
+    assert app.active is True
+    assert app.enabled is True
+    assert app.name == "mediamtx"
+
+    # remove snap
+    removal_response = await module_scope_client.snaps.remove_snap(
+        snap_name, purge=True, terminate=True, wait=True
+    )
+    assert removal_response.status_code == 200
+    assert removal_response.result.status == "Done"
