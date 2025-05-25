@@ -449,6 +449,8 @@ class SnapsEndpoints:
 
         :param snap: The name of the snap to retrieve applications for.
         :type snap: str
+        :param services_only: Whether to retrieve only service applications.
+        :type services_only: bool
 
         :returns: The response containing the list of applications for the specified snap.
         :rtype: AppsResponse
@@ -459,7 +461,7 @@ class SnapsEndpoints:
             payload["select"] = "service"
 
         response: httpx.Response = await self._client.request(
-            "GET", f"apps", params=payload
+            "GET", "apps", params=payload
         )
         if response.status_code != 200:
             raise SnapdAPIError(f"Failed to retrieve apps for snap: {snap}")
