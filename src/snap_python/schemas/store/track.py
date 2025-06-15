@@ -1,3 +1,4 @@
+import logging
 from typing import Optional
 
 from pydantic import (
@@ -7,6 +8,8 @@ from pydantic import (
 )
 
 from snap_python.schemas.store.info import Channel, ChannelMapItem
+
+logger = logging.getLogger("snap_python.schemas.store.track")
 
 
 class TrackRevisionDetails(BaseModel):
@@ -68,7 +71,8 @@ def channel_map_to_current_track_map(
     current_track_map: dict[str, dict[str, TrackRiskMap]] = {}
 
     all_tracks = set(item.channel.track for item in channel_map)
-    print(f"Found tracks: {', '.join(all_tracks)}")
+    logger.debug(f"Found tracks: {', '.join(all_tracks)}")
+
     for track in all_tracks:
         current_track_map[track] = {}
 
@@ -77,7 +81,9 @@ def channel_map_to_current_track_map(
         risk = item.channel.risk
 
         if not item.architectures:
-            print(f"Warning: Channel {item} has no architectures defined.")
+            logger.error(
+                f"Warning: Channel {item} has no architectures defined. Skipping."
+            )
             continue
         assert (
             len(item.architectures) == 1

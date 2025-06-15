@@ -522,5 +522,4 @@ class StoreEndpoints:
                 "created-at",
             ],
         )
-        print(snap_info)
         return channel_map_to_current_track_map(snap_info.channel_map)
