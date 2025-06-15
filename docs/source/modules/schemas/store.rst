@@ -20,3 +20,8 @@ snap\_python.schemas.store
    :members:
    :undoc-members:
    :show-inheritance:
+
+.. automodule:: snap_python.schemas.store.track
+   :members:
+   :undoc-members:
+   :show-inheritance:
