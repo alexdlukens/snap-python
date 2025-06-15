@@ -13,6 +13,13 @@ logger = logging.getLogger("snap_python.schemas.store.track")
 
 
 class TrackRevisionDetails(BaseModel):
+    """Contains details for a specific track/risk/architecture
+
+
+    Raises:
+        ValueError: If the architecture is invalid.
+    """
+
     arch: str
     base: str
     channel: Channel
@@ -44,6 +51,8 @@ class TrackRevisionDetails(BaseModel):
 
 
 class TrackRiskMap(BaseModel):
+    """Map of architectures to their revision details for a specific risk level."""
+
     amd64: Optional[TrackRevisionDetails] = None
     arm64: Optional[TrackRevisionDetails] = None
     armhf: Optional[TrackRevisionDetails] = None
@@ -63,10 +72,7 @@ class TrackRiskMap(BaseModel):
 def channel_map_to_current_track_map(
     channel_map: list[ChannelMapItem],
 ) -> dict[str, dict[str, TrackRiskMap]]:
-    """Convert a list of ChannelMapItem to a map of TrackRiskMap.
-
-    track -> risk -> arch
-    """
+    """Convert a list of ChannelMapItem to a map of track -> risk -> TrackRiskMap."""
     # track -> risk -> arch
     current_track_map: dict[str, dict[str, TrackRiskMap]] = {}
 
