@@ -220,3 +220,33 @@ async def test_get_snap_revision_info(setup_snaps_api: StoreEndpoints):
     assert refresh_response.snap.contact == None
     assert refresh_response.snap.license == "MIT"
     assert refresh_response.snap.snap_id == "7Ws3Vp3plo1viRF1MBkoU5OSX24VXPl6"
+
+
+@pytest.mark.asyncio
+async def test_get_track_risk_map(setup_snaps_api: StoreEndpoints):
+    setup_snaps_api.store_client.get = AsyncMock()
+    setup_snaps_api.store_client.get.return_value.status_code = 200
+    with open(DATA_DIR / "store_tui_info_response.json", "rb") as f:
+        response_content = f.read()
+
+    setup_snaps_api.store_client.get.return_value.content = response_content
+    response_json = json.loads(response_content)
+    setup_snaps_api.store_client.get.return_value.json = MagicMock()
+    setup_snaps_api.store_client.get.return_value.json.return_value = response_json
+    setup_snaps_api.store_client.get.return_value.raise_for_status = MagicMock()
+
+    track_risk_map = await setup_snaps_api.get_track_risk_map(snap_name="store-tui")
+
+    assert len(track_risk_map.keys()) == 1
+    assert "latest" in track_risk_map
+
+    assert len(track_risk_map["latest"].keys()) == 2
+    assert sorted(track_risk_map["latest"].keys()) == ["edge", "stable"]
+
+    assert sorted(track_risk_map["latest"]["stable"].architectures) == sorted(["amd64"])
+    assert sorted(track_risk_map["latest"]["edge"].architectures) == sorted(
+        ["amd64", "arm64", "armhf"]
+    )
+    assert track_risk_map["latest"]["stable"].amd64 is not None
+    assert track_risk_map["latest"]["stable"].amd64.revision == 29
+    assert track_risk_map["latest"]["stable"].amd64.base == "core24"
