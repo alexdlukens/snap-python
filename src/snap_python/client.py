@@ -61,7 +61,6 @@ class SnapClient(AbstractSnapsClient):
             headers=self.store_headers,
         )
         self.config = ConfigEndpoints(self)
-        self.snapd_client = httpx.AsyncClient(transport=self._transport)
 
     @retry(httpx.HTTPError, tries=3, delay=1, backoff=1)
     async def request(self, method: str, endpoint: str, **kwargs) -> httpx.Response:
