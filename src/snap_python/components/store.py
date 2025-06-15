@@ -23,6 +23,10 @@ from snap_python.schemas.store.search import (
     PaginatedSnapSearchResponse,
     SearchResponse,
 )
+from snap_python.schemas.store.track import (
+    TrackRiskMap,
+    channel_map_to_current_track_map,
+)
 
 
 class StoreEndpoints:
@@ -494,3 +498,28 @@ class StoreEndpoints:
         response_json["limit"] = limit
 
         return PaginatedSnapSearchResponse.model_validate(response_json)
+
+    async def get_track_risk_map(
+        self, snap_name: str
+    ) -> dict[str, dict[str, TrackRiskMap]]:
+        """Get the track risk map for a snap.
+
+        :param snap_name: The name of the snap.
+        :type snap_name: str
+
+        :returns: A dictionary mapping tracks to their risk maps.
+        :rtype: dict[str, TrackRiskMap]
+        """
+        snap_info = await self.get_snap_info(
+            snap_name=snap_name,
+            fields=[
+                "channel-map",
+                "architectures",
+                "base",
+                "revision",
+                "confinement",
+                "version",
+                "created-at",
+            ],
+        )
+        return channel_map_to_current_track_map(snap_info.channel_map)
