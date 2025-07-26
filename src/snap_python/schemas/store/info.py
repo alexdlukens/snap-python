@@ -45,7 +45,7 @@ VALID_SNAP_INFO_FIELDS = [
 
 
 class Channel(BaseModel):
-    model_config = ConfigDict(extra="forbid", exclude_unset=True)
+    model_config = ConfigDict(exclude_unset=True)
 
     architecture: str
     name: str
@@ -59,7 +59,7 @@ class Channel(BaseModel):
 
 
 class Delta(BaseModel):
-    model_config = ConfigDict(extra="forbid", exclude_unset=True)
+    model_config = ConfigDict(exclude_unset=True)
 
     format: str
     sha3_384: Optional[str] = Field(
@@ -72,7 +72,7 @@ class Delta(BaseModel):
 
 
 class Download(BaseModel):
-    model_config = ConfigDict(extra="forbid", exclude_unset=True)
+    model_config = ConfigDict(exclude_unset=True)
 
     deltas: List[Delta]
     sha3_384: Optional[str] = Field(
@@ -83,7 +83,7 @@ class Download(BaseModel):
 
 
 class Epoch(BaseModel):
-    model_config = ConfigDict(extra="forbid", exclude_unset=True)
+    model_config = ConfigDict(exclude_unset=True)
 
     read: List[float]
     write: List[float]
@@ -98,7 +98,7 @@ class Download1(BaseModel):
 
 
 class Resource(BaseModel):
-    model_config = ConfigDict(extra="forbid", exclude_unset=True)
+    model_config = ConfigDict(exclude_unset=True)
 
     architectures: Optional[List[str]] = None
     created_at: Optional[str] = Field(
