@@ -115,7 +115,7 @@ class Resource(BaseModel):
 
 
 class ChannelMapItem(BaseModel):
-    model_config = ConfigDict(extra="forbid", exclude_unset=True)
+    model_config = ConfigDict(exclude_unset=True)
 
     architectures: Optional[List[str]] = None
     base: Optional[str] = None
@@ -145,14 +145,14 @@ class ChannelMapItem(BaseModel):
 
 
 class ErrorListItem(BaseModel):
-    model_config = ConfigDict(extra="forbid", exclude_unset=True)
+    model_config = ConfigDict(exclude_unset=True)
 
     code: str
     message: str
 
 
 class InfoResponse(BaseModel):
-    model_config = ConfigDict(extra="forbid", exclude_unset=True)
+    model_config = ConfigDict(exclude_unset=True)
 
     channel_map: List[ChannelMapItem] = Field(
         ...,

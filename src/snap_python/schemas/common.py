@@ -52,7 +52,7 @@ class SnapApp(BaseModel):
 
 
 class Media(BaseModel):
-    model_config = ConfigDict(extra="forbid", exclude_unset=True)
+    model_config = ConfigDict(exclude_unset=True)
 
     height: Optional[float] = None
     type: str
@@ -65,13 +65,13 @@ class AsyncResponse(BaseResponse):
 
 
 class Download(BaseModel):
-    model_config = ConfigDict(extra="forbid", exclude_unset=True)
+    model_config = ConfigDict(exclude_unset=True)
 
     size: float
 
 
 class Revision(BaseModel):
-    model_config = ConfigDict(extra="forbid", exclude_unset=True)
+    model_config = ConfigDict(exclude_unset=True)
 
     base: Optional[SnapBaseVersion] = None
     channel: Optional[str] = None
@@ -86,7 +86,7 @@ class Revision(BaseModel):
 
 
 class Publisher(BaseModel):
-    model_config = ConfigDict(extra="forbid", exclude_unset=True)
+    model_config = ConfigDict(exclude_unset=True)
 
     display_name: str = Field(
         ...,

@@ -38,7 +38,7 @@ VALID_SEARCH_CATEGORY_FIELDS = [
 
 
 class ErrorListItem(BaseModel):
-    model_config = ConfigDict(extra="forbid", exclude_unset=True)
+    model_config = ConfigDict(exclude_unset=True)
 
     code: str
     message: str
@@ -90,8 +90,6 @@ class SnapDetails(BaseModel):
 
 
 class SearchResult(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
     name: str
     revision: Optional[Revision] = None
     snap: StoreSnap
@@ -124,15 +122,11 @@ class SearchResult(BaseModel):
 
 
 class SearchResponse(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
     error_list: Optional[List[ErrorListItem]] = Field(None, alias="error-list")
     results: List[SearchResult]
 
 
 class ArchSearchItem(BaseModel):
-    model_config = ConfigDict(extra="ignore")
-
     aliases: Optional[list[dict[str, str]]]
     apps: list[str]
     package_name: str

@@ -79,7 +79,7 @@ class RefreshResultError(BaseModel):
 
 
 class RefreshResultData(BaseModel):
-    model_config = ConfigDict(extra="forbid", exclude_unset=True)
+    model_config = ConfigDict(exclude_unset=True)
 
     default_track: Optional[str] = Field(
         None,
