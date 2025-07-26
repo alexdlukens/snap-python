@@ -10,7 +10,7 @@ VALID_CATEGORY_FIELDS = ["name", "type", "title", "summary", "description", "med
 
 
 class Media(BaseModel):
-    model_config = ConfigDict(extra="forbid", exclude_unset=True)
+    model_config = ConfigDict(exclude_unset=True)
 
     height: Optional[float] = None
     type: str
@@ -19,7 +19,7 @@ class Media(BaseModel):
 
 
 class Category(BaseModel):
-    model_config = ConfigDict(extra="forbid", exclude_unset=True)
+    model_config = ConfigDict(exclude_unset=True)
 
     description: Optional[str] = None
     media: Optional[Media] = None
@@ -31,12 +31,12 @@ class Category(BaseModel):
 
 
 class CategoryResponse(BaseModel):
-    model_config = ConfigDict(extra="forbid", exclude_unset=True)
+    model_config = ConfigDict(exclude_unset=True)
 
     categories: Optional[List[Category]] = None
 
 
 class SingleCategoryResponse(BaseModel):
-    model_config = ConfigDict(extra="forbid", exclude_unset=True)
+    model_config = ConfigDict(exclude_unset=True)
 
     category: Category

@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import AliasChoices, AwareDatetime, BaseModel, ConfigDict, Field
+from pydantic import AliasChoices, AwareDatetime, BaseModel, Field
 
 from snap_python.schemas.common import (
     BaseErrorResult,
@@ -66,8 +66,6 @@ class StoreSnapFields(BaseModel):
 
 
 class Snap(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
     contact: Optional[str] = None
     description: Optional[str] = None
     license: str = "unset"
