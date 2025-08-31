@@ -1,5 +1,6 @@
 import functools
 import uuid
+from typing import Optional
 
 import retry
 from httpx import AsyncClient, Response
@@ -77,8 +78,19 @@ class StoreEndpoints:
         response.raise_for_status()
         return response.json()
 
+    async def get_snap_name_from_snap_id(self, snap_id: str) -> str | None:
+        response = await self.store_client.get(
+            f"https://api.snapcraft.io/v2/assertions/snap-declaration/16/{snap_id}"
+        )
+        response.raise_for_status()
+        response_json = response.json()
+        return response_json.get("headers", {}).get("snap-name", None)
+
     async def get_snap_info(
-        self, snap_name: str, fields: list[str] | None = None
+        self,
+        snap_name: Optional[str] = None,
+        snap_id: Optional[str] = None,
+        fields: list[str] | None = None,
     ) -> InfoResponse:
         """
         Get information about a snap.
@@ -93,6 +105,15 @@ class StoreEndpoints:
 
         :raises ValueError: If invalid fields are provided.
         """
+        if snap_name is None and snap_id is None:
+            raise ValueError("Either snap_name or snap_id must be provided.")
+        if snap_name is not None and snap_id is not None:
+            raise ValueError("Only one of snap_name or snap_id must be provided.")
+
+        # get snap name from id, then proceed as usual
+        if snap_id is not None:
+            snap_name = await self.get_snap_name_from_snap_id(snap_id)
+
         query = {}
         if fields is not None:
             if not all(field in VALID_SNAP_INFO_FIELDS for field in fields):
