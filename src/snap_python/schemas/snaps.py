@@ -68,7 +68,7 @@ class StoreSnapFields(BaseModel):
 class Snap(BaseModel):
     contact: Optional[str] = None
     description: Optional[str] = None
-    license: str = "unset"
+    license: Optional[str] = "unset"
     links: Optional[dict[str, list[str]]] = None
     media: Optional[list[Media]] = None
     name: Optional[str] = None
