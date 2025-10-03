@@ -45,24 +45,24 @@ class SnapRefreshFields(BaseModel):
     created_at: Optional[AwareDatetime] = Field(
         None,
         alias=AliasChoices("created-at", "created_at"),
-        serialization_alias="created-at",
+        serialization_alias="created_at",
     )
     download: Optional[Download] = None
     epoch: Optional[dict[str, list[int]]] = None
     gated_snap_ids: Optional[list[str]] = Field(
         None, alias=AliasChoices("gated-snap-ids", "gated_snap_ids")
     )
-    license: Optional[str] = None
+    license: Optional[str] = "unset"
     prices: Optional[dict[str, str]] = None
     resources: list[Resource] = Field(default_factory=list)
     revision: Optional[int] = None
     snap_id: Optional[str] = Field(
-        None, alias=AliasChoices("snap-id", "snap_id"), serialization_alias="snap-id"
+        None, alias=AliasChoices("snap-id", "snap_id"), serialization_alias="snap_id"
     )
     snap_yaml: Optional[str] = Field(
         None,
         alias=AliasChoices("snap-yaml", "snap_yaml"),
-        serialization_alias="snap-yaml",
+        serialization_alias="snap_yaml",
     )
     type: Optional[str] = None
     version: Optional[str] = None

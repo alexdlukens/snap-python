@@ -1,0 +1,265 @@
+{
+  "channel_map": [
+    {
+      "architectures": [
+        "i386",
+        "amd64",
+        "arm64"
+      ],
+      "base": "core18",
+      "channel": {
+        "architecture": "amd64",
+        "name": "stable",
+        "released_at": "2022-10-02T12:33:44.899021Z",
+        "risk": "stable",
+        "track": "latest"
+      },
+      "common_ids": [],
+      "confinement": "strict",
+      "created_at": "2022-10-02T12:33:33.873514Z",
+      "download": {
+        "deltas": [],
+        "sha3_384": "83b0f678db1fedd4b797925d62511f9bb52529a4bad9df643ff6e08b1b7552185398130181619182f3d52aaa4b7d4256",
+        "size": 8237056.0,
+        "url": "https://api.snapcraft.io/api/v1/snaps/download/WjWWuJPN7Tv6Hl7AuhCMBLPfkr2jgNqt_4.snap"
+      },
+      "epoch": {
+        "read": [
+          0.0
+        ],
+        "write": [
+          0.0
+        ]
+      },
+      "resources": [],
+      "revision": 4,
+      "snap_yaml": "name: convertermulti\nversion: 3.1.3\nsummary: Unit and currencies converter\ndescription: A Unit and Currencies Converter. Converter Multi is immediate, fast and\n  easy to use!\napps:\n  convertermulti:\n    command: bin/convertermulti\n    plugs:\n    - desktop\n    - desktop-legacy\n    - gsettings\n    - opengl\n    - wayland\n    - x11\n    - network\n    slots:\n    - dbus-convertermulti\n    command-chain:\n    - snap/command-chain/snapcraft-runner\n    - snap/command-chain/desktop-launch\narchitectures:\n- amd64\n- i386\n- arm64\nassumes:\n- command-chain\n- snapd2.43\nbase: core18\nconfinement: strict\nenvironment:\n  SNAP_DESKTOP_RUNTIME: $SNAP/gnome-platform\ngrade: stable\nlayout:\n  /usr/share/xml/iso-codes:\n    bind: $SNAP/gnome-platform/usr/share/xml/iso-codes\n  /usr/share/libdrm:\n    bind: $SNAP/gnome-platform/usr/share/libdrm\nplugs:\n  gnome-3-28-1804:\n    interface: content\n    target: $SNAP/gnome-platform\n    default-provider: gnome-3-28-1804\n  gtk-3-themes:\n    interface: content\n    target: $SNAP/data-dir/themes\n    default-provider: gtk-common-themes\n  icon-themes:\n    interface: content\n    target: $SNAP/data-dir/icons\n    default-provider: gtk-common-themes\n  sound-themes:\n    interface: content\n    target: $SNAP/data-dir/sounds\n    default-provider: gtk-common-themes\nslots:\n  dbus-convertermulti:\n    interface: dbus\n    bus: session\n    name: com.ferrarid.convertermulti\n",
+      "type": "app",
+      "version": "3.1.3"
+    },
+    {
+      "architectures": [
+        "i386",
+        "amd64",
+        "arm64"
+      ],
+      "base": "core18",
+      "channel": {
+        "architecture": "arm64",
+        "name": "stable",
+        "released_at": "2022-10-02T12:33:44.899021Z",
+        "risk": "stable",
+        "track": "latest"
+      },
+      "common_ids": [],
+      "confinement": "strict",
+      "created_at": "2022-10-02T12:33:33.873514Z",
+      "download": {
+        "deltas": [],
+        "sha3_384": "83b0f678db1fedd4b797925d62511f9bb52529a4bad9df643ff6e08b1b7552185398130181619182f3d52aaa4b7d4256",
+        "size": 8237056.0,
+        "url": "https://api.snapcraft.io/api/v1/snaps/download/WjWWuJPN7Tv6Hl7AuhCMBLPfkr2jgNqt_4.snap"
+      },
+      "epoch": {
+        "read": [
+          0.0
+        ],
+        "write": [
+          0.0
+        ]
+      },
+      "resources": [],
+      "revision": 4,
+      "snap_yaml": "name: convertermulti\nversion: 3.1.3\nsummary: Unit and currencies converter\ndescription: A Unit and Currencies Converter. Converter Multi is immediate, fast and\n  easy to use!\napps:\n  convertermulti:\n    command: bin/convertermulti\n    plugs:\n    - desktop\n    - desktop-legacy\n    - gsettings\n    - opengl\n    - wayland\n    - x11\n    - network\n    slots:\n    - dbus-convertermulti\n    command-chain:\n    - snap/command-chain/snapcraft-runner\n    - snap/command-chain/desktop-launch\narchitectures:\n- amd64\n- i386\n- arm64\nassumes:\n- command-chain\n- snapd2.43\nbase: core18\nconfinement: strict\nenvironment:\n  SNAP_DESKTOP_RUNTIME: $SNAP/gnome-platform\ngrade: stable\nlayout:\n  /usr/share/xml/iso-codes:\n    bind: $SNAP/gnome-platform/usr/share/xml/iso-codes\n  /usr/share/libdrm:\n    bind: $SNAP/gnome-platform/usr/share/libdrm\nplugs:\n  gnome-3-28-1804:\n    interface: content\n    target: $SNAP/gnome-platform\n    default-provider: gnome-3-28-1804\n  gtk-3-themes:\n    interface: content\n    target: $SNAP/data-dir/themes\n    default-provider: gtk-common-themes\n  icon-themes:\n    interface: content\n    target: $SNAP/data-dir/icons\n    default-provider: gtk-common-themes\n  sound-themes:\n    interface: content\n    target: $SNAP/data-dir/sounds\n    default-provider: gtk-common-themes\nslots:\n  dbus-convertermulti:\n    interface: dbus\n    bus: session\n    name: com.ferrarid.convertermulti\n",
+      "type": "app",
+      "version": "3.1.3"
+    },
+    {
+      "architectures": [
+        "i386",
+        "amd64",
+        "arm64"
+      ],
+      "base": "core18",
+      "channel": {
+        "architecture": "i386",
+        "name": "stable",
+        "released_at": "2022-10-02T12:33:44.899021Z",
+        "risk": "stable",
+        "track": "latest"
+      },
+      "common_ids": [],
+      "confinement": "strict",
+      "created_at": "2022-10-02T12:33:33.873514Z",
+      "download": {
+        "deltas": [],
+        "sha3_384": "83b0f678db1fedd4b797925d62511f9bb52529a4bad9df643ff6e08b1b7552185398130181619182f3d52aaa4b7d4256",
+        "size": 8237056.0,
+        "url": "https://api.snapcraft.io/api/v1/snaps/download/WjWWuJPN7Tv6Hl7AuhCMBLPfkr2jgNqt_4.snap"
+      },
+      "epoch": {
+        "read": [
+          0.0
+        ],
+        "write": [
+          0.0
+        ]
+      },
+      "resources": [],
+      "revision": 4,
+      "snap_yaml": "name: convertermulti\nversion: 3.1.3\nsummary: Unit and currencies converter\ndescription: A Unit and Currencies Converter. Converter Multi is immediate, fast and\n  easy to use!\napps:\n  convertermulti:\n    command: bin/convertermulti\n    plugs:\n    - desktop\n    - desktop-legacy\n    - gsettings\n    - opengl\n    - wayland\n    - x11\n    - network\n    slots:\n    - dbus-convertermulti\n    command-chain:\n    - snap/command-chain/snapcraft-runner\n    - snap/command-chain/desktop-launch\narchitectures:\n- amd64\n- i386\n- arm64\nassumes:\n- command-chain\n- snapd2.43\nbase: core18\nconfinement: strict\nenvironment:\n  SNAP_DESKTOP_RUNTIME: $SNAP/gnome-platform\ngrade: stable\nlayout:\n  /usr/share/xml/iso-codes:\n    bind: $SNAP/gnome-platform/usr/share/xml/iso-codes\n  /usr/share/libdrm:\n    bind: $SNAP/gnome-platform/usr/share/libdrm\nplugs:\n  gnome-3-28-1804:\n    interface: content\n    target: $SNAP/gnome-platform\n    default-provider: gnome-3-28-1804\n  gtk-3-themes:\n    interface: content\n    target: $SNAP/data-dir/themes\n    default-provider: gtk-common-themes\n  icon-themes:\n    interface: content\n    target: $SNAP/data-dir/icons\n    default-provider: gtk-common-themes\n  sound-themes:\n    interface: content\n    target: $SNAP/data-dir/sounds\n    default-provider: gtk-common-themes\nslots:\n  dbus-convertermulti:\n    interface: dbus\n    bus: session\n    name: com.ferrarid.convertermulti\n",
+      "type": "app",
+      "version": "3.1.3"
+    },
+    {
+      "architectures": [
+        "i386",
+        "amd64",
+        "arm64"
+      ],
+      "base": "core18",
+      "channel": {
+        "architecture": "amd64",
+        "name": "edge",
+        "released_at": "2022-05-12T19:57:04.174262Z",
+        "risk": "edge",
+        "track": "latest"
+      },
+      "common_ids": [],
+      "confinement": "strict",
+      "created_at": "2022-04-04T17:13:30.288471Z",
+      "download": {
+        "deltas": [],
+        "sha3_384": "9b90ef68b37deabc31820970c758297f9a025e9b8568e0901ed40c3989afe24ce1567fa71e4ce3bebfea41b6921ca7ba",
+        "size": 8081408.0,
+        "url": "https://api.snapcraft.io/api/v1/snaps/download/WjWWuJPN7Tv6Hl7AuhCMBLPfkr2jgNqt_3.snap"
+      },
+      "epoch": {
+        "read": [
+          0.0
+        ],
+        "write": [
+          0.0
+        ]
+      },
+      "resources": [],
+      "revision": 3,
+      "snap_yaml": "name: convertermulti\nversion: 3.1.2\nsummary: Unit and currencies converter\ndescription: A Unit and Currencies Converter. Converter Multi is immediate, fast and\n  easy to use!\napps:\n  convertermulti:\n    command: bin/convertermulti\n    plugs:\n    - desktop\n    - desktop-legacy\n    - gsettings\n    - opengl\n    - wayland\n    - x11\n    - network\n    slots:\n    - dbus-convertermulti\n    command-chain:\n    - snap/command-chain/snapcraft-runner\n    - snap/command-chain/desktop-launch\narchitectures:\n- amd64\n- i386\n- arm64\nassumes:\n- command-chain\n- snapd2.43\nbase: core18\nconfinement: strict\nenvironment:\n  SNAP_DESKTOP_RUNTIME: $SNAP/gnome-platform\ngrade: stable\nlayout:\n  /usr/share/xml/iso-codes:\n    bind: $SNAP/gnome-platform/usr/share/xml/iso-codes\n  /usr/share/libdrm:\n    bind: $SNAP/gnome-platform/usr/share/libdrm\nplugs:\n  gnome-3-28-1804:\n    interface: content\n    target: $SNAP/gnome-platform\n    default-provider: gnome-3-28-1804\n  gtk-3-themes:\n    interface: content\n    target: $SNAP/data-dir/themes\n    default-provider: gtk-common-themes\n  icon-themes:\n    interface: content\n    target: $SNAP/data-dir/icons\n    default-provider: gtk-common-themes\n  sound-themes:\n    interface: content\n    target: $SNAP/data-dir/sounds\n    default-provider: gtk-common-themes\nslots:\n  dbus-convertermulti:\n    interface: dbus\n    bus: session\n    name: com.ferrarid.convertermulti\n",
+      "type": "app",
+      "version": "3.1.2"
+    },
+    {
+      "architectures": [
+        "i386",
+        "amd64",
+        "arm64"
+      ],
+      "base": "core18",
+      "channel": {
+        "architecture": "arm64",
+        "name": "edge",
+        "released_at": "2022-05-12T19:57:04.174262Z",
+        "risk": "edge",
+        "track": "latest"
+      },
+      "common_ids": [],
+      "confinement": "strict",
+      "created_at": "2022-04-04T17:13:30.288471Z",
+      "download": {
+        "deltas": [],
+        "sha3_384": "9b90ef68b37deabc31820970c758297f9a025e9b8568e0901ed40c3989afe24ce1567fa71e4ce3bebfea41b6921ca7ba",
+        "size": 8081408.0,
+        "url": "https://api.snapcraft.io/api/v1/snaps/download/WjWWuJPN7Tv6Hl7AuhCMBLPfkr2jgNqt_3.snap"
+      },
+      "epoch": {
+        "read": [
+          0.0
+        ],
+        "write": [
+          0.0
+        ]
+      },
+      "resources": [],
+      "revision": 3,
+      "snap_yaml": "name: convertermulti\nversion: 3.1.2\nsummary: Unit and currencies converter\ndescription: A Unit and Currencies Converter. Converter Multi is immediate, fast and\n  easy to use!\napps:\n  convertermulti:\n    command: bin/convertermulti\n    plugs:\n    - desktop\n    - desktop-legacy\n    - gsettings\n    - opengl\n    - wayland\n    - x11\n    - network\n    slots:\n    - dbus-convertermulti\n    command-chain:\n    - snap/command-chain/snapcraft-runner\n    - snap/command-chain/desktop-launch\narchitectures:\n- amd64\n- i386\n- arm64\nassumes:\n- command-chain\n- snapd2.43\nbase: core18\nconfinement: strict\nenvironment:\n  SNAP_DESKTOP_RUNTIME: $SNAP/gnome-platform\ngrade: stable\nlayout:\n  /usr/share/xml/iso-codes:\n    bind: $SNAP/gnome-platform/usr/share/xml/iso-codes\n  /usr/share/libdrm:\n    bind: $SNAP/gnome-platform/usr/share/libdrm\nplugs:\n  gnome-3-28-1804:\n    interface: content\n    target: $SNAP/gnome-platform\n    default-provider: gnome-3-28-1804\n  gtk-3-themes:\n    interface: content\n    target: $SNAP/data-dir/themes\n    default-provider: gtk-common-themes\n  icon-themes:\n    interface: content\n    target: $SNAP/data-dir/icons\n    default-provider: gtk-common-themes\n  sound-themes:\n    interface: content\n    target: $SNAP/data-dir/sounds\n    default-provider: gtk-common-themes\nslots:\n  dbus-convertermulti:\n    interface: dbus\n    bus: session\n    name: com.ferrarid.convertermulti\n",
+      "type": "app",
+      "version": "3.1.2"
+    },
+    {
+      "architectures": [
+        "i386",
+        "amd64",
+        "arm64"
+      ],
+      "base": "core18",
+      "channel": {
+        "architecture": "i386",
+        "name": "edge",
+        "released_at": "2022-05-12T19:57:04.174262Z",
+        "risk": "edge",
+        "track": "latest"
+      },
+      "common_ids": [],
+      "confinement": "strict",
+      "created_at": "2022-04-04T17:13:30.288471Z",
+      "download": {
+        "deltas": [],
+        "sha3_384": "9b90ef68b37deabc31820970c758297f9a025e9b8568e0901ed40c3989afe24ce1567fa71e4ce3bebfea41b6921ca7ba",
+        "size": 8081408.0,
+        "url": "https://api.snapcraft.io/api/v1/snaps/download/WjWWuJPN7Tv6Hl7AuhCMBLPfkr2jgNqt_3.snap"
+      },
+      "epoch": {
+        "read": [
+          0.0
+        ],
+        "write": [
+          0.0
+        ]
+      },
+      "resources": [],
+      "revision": 3,
+      "snap_yaml": "name: convertermulti\nversion: 3.1.2\nsummary: Unit and currencies converter\ndescription: A Unit and Currencies Converter. Converter Multi is immediate, fast and\n  easy to use!\napps:\n  convertermulti:\n    command: bin/convertermulti\n    plugs:\n    - desktop\n    - desktop-legacy\n    - gsettings\n    - opengl\n    - wayland\n    - x11\n    - network\n    slots:\n    - dbus-convertermulti\n    command-chain:\n    - snap/command-chain/snapcraft-runner\n    - snap/command-chain/desktop-launch\narchitectures:\n- amd64\n- i386\n- arm64\nassumes:\n- command-chain\n- snapd2.43\nbase: core18\nconfinement: strict\nenvironment:\n  SNAP_DESKTOP_RUNTIME: $SNAP/gnome-platform\ngrade: stable\nlayout:\n  /usr/share/xml/iso-codes:\n    bind: $SNAP/gnome-platform/usr/share/xml/iso-codes\n  /usr/share/libdrm:\n    bind: $SNAP/gnome-platform/usr/share/libdrm\nplugs:\n  gnome-3-28-1804:\n    interface: content\n    target: $SNAP/gnome-platform\n    default-provider: gnome-3-28-1804\n  gtk-3-themes:\n    interface: content\n    target: $SNAP/data-dir/themes\n    default-provider: gtk-common-themes\n  icon-themes:\n    interface: content\n    target: $SNAP/data-dir/icons\n    default-provider: gtk-common-themes\n  sound-themes:\n    interface: content\n    target: $SNAP/data-dir/sounds\n    default-provider: gtk-common-themes\nslots:\n  dbus-convertermulti:\n    interface: dbus\n    bus: session\n    name: com.ferrarid.convertermulti\n",
+      "type": "app",
+      "version": "3.1.2"
+    }
+  ],
+  "default_track": null,
+  "error_list": null,
+  "name": "convertermulti",
+  "snap": {
+    "gated_snap_ids": [],
+    "categories": [
+      {
+        "description": null,
+        "media": null,
+        "name": "productivity",
+        "summary": null,
+        "title": null,
+        "type": null,
+        "featured": false
+      }
+    ],
+    "prices": {},
+    "snap_id": "WjWWuJPN7Tv6Hl7AuhCMBLPfkr2jgNqt",
+    "store_url": "https://snapcraft.io/convertermulti",
+    "trending": false,
+    "contact": null,
+    "description": "It is made to be easy, fast and immediately useable: just start typing and immediately you have the real-time conversion with all",
+    "license": "unset",
+    "links": {},
+    "media": [],
+    "name": "convertermulti",
+    "private": false,
+    "publisher": {
+      "display_name": "ANEESH KUMAR S",
+      "id": "JZusASwcAepYMs58qoW6VesK4gA8vo0z",
+      "username": "aneeshkumarkply",
+      "validation": "unproven"
+    },
+    "summary": "It is made to be easy, fast and immediately useable: just start typing and immediately you have the real-time conversion with",
+    "title": "convertermulti",
+    "unlisted": false,
+    "website": null
+  },
+  "snap_id": "WjWWuJPN7Tv6Hl7AuhCMBLPfkr2jgNqt"
+}
