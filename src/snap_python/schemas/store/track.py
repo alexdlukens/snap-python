@@ -91,9 +91,6 @@ def channel_map_to_current_track_map(
                 f"Warning: Channel {item} has no architectures defined. Skipping."
             )
             continue
-        assert (
-            len(item.architectures) == 1
-        ), "Channel must have exactly one architecture."
 
         assert (
             item.revision is not None
@@ -111,9 +108,12 @@ def channel_map_to_current_track_map(
             item.channel.released_at is not None
         ), f"Channel {item} must have a released_at defined."
 
-        arch = item.architectures[0]
+        if risk not in current_track_map[track]:
+            # validated at end
+            current_track_map[track][risk] = {}  # type: ignore
 
-        revision_details = TrackRevisionDetails(
+        arch = item.channel.architecture
+        current_track_map[track][risk][arch] = TrackRevisionDetails(  # type: ignore
             arch=arch,
             base=item.base,
             channel=item.channel,
@@ -125,10 +125,6 @@ def channel_map_to_current_track_map(
             track=track,
             version=item.version,
         )
-
-        if risk not in current_track_map[track]:
-            current_track_map[track][risk] = TrackRiskMap()
-        setattr(current_track_map[track][risk], arch, revision_details)
 
     # re validate the track map to ensure it has all required fields
     for track, risk_map in current_track_map.items():
