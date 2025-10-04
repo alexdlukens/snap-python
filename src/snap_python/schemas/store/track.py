@@ -21,7 +21,7 @@ class TrackRevisionDetails(BaseModel):
     """
 
     arch: str
-    base: str
+    base: str = "unset"
     channel: Channel
     confinement: str
     created_at: AwareDatetime
@@ -29,7 +29,7 @@ class TrackRevisionDetails(BaseModel):
     revision: int
     risk: str
     track: str
-    version: str
+    version: str = "unset"
 
     @field_validator("arch")
     @classmethod
@@ -96,11 +96,9 @@ def channel_map_to_current_track_map(
             item.revision is not None
         ), f"Channel {item} must have a revision defined."
         assert item.channel is not None, f"Channel {item} must have a channel defined."
-        assert item.base is not None, f"Channel {item} must have a base defined."
         assert (
             item.confinement is not None
         ), f"Channel {item} must have a confinement defined."
-        assert item.version is not None, f"Channel {item} must have a version defined."
         assert (
             item.created_at is not None
         ), f"Channel {item} must have a created_at defined."
@@ -115,7 +113,7 @@ def channel_map_to_current_track_map(
         arch = item.channel.architecture
         current_track_map[track][risk][arch] = TrackRevisionDetails(  # type: ignore
             arch=arch,
-            base=item.base,
+            base=item.base or "unset",
             channel=item.channel,
             confinement=item.confinement,
             created_at=item.created_at,
@@ -123,7 +121,7 @@ def channel_map_to_current_track_map(
             revision=item.revision,
             risk=risk,
             track=track,
-            version=item.version,
+            version=item.version or "unset",
         )
 
     # re validate the track map to ensure it has all required fields
