@@ -5,6 +5,7 @@ from typing import Optional
 import retry
 from httpx import AsyncClient, Response
 
+from snap_python.schemas.common import VALID_SNAP_ARCHITECTURES
 from snap_python.schemas.store.categories import (
     VALID_CATEGORY_FIELDS,
     CategoryResponse,
@@ -319,15 +320,7 @@ class StoreEndpoints:
         # use the old "/api/v1/snaps/names" to get all snaps for a given architecture
 
         # ensure valid arch
-        if arch not in [
-            "amd64",
-            "arm64",
-            "armhf",
-            "i386",
-            "ppc64el",
-            "s390x",
-            "riscv64",
-        ]:
+        if arch not in VALID_SNAP_ARCHITECTURES:
             raise ValueError(f"Invalid architecture: {arch}")
 
         route = "/api/v1/snaps/names"

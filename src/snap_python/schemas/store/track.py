@@ -7,6 +7,7 @@ from pydantic import (
     field_validator,
 )
 
+from snap_python.schemas.common import VALID_SNAP_ARCHITECTURES
 from snap_python.schemas.store.info import Channel, ChannelMapItem
 
 logger = logging.getLogger("snap_python.schemas.store.track")
@@ -34,18 +35,9 @@ class TrackRevisionDetails(BaseModel):
     @field_validator("arch")
     @classmethod
     def validate_arch(cls, value):
-        valid_architectures = {
-            "amd64",
-            "arm64",
-            "armhf",
-            "i386",
-            "ppc64el",
-            "s390x",
-            "riscv64",
-        }
-        if value not in valid_architectures:
+        if value not in VALID_SNAP_ARCHITECTURES:
             raise ValueError(
-                f"Invalid architecture: {value}. Must be one of {', '.join(valid_architectures)}."
+                f"Invalid architecture: {value}. Must be one of {', '.join(VALID_SNAP_ARCHITECTURES)}."
             )
         return value
 
@@ -57,6 +49,7 @@ class TrackRiskMap(BaseModel):
     arm64: Optional[TrackRevisionDetails] = None
     armhf: Optional[TrackRevisionDetails] = None
     i386: Optional[TrackRevisionDetails] = None
+    powerpc: Optional[TrackRevisionDetails] = None
     ppc64el: Optional[TrackRevisionDetails] = None
     s390x: Optional[TrackRevisionDetails] = None
     riscv64: Optional[TrackRevisionDetails] = None

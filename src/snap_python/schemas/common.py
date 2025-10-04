@@ -3,6 +3,17 @@ from typing import Literal, Optional
 
 from pydantic import AliasChoices, BaseModel, ConfigDict, Field
 
+VALID_SNAP_ARCHITECTURES = [
+    "amd64",
+    "arm64",
+    "armhf",
+    "i386",
+    "powerpc",
+    "ppc64el",
+    "riscv64",
+    "s390x",
+]
+
 
 class BaseErrorResult(BaseModel):
     message: str
