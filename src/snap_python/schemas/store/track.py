@@ -8,7 +8,7 @@ from pydantic import (
 )
 
 from snap_python.schemas.common import VALID_SNAP_ARCHITECTURES
-from snap_python.schemas.store.info import Channel, ChannelMapItem
+from snap_python.schemas.store.info import ChannelMapItem
 
 logger = logging.getLogger("snap_python.schemas.store.track")
 
@@ -21,9 +21,9 @@ class TrackRevisionDetails(BaseModel):
         ValueError: If the architecture is invalid.
     """
 
-    arch: str
+    name: str
+    architecture: str
     base: str = "unset"
-    channel: Channel
     confinement: str
     created_at: AwareDatetime
     released_at: AwareDatetime
@@ -32,7 +32,7 @@ class TrackRevisionDetails(BaseModel):
     track: str
     version: str = "unset"
 
-    @field_validator("arch")
+    @field_validator("architecture")
     @classmethod
     def validate_arch(cls, value):
         if value not in VALID_SNAP_ARCHITECTURES:
@@ -103,18 +103,19 @@ def channel_map_to_current_track_map(
             # validated at end
             current_track_map[track][risk] = {}  # type: ignore
 
-        arch = item.channel.architecture
-        current_track_map[track][risk][arch] = TrackRevisionDetails(  # type: ignore
-            arch=arch,
-            base=item.base or "unset",
-            channel=item.channel,
-            confinement=item.confinement,
-            created_at=item.created_at,
-            released_at=item.channel.released_at,
-            revision=item.revision,
-            risk=risk,
-            track=track,
-            version=item.version or "unset",
+        current_track_map[track][risk][item.channel.architecture] = (
+            TrackRevisionDetails(  # type: ignore
+                name=item.channel.name,
+                architecture=item.channel.architecture,
+                base=item.base or "unset",
+                confinement=item.confinement,
+                created_at=item.created_at,
+                released_at=item.channel.released_at,
+                revision=item.revision,
+                risk=risk,
+                track=track,
+                version=item.version or "unset",
+            )
         )
 
     # re validate the track map to ensure it has all required fields
@@ -123,3 +124,34 @@ def channel_map_to_current_track_map(
             risk_map[risk] = TrackRiskMap.model_validate(risk_map[risk])
 
     return current_track_map
+
+
+def channel_map_item_to_track_revision_details(
+    item: ChannelMapItem,
+) -> TrackRevisionDetails:
+    """Convert a ChannelMapItem to a TrackRevisionDetails."""
+    assert (
+        item.revision is not None
+    ), f"ChannelMapItem {item} must have a revision defined."
+    assert (
+        item.channel is not None
+    ), f"ChannelMapItem {item} must have a channel defined."
+    assert (
+        item.channel.track is not None
+    ), f"ChannelMapItem {item} must have a track defined."
+    assert (
+        item.channel.risk is not None
+    ), f"ChannelMapItem {item} must have a risk defined."
+
+    return TrackRevisionDetails(
+        name=item.channel.name,
+        architecture=item.channel.architecture,
+        base=item.base or "unset",
+        confinement=item.confinement or "unset",
+        created_at=item.created_at,
+        released_at=item.channel.released_at,
+        revision=item.revision,
+        risk=item.channel.risk,
+        track=item.channel.track,
+        version=item.version or "unset",
+    )
