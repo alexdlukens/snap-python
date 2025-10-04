@@ -4,7 +4,7 @@ import pytest
 
 from snap_python.schemas.store.info import InfoResponse
 from snap_python.schemas.store.track import (
-    TrackRevisionDetails,
+    SnapTrackInfo,
     TrackRiskMap,
     channel_map_to_current_track_map,
 )
@@ -25,9 +25,9 @@ async def test_get_categories_success():
 
     for track, risks in track_map.items():
         for risk, architectures in risks.items():
-            details: TrackRevisionDetails
+            details: SnapTrackInfo
             for arch, details in architectures.model_dump(exclude_none=True).items():
-                details = TrackRevisionDetails.model_validate(details)
+                details = SnapTrackInfo.model_validate(details)
                 assert details.architecture == arch
                 assert details.risk == risk
                 assert details.track == track

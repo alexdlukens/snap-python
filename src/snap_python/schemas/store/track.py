@@ -13,7 +13,7 @@ from snap_python.schemas.store.info import ChannelMapItem
 logger = logging.getLogger("snap_python.schemas.store.track")
 
 
-class TrackRevisionDetails(BaseModel):
+class SnapTrackInfo(BaseModel):
     """Contains details for a specific track/risk/architecture
 
 
@@ -45,14 +45,14 @@ class TrackRevisionDetails(BaseModel):
 class TrackRiskMap(BaseModel):
     """Map of architectures to their revision details for a specific risk level."""
 
-    amd64: Optional[TrackRevisionDetails] = None
-    arm64: Optional[TrackRevisionDetails] = None
-    armhf: Optional[TrackRevisionDetails] = None
-    i386: Optional[TrackRevisionDetails] = None
-    powerpc: Optional[TrackRevisionDetails] = None
-    ppc64el: Optional[TrackRevisionDetails] = None
-    s390x: Optional[TrackRevisionDetails] = None
-    riscv64: Optional[TrackRevisionDetails] = None
+    amd64: Optional[SnapTrackInfo] = None
+    arm64: Optional[SnapTrackInfo] = None
+    armhf: Optional[SnapTrackInfo] = None
+    i386: Optional[SnapTrackInfo] = None
+    powerpc: Optional[SnapTrackInfo] = None
+    ppc64el: Optional[SnapTrackInfo] = None
+    s390x: Optional[SnapTrackInfo] = None
+    riscv64: Optional[SnapTrackInfo] = None
 
     @property
     def architectures(self) -> list[str]:
@@ -103,19 +103,17 @@ def channel_map_to_current_track_map(
             # validated at end
             current_track_map[track][risk] = {}  # type: ignore
 
-        current_track_map[track][risk][item.channel.architecture] = (
-            TrackRevisionDetails(  # type: ignore
-                name=item.channel.name,
-                architecture=item.channel.architecture,
-                base=item.base or "unset",
-                confinement=item.confinement,
-                created_at=item.created_at,
-                released_at=item.channel.released_at,
-                revision=item.revision,
-                risk=risk,
-                track=track,
-                version=item.version or "unset",
-            )
+        current_track_map[track][risk][item.channel.architecture] = SnapTrackInfo(  # type: ignore
+            name=item.channel.name,
+            architecture=item.channel.architecture,
+            base=item.base or "unset",
+            confinement=item.confinement,
+            created_at=item.created_at,
+            released_at=item.channel.released_at,
+            revision=item.revision,
+            risk=risk,
+            track=track,
+            version=item.version or "unset",
         )
 
     # re validate the track map to ensure it has all required fields
@@ -128,7 +126,7 @@ def channel_map_to_current_track_map(
 
 def channel_map_item_to_track_revision_details(
     item: ChannelMapItem,
-) -> TrackRevisionDetails:
+) -> SnapTrackInfo:
     """Convert a ChannelMapItem to a TrackRevisionDetails."""
     assert (
         item.revision is not None
@@ -143,7 +141,7 @@ def channel_map_item_to_track_revision_details(
         item.channel.risk is not None
     ), f"ChannelMapItem {item} must have a risk defined."
 
-    return TrackRevisionDetails(
+    return SnapTrackInfo(
         name=item.channel.name,
         architecture=item.channel.architecture,
         base=item.base or "unset",
