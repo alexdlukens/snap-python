@@ -28,7 +28,7 @@ async def test_get_categories_success():
             details: TrackRevisionDetails
             for arch, details in architectures.model_dump(exclude_none=True).items():
                 details = TrackRevisionDetails.model_validate(details)
-                assert details.arch == arch
+                assert details.architecture == arch
                 assert details.risk == risk
                 assert details.track == track
                 assert details.revision is not None
@@ -37,4 +37,4 @@ async def test_get_categories_success():
                 assert details.confinement is not None
                 assert details.created_at is not None
                 assert details.released_at is not None
-                assert details.channel is not None
+                assert details.name is not None
