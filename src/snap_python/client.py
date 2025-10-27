@@ -178,3 +178,15 @@ class SnapClient(AbstractSnapsClient):
             await asyncio.sleep(
                 0.01
             )  # Add a delay to avoid spamming the server with requests
+
+    async def get_system_info(self) -> dict:
+        """
+        Retrieves system information from the snapd service.
+
+        :returns: A dictionary containing system information.
+        :rtype: dict
+
+        :raises httpx.HTTPStatusError: If the request results in an HTTP error.
+        """
+        response = await self.request("GET", "system-info")
+        return response.json()
