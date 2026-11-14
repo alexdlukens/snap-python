@@ -2,7 +2,7 @@ import functools
 import uuid
 from typing import Optional
 
-import retry
+import httpx
 from httpx import AsyncClient, Response
 
 from snap_python.schemas.common import VALID_SNAP_ARCHITECTURES
@@ -29,6 +29,7 @@ from snap_python.schemas.store.track import (
     TrackRiskMap,
     channel_map_to_current_track_map,
 )
+from snap_python.utils import async_retry
 
 
 class StoreEndpoints:
@@ -51,6 +52,10 @@ class StoreEndpoints:
         if headers is not None:
             self.store_client.headers.update(headers)
 
+    async def close(self) -> None:
+        """Close the underlying store HTTP client."""
+        await self.store_client.aclose()
+
     async def get_snap_details(self, snap_name: str, fields: list[str] | None = None):
         """
         Get details of a snap.
@@ -60,7 +65,9 @@ class StoreEndpoints:
         :param fields: The fields to include in the response.
         :type fields: list[str], optional
 
-        :returns: The snap details.
+        :returns: The raw store JSON payload for the snap. Note that, unlike the
+            sibling methods of this class, the result is not validated into a
+            pydantic model.
         :rtype: dict
 
         :raises ValueError: If invalid fields are provided.
@@ -80,8 +87,16 @@ class StoreEndpoints:
         return response.json()
 
     async def get_snap_name_from_snap_id(self, snap_id: str) -> str | None:
+        """Resolve a snap name from its snap id using the configured store.
+
+        :param snap_id: The snap id to resolve.
+        :type snap_id: str
+
+        :returns: The snap name, or None if the store did not return one.
+        :rtype: str | None
+        """
         response = await self.store_client.get(
-            f"https://api.snapcraft.io/v2/assertions/snap-declaration/16/{snap_id}"
+            f"{self.base_url}/assertions/snap-declaration/16/{snap_id}"
         )
         response.raise_for_status()
         response_json = response.json()
@@ -114,6 +129,8 @@ class StoreEndpoints:
         # get snap name from id, then proceed as usual
         if snap_id is not None:
             snap_name = await self.get_snap_name_from_snap_id(snap_id)
+            if not snap_name:
+                raise ValueError(f"Could not resolve a snap name for snap id {snap_id}")
 
         query = {}
         if fields is not None:
@@ -197,9 +214,9 @@ class StoreEndpoints:
         common_id: str | None = None,
         category: str | None = None,
         channel: str | None = None,
-        confiement: str | None = None,
-        featured: bool = False,
-        private: bool = False,
+        confinement: str | None = None,
+        featured: bool | None = None,
+        private: bool | None = None,
         publisher: str | None = None,
         headers: dict[str, str] | None = None,
     ) -> SearchResponse:
@@ -220,11 +237,13 @@ class StoreEndpoints:
         :type category: str, optional
         :param channel: Filter snaps by channel.
         :type channel: str, optional
-        :param confiement: Filter snaps by confinement.
-        :type confiement: str, optional
-        :param featured: Filter snaps by featured status.
+        :param confinement: Filter snaps by confinement.
+        :type confinement: str, optional
+        :param featured: Filter snaps by featured status. Omitted from the
+            request when None.
         :type featured: bool, optional
-        :param private: Filter snaps by private status.
+        :param private: Filter snaps by private status. Omitted from the
+            request when None.
         :type private: bool, optional
         :param publisher: Filter snaps by publisher.
         :type publisher: str, optional
@@ -244,7 +263,7 @@ class StoreEndpoints:
             "common_id": common_id,
             "category": category,
             "channel": channel,
-            "confinement": confiement,
+            "confinement": confinement,
             "featured": featured,
             "private": private,
             "publisher": publisher,
@@ -276,7 +295,7 @@ class StoreEndpoints:
         response.raise_for_status()
         return SearchResponse.model_validate_json(response.content)
 
-    @retry.retry(Exception, tries=3, delay=2, backoff=2)
+    @async_retry(httpx.HTTPError, tries=3, delay=2, backoff=2)
     async def retry_get_snap_info(self, snap_name: str, fields: list[str]):
         """
         Retry getting snap information.

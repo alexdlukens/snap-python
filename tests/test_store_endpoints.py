@@ -123,7 +123,7 @@ async def test_get_category_by_name_not_found(setup_snaps_api: StoreEndpoints):
     )
 
     try:
-        response = await setup_snaps_api.get_category_by_name(name="banana")
+        await setup_snaps_api.get_category_by_name(name="banana")
         pytest.fail("Expected HTTPStatusError")
     except HTTPError:
         pass
@@ -132,7 +132,7 @@ async def test_get_category_by_name_not_found(setup_snaps_api: StoreEndpoints):
 @pytest.mark.asyncio
 async def test_get_category_by_name_bad_field(setup_snaps_api: StoreEndpoints):
     try:
-        response = await setup_snaps_api.get_category_by_name(
+        await setup_snaps_api.get_category_by_name(
             name="banana", fields=["bad-field", "name"]
         )
         pytest.fail("Expected ValueError for bad field")
@@ -172,9 +172,7 @@ async def test_get_all_snaps_for_arch_success(setup_snaps_api: StoreEndpoints):
 @pytest.mark.asyncio
 async def test_get_all_snaps_for_arch_invalid_arch(setup_snaps_api: StoreEndpoints):
     try:
-        response = await setup_snaps_api.get_all_snaps_for_arch(
-            arch="test-unknown-arch"
-        )
+        await setup_snaps_api.get_all_snaps_for_arch(arch="test-unknown-arch")
         pytest.fail("Expected ValueError for invalid arch")
     except ValueError:
         pass
@@ -217,7 +215,7 @@ async def test_get_snap_revision_info(setup_snaps_api: StoreEndpoints):
     assert refresh_response.snap.architectures == ["arm64"]
     assert refresh_response.snap.common_ids == []
     assert refresh_response.snap.confinement == "strict"
-    assert refresh_response.snap.contact == None
+    assert refresh_response.snap.contact is None
     assert refresh_response.snap.license == "MIT"
     assert refresh_response.snap.snap_id == "7Ws3Vp3plo1viRF1MBkoU5OSX24VXPl6"
 

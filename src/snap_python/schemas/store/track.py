@@ -79,19 +79,14 @@ def channel_map_to_current_track_map(
         track = item.channel.track
         risk = item.channel.risk
 
-        if not item.architectures:
-            logger.error(
-                f"Warning: Channel {item} has no architectures defined. Skipping."
-            )
+        if not item.supported_architectures:
+            logger.warning("Channel %s has no architectures defined. Skipping.", item)
             continue
 
         assert (
             item.revision is not None
         ), f"Channel {item} must have a revision defined."
         assert item.channel is not None, f"Channel {item} must have a channel defined."
-        assert (
-            item.confinement is not None
-        ), f"Channel {item} must have a confinement defined."
         assert (
             item.created_at is not None
         ), f"Channel {item} must have a created_at defined."
@@ -107,7 +102,7 @@ def channel_map_to_current_track_map(
             name=item.channel.name,
             architecture=item.channel.architecture,
             base=item.base or "unset",
-            confinement=item.confinement,
+            confinement=item.confinement or "unset",
             created_at=item.created_at,
             released_at=item.channel.released_at,
             revision=item.revision,

@@ -143,6 +143,15 @@ class ChannelMapItem(BaseModel):
     type: Optional[str] = None
     version: Optional[str] = None
 
+    @property
+    def supported_architectures(self) -> List[str]:
+        """Architectures this revision is released for.
+
+        The store omits ``architectures`` from many channel-map entries; when
+        it is absent the entry's channel architecture is the one supported.
+        """
+        return self.architectures or [self.channel.architecture]
+
 
 class ErrorListItem(BaseModel):
     model_config = ConfigDict(exclude_unset=True)
@@ -174,3 +183,11 @@ class InfoResponse(BaseModel):
     snap_id: str = Field(
         ..., alias=AliasChoices("snap-id", "snap_id"), serialization_alias="snap-id"
     )
+
+    @property
+    def supported_architectures(self) -> List[str]:
+        """Sorted, unique union of the architectures in the channel map."""
+        architectures: set[str] = set()
+        for item in self.channel_map:
+            architectures.update(item.supported_architectures)
+        return sorted(architectures)
