@@ -26,15 +26,11 @@ async def module_scope_container() -> Container:
 async def module_scope_client(module_scope_container) -> SnapClient:
     container: Container = module_scope_container
     logger.info("Container ID: %s", container.name)
-    client = SnapClient(version="v2", tcp_location="http://127.0.0.1:8181")
-    yield client
-    await client.close()
+    yield SnapClient(version="v2", tcp_location="http://127.0.0.1:8181")
 
 
 @pytest_asyncio.fixture(scope="function", loop_scope="function")
 async def function_scope_client(function_scope_container) -> SnapClient:
     container: Container = function_scope_container
     logger.info("Container ID: %s", container.name)
-    client = SnapClient(version="v2", tcp_location="http://127.0.0.1:8181")
-    yield client
-    await client.close()
+    yield SnapClient(version="v2", tcp_location="http://127.0.0.1:8181")
