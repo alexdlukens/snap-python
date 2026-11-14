@@ -1,4 +1,3 @@
-import asyncio
 import logging
 
 import httpx
@@ -6,9 +5,9 @@ import httpx
 from snap_python.schemas.changes import ChangesResponse
 from snap_python.schemas.common import AsyncResponse
 from snap_python.schemas.config import ConfigResponse
-from snap_python.utils import AbstractSnapsClient
+from snap_python.utils import AbstractSnapsClient, wait_for_change
 
-logger = logging.getLogger("snap_python.components.snaps")
+logger = logging.getLogger("snap_python.components.config")
 
 
 class ConfigEndpoints:
@@ -33,7 +32,11 @@ class ConfigEndpoints:
         return ConfigResponse.model_validate_json(response.content)
 
     async def set_configuration(
-        self, snap: str, configuration: dict, wait: bool = True
+        self,
+        snap: str,
+        configuration: dict,
+        wait: bool = True,
+        timeout: float | None = None,
     ) -> AsyncResponse | ChangesResponse:
         # TODO: should check that snap supports configure hook before trying to set configuration
         response: httpx.Response = await self._client.request(
@@ -43,12 +46,6 @@ class ConfigEndpoints:
         async_response = AsyncResponse.model_validate_json(response.content)
         if not wait:
             return async_response
-        while True:
-            changes = await self._client.get_changes_by_id(async_response.change)
-
-            if changes.ready:
-                break
-
-            await asyncio.sleep(0.1)
-
-        return changes
+        return await wait_for_change(
+            self._client, async_response.change, timeout=timeout
+        )

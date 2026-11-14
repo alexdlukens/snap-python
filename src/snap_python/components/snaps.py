@@ -1,4 +1,3 @@
-import asyncio
 import logging
 from pathlib import Path
 from typing import Any
@@ -6,13 +5,14 @@ from typing import Any
 import httpx
 
 from snap_python.schemas.changes import ChangesResponse
-from snap_python.schemas.common import AsyncResponse, BaseErrorResult
+from snap_python.schemas.common import AsyncResponse
 from snap_python.schemas.snaps import (
     AppsResponse,
+    InstalledSnap,
     InstalledSnapListResponse,
     SingleInstalledSnapResponse,
 )
-from snap_python.utils import AbstractSnapsClient, SnapdAPIError, going_to_reload_daemon
+from snap_python.utils import AbstractSnapsClient, SnapdAPIError, wait_for_change
 
 logger = logging.getLogger("snap_python.components.snaps")
 
@@ -21,6 +21,40 @@ class SnapsEndpoints:
     def __init__(self, client: AbstractSnapsClient) -> None:
         self._client = client
         self.common_endpoint = "snaps"
+
+    async def _wait_for_change(
+        self,
+        change_id: str,
+        timeout: float | None = None,
+        poll_interval: float = 0.5,
+        progress_callback=None,
+    ) -> ChangesResponse:
+        """Wait for a snapd change to reach a terminal state.
+
+        Thin wrapper around :func:`snap_python.utils.wait_for_change` bound to
+        this endpoint's client.
+
+        :param change_id: The change to wait for.
+        :type change_id: str
+        :param timeout: Maximum number of seconds to wait, None waits forever.
+        :type timeout: float, optional
+        :param poll_interval: Seconds between two polls.
+        :type poll_interval: float, optional
+        :param progress_callback: Optional callable receiving intermediate changes.
+        :type progress_callback: callable, optional
+
+        :returns: The final change response.
+        :rtype: ChangesResponse
+
+        :raises SnapdAPIError: If the change reports an error or times out.
+        """
+        return await wait_for_change(
+            self._client,
+            change_id,
+            timeout=timeout,
+            poll_interval=poll_interval,
+            progress_callback=progress_callback,
+        )
 
     async def list_installed_snaps(self) -> InstalledSnapListResponse:
         """
@@ -61,14 +95,42 @@ class SnapsEndpoints:
                 "GET", f"{self.common_endpoint}/{snap}"
             )
         except httpx.HTTPStatusError as e:
-            logger.debug(
-                "Bad status code from get_snap_info on snap %s: %s",
-                snap,
-                e.response.status_code,
-            )
-            response = e.response
+            if e.response.status_code != httpx.codes.NOT_FOUND:
+                logger.debug(
+                    "Bad status code from get_snap_info on snap %s: %s",
+                    snap,
+                    e.response.status_code,
+                )
+                raise SnapdAPIError(
+                    f"Failed to get info for snap {snap}: "
+                    f"HTTP {e.response.status_code}"
+                ) from e
+            logger.debug("Snap %s is not installed (HTTP 404)", snap)
+            return SingleInstalledSnapResponse.model_validate_json(e.response.content)
 
         return SingleInstalledSnapResponse.model_validate_json(response.content)
+
+    async def get_installed_snap(self, snap: str) -> InstalledSnap | None:
+        """
+        Get information about an installed snap.
+
+        :param snap: The name of the snap to inspect.
+        :type snap: str
+
+        :returns: The installed snap, or None if the snap is not installed.
+        :rtype: InstalledSnap | None
+
+        :raises SnapdAPIError: If snapd reports an unexpected error.
+        """
+        response = await self.get_snap_info(snap)
+        if isinstance(response.result, InstalledSnap):
+            return response.result
+        if response.status_code == httpx.codes.NOT_FOUND:
+            return None
+        raise SnapdAPIError(
+            f"Unexpected response while getting snap {snap}: "
+            f"HTTP {response.status_code}"
+        )
 
     async def is_snap_installed(self, snap: str) -> bool:
         """
@@ -81,10 +143,7 @@ class SnapsEndpoints:
         :rtype: bool
         """
 
-        snap_info = await self.get_snap_info(snap)
-        if snap_info.status == "OK":
-            return True
-        return False
+        return await self.get_installed_snap(snap) is not None
 
     async def install_snap(
         self,
@@ -97,6 +156,7 @@ class SnapsEndpoints:
         revision: int = None,
         filename: str = None,
         wait: bool = False,
+        timeout: float | None = None,
     ) -> AsyncResponse | ChangesResponse:
         """
         Install or sideload a snap.
@@ -121,6 +181,8 @@ class SnapsEndpoints:
         :type filename: str, optional
         :param wait: Whether to wait for snap to install. If not waiting, will return async response with change id, defaults to False.
         :type wait: bool, optional
+        :param timeout: Maximum number of seconds to wait for the install to finish, defaults to None (wait forever).
+        :type timeout: float, optional
 
         :raises FileNotFoundError: If the specified snap file does not exist.
         :raises ValueError: If attempting to sideload without the dangerous flag set to True.
@@ -160,24 +222,7 @@ class SnapsEndpoints:
             )
         response = AsyncResponse.model_validate_json(raw_response.content)
         if wait:
-            changes_id = response.change
-            previous_changes = None
-            while True:
-                try:
-                    changes = await self._client.get_changes_by_id(changes_id)
-                    logger.debug("Progress: %s", changes.result.overall_progress)
-                except httpx.HTTPError:
-                    if going_to_reload_daemon(previous_changes):
-                        logger.debug("Waiting for daemon to reload")
-                        changes = previous_changes
-
-                if changes.ready:
-                    break
-                if changes.result.err:
-                    raise SnapdAPIError(f"Error in snap install: {changes.result.err}")
-                await asyncio.sleep(0.1)
-                previous_changes = changes
-            return changes
+            return await self._wait_for_change(response.change, timeout=timeout)
         return response
 
     async def remove_snap(
@@ -186,6 +231,7 @@ class SnapsEndpoints:
         purge: bool = False,
         terminate: bool = False,
         wait: bool = False,
+        timeout: float | None = None,
     ) -> AsyncResponse | ChangesResponse:
         """
         Asynchronously removes a snap package.
@@ -198,6 +244,8 @@ class SnapsEndpoints:
         :type terminate: bool, optional
         :param wait: If True, waits for the removal process to complete. Defaults to False.
         :type wait: bool, optional
+        :param timeout: Maximum number of seconds to wait for the removal to finish, defaults to None (wait forever).
+        :type timeout: float, optional
 
         :returns: The response from the snapd API, either an asynchronous response or a changes response if waiting for completion.
         :rtype: AsyncResponse | ChangesResponse
@@ -216,23 +264,7 @@ class SnapsEndpoints:
         response = AsyncResponse.model_validate_json(raw_response.content)
 
         if wait:
-            changes_id = response.change
-            previous_changes = None
-            while True:
-                try:
-                    changes = await self._client.get_changes_by_id(changes_id)
-                except httpx.HTTPError:
-                    if going_to_reload_daemon(previous_changes):
-                        logger.debug("Waiting for daemon to reload")
-                        await asyncio.sleep(0.1)
-                        continue
-                if changes.ready:
-                    break
-                if changes.result.err:
-                    raise SnapdAPIError(f"Error in snap remove: {changes.result.err}")
-                await asyncio.sleep(0.1)
-                previous_changes = changes
-            return changes
+            return await self._wait_for_change(response.change, timeout=timeout)
 
         return response
 
@@ -248,6 +280,7 @@ class SnapsEndpoints:
         revision: int = None,
         filename: str = None,
         wait: bool = False,
+        timeout: float | None = None,
     ) -> AsyncResponse | ChangesResponse:
         """
         Refreshes a snap package.
@@ -272,6 +305,8 @@ class SnapsEndpoints:
         :type filename: str, optional
         :param wait: Whether to wait for the refresh operation to complete. Defaults to False.
         :type wait: bool, optional
+        :param timeout: Maximum number of seconds to wait for the refresh to finish, defaults to None (wait forever).
+        :type timeout: float, optional
 
         :returns: The response from the refresh operation.
         :rtype: AsyncResponse | ChangesResponse
@@ -312,31 +347,14 @@ class SnapsEndpoints:
             )
         response = AsyncResponse.model_validate_json(raw_response.content)
         if wait:
-            changes_id = response.change
-            previous_changes = None
-            while True:
-                try:
-                    changes = await self._client.get_changes_by_id(changes_id)
-                    logger.debug("Progress: %s", changes.result.overall_progress)
-                except httpx.HTTPError:
-                    if going_to_reload_daemon(previous_changes):
-                        logger.debug("Waiting for daemon to reload")
-                        await asyncio.sleep(0.1)
-                        continue
-
-                if changes.ready:
-                    break
-                if changes.result.err:
-                    raise SnapdAPIError(f"Error in snap remove: {changes.result.err}")
-                await asyncio.sleep(0.1)
-                previous_changes = changes
-            return changes
+            return await self._wait_for_change(response.change, timeout=timeout)
         return response
 
     async def disable_snap(
         self,
         snap: str,
         wait: bool = False,
+        timeout: float | None = None,
     ) -> AsyncResponse | ChangesResponse:
         """
         Disables a snap package.
@@ -345,6 +363,8 @@ class SnapsEndpoints:
         :type snap: str
         :param wait: Whether to wait for the disable operation to complete. Defaults to False.
         :type wait: bool, optional
+        :param timeout: Maximum number of seconds to wait for the disable to finish, defaults to None (wait forever).
+        :type timeout: float, optional
 
         :returns: The response from the disable operation.
         :rtype: AsyncResponse | ChangesResponse
@@ -361,28 +381,7 @@ class SnapsEndpoints:
         response = AsyncResponse.model_validate_json(raw_response.content)
 
         if wait:
-            changes_id = response.change
-            previous_changes = None
-            while True:
-                try:
-                    changes = await self._client.get_changes_by_id(changes_id)
-                except httpx.HTTPError:
-                    if going_to_reload_daemon(previous_changes):
-                        logger.debug("Waiting for daemon to reload")
-                        await asyncio.sleep(0.1)
-                        continue
-                    raise
-                if changes.ready:
-                    break
-                if isinstance(changes.result, BaseErrorResult):
-                    raise SnapdAPIError(
-                        f"Error in snap disable: {changes.result.message}"
-                    )
-                if changes.result.err:
-                    raise SnapdAPIError(f"Error in snap disable: {changes.result.err}")
-                await asyncio.sleep(0.1)
-                previous_changes = changes
-            return changes
+            return await self._wait_for_change(response.change, timeout=timeout)
 
         return response
 
@@ -390,6 +389,7 @@ class SnapsEndpoints:
         self,
         snap: str,
         wait: bool = False,
+        timeout: float | None = None,
     ) -> AsyncResponse | ChangesResponse:
         """
         enables a snap package.
@@ -398,6 +398,8 @@ class SnapsEndpoints:
         :type snap: str
         :param wait: Whether to wait for the enable operation to complete. Defaults to False.
         :type wait: bool, optional
+        :param timeout: Maximum number of seconds to wait for the enable to finish, defaults to None (wait forever).
+        :type timeout: float, optional
 
         :returns: The response from the enable operation.
         :rtype: AsyncResponse | ChangesResponse
@@ -414,28 +416,7 @@ class SnapsEndpoints:
         response = AsyncResponse.model_validate_json(raw_response.content)
 
         if wait:
-            changes_id = response.change
-            previous_changes = None
-            while True:
-                try:
-                    changes = await self._client.get_changes_by_id(changes_id)
-                except httpx.HTTPError:
-                    if going_to_reload_daemon(previous_changes):
-                        logger.debug("Waiting for daemon to reload")
-                        await asyncio.sleep(0.1)
-                        continue
-                    raise
-                if changes.ready:
-                    break
-                if isinstance(changes.result, BaseErrorResult):
-                    raise SnapdAPIError(
-                        f"Error in snap enable: {changes.result.message}"
-                    )
-                if changes.result.err:
-                    raise SnapdAPIError(f"Error in snap enable: {changes.result.err}")
-                await asyncio.sleep(0.1)
-                previous_changes = changes
-            return changes
+            return await self._wait_for_change(response.change, timeout=timeout)
 
         return response
 

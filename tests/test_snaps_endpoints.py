@@ -7,7 +7,7 @@ import pytest
 
 from snap_python.client import SnapClient
 from snap_python.schemas.changes import ChangesResponse
-from snap_python.schemas.common import AsyncResponse, BaseErrorResult
+from snap_python.schemas.common import AsyncResponse
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 CODE_DIR = BASE_DIR / "src" / "snap_python"
@@ -96,12 +96,11 @@ async def test_snap_client_install_with_wait(module_scope_client: SnapClient):
 async def test_get_unknown_change(module_scope_client: SnapClient):
     logger.debug("Running test_get_unknown_change")
 
-    bad_response = await module_scope_client.get_changes_by_id("unknown-change-id")
+    # HTTP errors are surfaced instead of being masked as a normal response
+    with pytest.raises(httpx.HTTPStatusError) as exc_info:
+        await module_scope_client.get_changes_by_id("unknown-change-id")
 
-    assert bad_response.status_code == 404
-    assert bad_response.status == "Not Found"
-    assert isinstance(bad_response.result, BaseErrorResult)
-    assert bad_response.type == "error"
+    assert exc_info.value.response.status_code == 404
 
 
 @pytest.mark.asyncio
@@ -136,7 +135,7 @@ async def test_get_snap_info(module_scope_client: SnapClient):
     logger.debug("Running test_get_snap_info")
 
     # install hello-world snap
-    response = await module_scope_client.snaps.install_snap("hello-world", wait=True)
+    await module_scope_client.snaps.install_snap("hello-world", wait=True)
 
     # ensure snap shows up in list_installed_snaps
     installed_snaps = await module_scope_client.snaps.list_installed_snaps()
@@ -151,7 +150,7 @@ async def test_get_snap_info(module_scope_client: SnapClient):
     snap = [snap for snap in installed_snaps.result if snap.name == "hello-world"][0]
 
     # remove snap
-    removal_response = await module_scope_client.snaps.remove_snap(
+    await module_scope_client.snaps.remove_snap(
         "hello-world", purge=True, terminate=True, wait=True
     )
 
@@ -197,9 +196,7 @@ async def install_snap_edgecase_health(module_scope_client: SnapClient):
     logger.debug("Running test_install_snap_edgecase_health")
     microk8s_snap_name = "microk8s"
 
-    response = await module_scope_client.snaps.install_snap(
-        microk8s_snap_name, wait=True
-    )
+    await module_scope_client.snaps.install_snap(microk8s_snap_name, wait=True)
 
     # ensure snap shows up in list_installed_snaps
     installed_snaps = await module_scope_client.snaps.list_installed_snaps()
@@ -214,7 +211,7 @@ async def install_snap_edgecase_health(module_scope_client: SnapClient):
     assert snap_info.result.health is not None
 
     # remove snap
-    removal_response = await module_scope_client.snaps.remove_snap(
+    await module_scope_client.snaps.remove_snap(
         microk8s_snap_name, purge=True, terminate=True, wait=True
     )
 
