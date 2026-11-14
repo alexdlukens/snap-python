@@ -1,20 +1,40 @@
 import asyncio
 import logging
+import time
 from typing import AsyncGenerator
 
 import httpx
-from retry import retry
 
 from snap_python.components.config import ConfigEndpoints
 from snap_python.components.snaps import SnapsEndpoints
 from snap_python.components.store import StoreEndpoints
 from snap_python.schemas.changes import ChangesResponse
-from snap_python.utils import AbstractSnapsClient
+from snap_python.schemas.common import BaseErrorResult
+from snap_python.utils import (
+    IDEMPOTENT_HTTP_METHODS,
+    AbstractSnapsClient,
+    SnapdAPIError,
+    async_retry,
+    is_transient_exception,
+)
 
 SNAPD_SOCKET = "/run/snapd.socket"
 
 logger = logging.getLogger("snap_python.client")
-logger.setLevel(logging.DEBUG)
+
+
+def _is_retryable_request(exc: BaseException, args: tuple, kwargs: dict) -> bool:
+    """Retry predicate for :meth:`SnapClient.request` and :meth:`request_raw`.
+
+    Only idempotent methods are retried: replaying a POST/PUT/DELETE can
+    duplicate side effects (installing a snap twice, for instance).
+    """
+    method = kwargs.get("method")
+    if method is None and len(args) >= 2:
+        method = args[1]
+    if str(method).upper() not in IDEMPOTENT_HTTP_METHODS:
+        return False
+    return is_transient_exception(exc)
 
 
 class SnapClient(AbstractSnapsClient):
@@ -62,7 +82,9 @@ class SnapClient(AbstractSnapsClient):
         )
         self.config = ConfigEndpoints(self)
 
-    @retry(httpx.HTTPError, tries=3, delay=1, backoff=1)
+    @async_retry(
+        httpx.HTTPError, tries=3, delay=1, backoff=1, retry_if=_is_retryable_request
+    )
     async def request(self, method: str, endpoint: str, **kwargs) -> httpx.Response:
         r"""
         Sends an HTTP request to the specified endpoint using the given method and parameters.
@@ -85,12 +107,14 @@ class SnapClient(AbstractSnapsClient):
         response.raise_for_status()
         return response
 
-    @retry(httpx.HTTPError, tries=3, delay=1, backoff=1)
+    @async_retry(
+        httpx.HTTPError, tries=3, delay=1, backoff=1, retry_if=_is_retryable_request
+    )
     async def request_raw(self, method: str, endpoint: str, **kwargs) -> httpx.Response:
         r"""
         Sends an HTTP request using the specified method and endpoint.
 
-        :param method: The HTTP method to use for the request (e.g., 'GET', 'POST').
+        :param method: The HTTP method to use for the request (e.g., 'POST').
         :type method: str
         :param endpoint: The endpoint URL to send the request to.
         :type endpoint: str
@@ -113,12 +137,41 @@ class SnapClient(AbstractSnapsClient):
 
         :returns: The response from the ping request.
         :rtype: httpx.Response
+
+        :raises httpx.HTTPStatusError: If snapd is not reachable or reports an
+            error status.
         """
         response = await self.snapd_client.get(f"{self._base_url}/")
+        response.raise_for_status()
 
         return response
 
-    @retry(httpx.HTTPError, tries=3, delay=0.5)
+    async def is_available(self) -> bool:
+        """
+        Check whether snapd is reachable and healthy.
+
+        :returns: True if snapd answered with a 2xx status, False otherwise.
+        :rtype: bool
+        """
+        try:
+            await self.ping()
+        except httpx.HTTPError as exc:
+            logger.debug("snapd is not available: %s", exc)
+            return False
+        return True
+
+    async def close(self) -> None:
+        """Close the underlying snapd and store HTTP clients."""
+        await self.snapd_client.aclose()
+        await self.store.close()
+
+    async def __aenter__(self) -> "SnapClient":
+        return self
+
+    async def __aexit__(self, exc_type, exc, tb) -> None:
+        await self.close()
+
+    @async_retry(httpx.HTTPError, tries=3, delay=0.5)
     async def get_changes_by_id(self, change_id: str) -> ChangesResponse:
         """
         Asynchronously retrieves changes by their ID.
@@ -132,52 +185,62 @@ class SnapClient(AbstractSnapsClient):
         :raises httpx.HTTPStatusError: If the request results in an HTTP error.
         """
 
-        try:
-            response = await self.request("GET", f"changes/{change_id}")
-        except httpx.HTTPStatusError as e:
-            logger.warning(
-                "Bad response status code for get_changes_by_id: %s",
-                e.response.status_code,
-            )
-            response = e.response
-
+        response = await self.request("GET", f"changes/{change_id}")
         return ChangesResponse.model_validate_json(response.content)
 
     async def get_changes_by_id_generator(
-        self, change_id: str
+        self,
+        change_id: str,
+        timeout: float | None = None,
+        poll_interval: float = 0.5,
     ) -> AsyncGenerator[ChangesResponse, None]:
         """
         Asynchronous generator to fetch changes by change ID.
 
-        This generator continuously requests changes from the server using the provided
-        change ID and yields the response as a ChangesResponse object. It includes error
-        handling for HTTP status errors and adds a small delay between requests to avoid
-        overwhelming the server.
+        Polls snapd and yields every :class:`ChangesResponse` until the change
+        is ready. Error results are raised instead of being yielded silently.
 
         :param change_id: The ID of the change to fetch.
         :type change_id: str
+        :param timeout: Maximum number of seconds to poll. ``None`` polls until
+            the change is ready.
+        :type timeout: float | None
+        :param poll_interval: Seconds between two polls.
+        :type poll_interval: float
 
         :yields: The response object containing the changes.
         :rtype: ChangesResponse
 
-        :raises httpx.HTTPStatusError: If the request fails with an HTTP status error.
+        :raises SnapdAPIError: If the change reports an error or the timeout
+            expires.
+        :raises httpx.HTTPStatusError: If the request fails with an HTTP error.
         """
-        while True:
-            try:
-                response = await self.request("GET", f"changes/{change_id}")
-            except httpx.HTTPStatusError as e:
-                logger.warning(
-                    "Bad response status code for get_changes_by_id: %s",
-                    e.response.status_code,
-                )
-                response = e.response
+        deadline = None if timeout is None else time.monotonic() + timeout
 
-            change_response = ChangesResponse.model_validate_json(response.content)
+        while True:
+            change_response = await self.get_changes_by_id(change_id)
+
+            if isinstance(change_response.result, BaseErrorResult):
+                raise SnapdAPIError(
+                    f"Error waiting for change {change_id}: "
+                    f"{change_response.result.message}"
+                )
+            if change_response.result.err:
+                raise SnapdAPIError(
+                    f"Error waiting for change {change_id}: "
+                    f"{change_response.result.err}"
+                )
+
             yield change_response
 
-            await asyncio.sleep(
-                0.01
-            )  # Add a delay to avoid spamming the server with requests
+            if change_response.ready:
+                return
+
+            if deadline is not None and time.monotonic() >= deadline:
+                raise SnapdAPIError(
+                    f"Timed out after {timeout}s waiting for change {change_id}"
+                )
+            await asyncio.sleep(poll_interval)
 
     async def get_system_info(self) -> dict:
         """
