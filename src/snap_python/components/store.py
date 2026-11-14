@@ -227,11 +227,13 @@ class StoreEndpoints:
         :type query: str, optional
         :param fields: The fields to include in the response.
         :type fields: list[str], optional
-        :param name_startswith: Filter snaps by name prefix.
+        :param name_startswith: Filter snaps by name prefix. Sent on the wire
+            as ``name-startswith``, as required by the store API.
         :type name_startswith: str, optional
         :param architecture: Filter snaps by architecture.
         :type architecture: str, optional
-        :param common_id: Filter snaps by common ID.
+        :param common_id: Filter snaps by common ID. Sent on the wire as
+            ``common-id``, as required by the store API.
         :type common_id: str, optional
         :param category: Filter snaps by category.
         :type category: str, optional
@@ -256,11 +258,13 @@ class StoreEndpoints:
         :raises ValueError: If invalid fields are provided.
         """
         route = "/snaps/find"
+        # The store API uses hyphenated wire names; the Python keyword
+        # arguments stay snake_case for API stability.
         query_dict: dict = {
             "q": query,
-            "name_startswith": name_startswith,
+            "name-startswith": name_startswith,
             "architecture": architecture,
-            "common_id": common_id,
+            "common-id": common_id,
             "category": category,
             "channel": channel,
             "confinement": confinement,
@@ -425,7 +429,7 @@ class StoreEndpoints:
                 raise ValueError(
                     f"Invalid fields. Allowed fields: {VALID_SNAP_REFRESH_FIELDS}"
                 )
-        payload["fields"] = fields
+            payload["fields"] = fields
 
         response = await self.snap_refresh(
             snap_name=snap_name,
@@ -491,7 +495,7 @@ class StoreEndpoints:
                 raise ValueError(
                     f"Invalid fields. Allowed fields: {VALID_SNAP_REFRESH_FIELDS}"
                 )
-        payload["fields"] = fields
+            payload["fields"] = fields
 
         response = await self.snap_refresh(
             snap_name=snap_name,

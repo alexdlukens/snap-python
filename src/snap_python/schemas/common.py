@@ -1,7 +1,7 @@
 from enum import Enum
-from typing import Literal, Optional
+from typing import Any, Literal, Optional
 
-from pydantic import AliasChoices, BaseModel, ConfigDict, Field
+from pydantic import AliasChoices, BaseModel, ConfigDict, Field, field_validator
 
 VALID_SNAP_ARCHITECTURES = [
     "amd64",
@@ -16,7 +16,16 @@ VALID_SNAP_ARCHITECTURES = [
 
 
 class BaseErrorResult(BaseModel):
+    """Error result returned by snapd.
+
+    snapd uses ``kind`` for both ``base`` and ``error`` statuses; ``value``
+    carries the kind-specific payload (a snap name, a validation set, ...).
+    Both are optional because not every endpoint populates them.
+    """
+
     message: str
+    kind: Optional[str] = None
+    value: Any = None
 
 
 class BaseResponse(BaseModel):
@@ -28,12 +37,21 @@ class BaseResponse(BaseModel):
     status: str
 
 
-class SnapBaseVersion(Enum):
+class SnapBaseVersion(str, Enum):
+    """Known snap base versions.
+
+    The store types ``base`` as an arbitrary string and new bases keep
+    appearing (``core26`` was added after this enum was written), so models
+    store the raw string and never reject an unknown base. This enum is kept
+    as a convenience for callers.
+    """
+
     core16 = "core16"
     core18 = "core18"
     core20 = "core20"
     core22 = "core22"
     core24 = "core24"
+    core26 = "core26"
     bare = "bare"
 
 
@@ -84,7 +102,7 @@ class Download(BaseModel):
 class Revision(BaseModel):
     model_config = ConfigDict(exclude_unset=True)
 
-    base: Optional[SnapBaseVersion] = None
+    base: Optional[str] = None
     channel: Optional[str] = None
     common_ids: Optional[list[str]] = Field(
         None, validation_alias=AliasChoices("common-ids", "common_ids")
@@ -94,6 +112,14 @@ class Revision(BaseModel):
     revision: Optional[int | str] = None
     type: Optional[str] = None
     version: Optional[str] = None
+
+    @field_validator("base", mode="before")
+    @classmethod
+    def _base_as_string(cls, value):
+        """Accept any base string, including ones unknown to this library."""
+        if isinstance(value, SnapBaseVersion):
+            return value.value
+        return value
 
 
 class Publisher(BaseModel):

@@ -101,9 +101,13 @@ class SnapsEndpoints:
                     snap,
                     e.response.status_code,
                 )
+                if isinstance(e, SnapdAPIError):
+                    # Already carries the parsed kind/value envelope.
+                    raise
                 raise SnapdAPIError(
                     f"Failed to get info for snap {snap}: "
-                    f"HTTP {e.response.status_code}"
+                    f"HTTP {e.response.status_code}",
+                    response=e.response,
                 ) from e
             logger.debug("Snap %s is not installed (HTTP 404)", snap)
             return SingleInstalledSnapResponse.model_validate_json(e.response.content)
@@ -145,10 +149,55 @@ class SnapsEndpoints:
 
         return await self.get_installed_snap(snap) is not None
 
+    @staticmethod
+    def _sideload_form_data(
+        filename: str,
+        channel: str | None = None,
+        classic: bool = False,
+        dangerous: bool = False,
+        devmode: bool = False,
+        jailmode: bool = False,
+    ) -> dict[str, str]:
+        """Build the multipart form snapd honors for a sideload.
+
+        The daemon's multipart handler (``sideloadOrTrySnap`` in
+        ``daemon/api_sideload_n_try.go``) only special-cases ``action ==
+        "try"``; every other action is a path install. These field names match
+        what snapd's own client writes (``client/snap_op.go``).
+
+        :param filename: Path to the snap file, sent as ``snap-path``.
+        :type filename: str
+        :param channel: Optional channel to send with the sideload.
+        :type channel: str, optional
+        :param classic: Whether to request classic confinement.
+        :type classic: bool
+        :param dangerous: Whether to allow unasserted snaps.
+        :type dangerous: bool
+        :param devmode: Whether to request devmode.
+        :type devmode: bool
+        :param jailmode: Whether to request jailmode.
+        :type jailmode: bool
+
+        :returns: Form fields to send alongside the ``snap`` file part.
+        :rtype: dict[str, str]
+        """
+        form_data = {"action": "install", "snap-path": filename}
+        if channel is not None:
+            form_data["channel"] = channel
+        for key, value in (
+            ("classic", classic),
+            ("dangerous", dangerous),
+            ("devmode", devmode),
+            ("jailmode", jailmode),
+        ):
+            if value:
+                form_data[key] = "true"
+        return form_data
+
     async def install_snap(
         self,
         snap: str,
-        channel: str = "stable",
+        channel: str | None = None,
         classic: bool = False,
         dangerous: bool = False,
         devmode: bool = False,
@@ -162,10 +211,14 @@ class SnapsEndpoints:
         Install or sideload a snap.
 
         To sideload a snap, provide the filename parameter with the path to the snap file.
+        snapd accepts a locally injected snap whose assertion is valid without
+        ``dangerous``; that flag is only needed for unasserted snaps and is
+        passed through untouched.
 
         :param snap: Name of the snap to install.
         :type snap: str
-        :param channel: Channel to install, defaults to "stable".
+        :param channel: Channel to install from. None (default) lets snapd use
+            its own default channel.
         :type channel: str, optional
         :param classic: Install with classic confinement, defaults to False.
         :type classic: bool, optional
@@ -185,7 +238,6 @@ class SnapsEndpoints:
         :type timeout: float, optional
 
         :raises FileNotFoundError: If the specified snap file does not exist.
-        :raises ValueError: If attempting to sideload without the dangerous flag set to True.
         :raises SnapdAPIError: If there is an error during the snap install.
 
         :returns: If wait is True, will return ChangesResponse. Otherwise, will return AsyncResponse.
@@ -193,28 +245,35 @@ class SnapsEndpoints:
         """
         request_data = {
             "action": "install",
-            "channel": channel,
             "classic": classic,
             "dangerous": dangerous,
             "devmode": devmode,
             "jailmode": jailmode,
         }
+        if channel is not None:
+            request_data["channel"] = channel
         if revision:
             request_data["revision"] = revision
         if filename:
             # sideload
-            if not Path(filename).exists():
+            snap_path = Path(filename)
+            if not snap_path.exists():
                 raise FileNotFoundError(f"File {filename} does not exist")
-            if request_data.get("dangerous") is not True:
-                raise ValueError(
-                    "Cannot sideload snap without dangerous flag set to True"
-                )
-            raw_response: httpx.Response = await self._client.request(
-                "POST",
-                f"{self.common_endpoint}",
-                data=request_data,
-                files={"snap": open(filename, "rb")},
+            form_data = self._sideload_form_data(
+                filename=str(snap_path),
+                channel=channel,
+                classic=classic,
+                dangerous=dangerous,
+                devmode=devmode,
+                jailmode=jailmode,
             )
+            with open(snap_path, "rb") as snap_file:
+                raw_response: httpx.Response = await self._client.request(
+                    "POST",
+                    f"{self.common_endpoint}",
+                    data=form_data,
+                    files={"snap": (snap_path.name, snap_file)},
+                )
         else:
             # install from default snap store
             raw_response: httpx.Response = await self._client.request(
@@ -271,7 +330,7 @@ class SnapsEndpoints:
     async def refresh_snap(
         self,
         snap: str,
-        channel: str = "stable",
+        channel: str | None = None,
         classic: bool = False,
         dangerous: bool = False,
         devmode: bool = False,
@@ -287,7 +346,8 @@ class SnapsEndpoints:
 
         :param snap: The name of the snap package to refresh.
         :type snap: str
-        :param channel: The channel to refresh the snap from. Defaults to "stable".
+        :param channel: Channel to refresh from. None (default) keeps the
+            currently tracked channel.
         :type channel: str, optional
         :param classic: Whether to use classic confinement. Defaults to False.
         :type classic: bool, optional
@@ -312,36 +372,44 @@ class SnapsEndpoints:
         :rtype: AsyncResponse | ChangesResponse
 
         :raises FileNotFoundError: If the specified snap file does not exist.
-        :raises ValueError: If attempting to sideload without the dangerous flag set to True.
         :raises SnapdAPIError: If there is an error during the snap refresh.
         """
         request_data = {
             "action": "refresh",
-            "channel": channel,
             "classic": classic,
             "dangerous": dangerous,
             "devmode": devmode,
             "ignore_validation": ignore_validation,
             "jailmode": jailmode,
         }
+        if channel is not None:
+            request_data["channel"] = channel
         if revision:
             request_data["revision"] = revision
         if filename:
-            # sideload
-            if not Path(filename).exists():
+            # Sideload. The daemon's multipart handler only treats
+            # action == "try" specially; every other value is a path install,
+            # so use "install" here instead of "refresh".
+            snap_path = Path(filename)
+            if not snap_path.exists():
                 raise FileNotFoundError(f"File {filename} does not exist")
-            if request_data.get("dangerous") is not True:
-                raise ValueError(
-                    "Cannot sideload snap without dangerous flag set to True"
-                )
-            raw_response: httpx.Response = await self._client.request(
-                "POST",
-                f"{self.common_endpoint}",
-                data=request_data,
-                files={"snap": open(filename, "rb")},
+            form_data = self._sideload_form_data(
+                filename=str(snap_path),
+                channel=channel,
+                classic=classic,
+                dangerous=dangerous,
+                devmode=devmode,
+                jailmode=jailmode,
             )
+            with open(snap_path, "rb") as snap_file:
+                raw_response: httpx.Response = await self._client.request(
+                    "POST",
+                    f"{self.common_endpoint}",
+                    data=form_data,
+                    files={"snap": (snap_path.name, snap_file)},
+                )
         else:
-            # install from default snap store
+            # refresh from default snap store
             raw_response: httpx.Response = await self._client.request(
                 "POST", f"{self.common_endpoint}/{snap}", json=request_data
             )

@@ -37,8 +37,46 @@ def _is_retryable_request(exc: BaseException, args: tuple, kwargs: dict) -> bool
     return is_transient_exception(exc)
 
 
+def _snapd_error_from_response(response: httpx.Response) -> SnapdAPIError | None:
+    """Build a :class:`SnapdAPIError` from a snapd error envelope.
+
+    snapd reports failures as
+    ``{"type": "error", "status-code": N, "result": {"message", "kind", "value"}}``.
+    Returns ``None`` when the body is not such an envelope, so callers can fall
+    back to :meth:`httpx.Response.raise_for_status`.
+    """
+    try:
+        body = response.json()
+    except ValueError:
+        return None
+    if not isinstance(body, dict) or body.get("type") != "error":
+        return None
+    result = body.get("result")
+    if not isinstance(result, dict):
+        return None
+
+    request = response.request
+    request_desc = (
+        f"{request.method} {request.url}" if request is not None else "snapd request"
+    )
+    detail = result.get("message") or "snapd returned an error"
+    return SnapdAPIError(
+        f"HTTP {response.status_code} for {request_desc}: {detail}",
+        status_code=response.status_code,
+        kind=result.get("kind"),
+        value=result.get("value"),
+        response=response,
+    )
+
+
 class SnapClient(AbstractSnapsClient):
-    """Core class for interacting with the Snap Store and Snapd."""
+    """Core class for interacting with the Snap Store and Snapd.
+
+    :param timeout: Timeout applied to every snapd request, in seconds or as an
+        :class:`httpx.Timeout`. ``None`` disables the timeout (httpx interprets
+        it that way), which is useful for large sideloads. Defaults to 60.0;
+        httpx's own 5 second default is too short for uploads.
+    """
 
     def __init__(
         self,
@@ -48,6 +86,7 @@ class SnapClient(AbstractSnapsClient):
         store_base_url: str = "https://api.snapcraft.io",
         store_headers: dict[str, str] = None,
         prompt_for_authentication: bool = False,
+        timeout: float | httpx.Timeout | None = 60.0,
     ):
         if tcp_location and snapd_socket_location:
             raise ValueError(
@@ -72,7 +111,7 @@ class SnapClient(AbstractSnapsClient):
         self.store_base_url = store_base_url
         self.store_headers = store_headers
         self.snapd_client = httpx.AsyncClient(
-            transport=self._transport, headers=self.snapd_headers
+            transport=self._transport, headers=self.snapd_headers, timeout=timeout
         )
         self.snaps = SnapsEndpoints(self)
         self.store = StoreEndpoints(
@@ -98,12 +137,19 @@ class SnapClient(AbstractSnapsClient):
         :returns: The response object from the HTTP request.
         :rtype: httpx.Response
 
-        :raises httpx.HTTPStatusError: If the response contains an HTTP status code indicating an error.
+        :raises SnapdAPIError: If snapd answered with an error envelope; the
+            parsed ``kind`` and ``value`` are available on the exception.
+        :raises httpx.HTTPStatusError: If the response contains an HTTP status
+            code indicating an error and the body is not a snapd envelope.
         """
 
         response = await self.snapd_client.request(
             method, f"{self._base_url}/{self.version}/{endpoint}", **kwargs
         )
+        if response.is_error:
+            snapd_error = _snapd_error_from_response(response)
+            if snapd_error is not None:
+                raise snapd_error
         response.raise_for_status()
         return response
 
@@ -123,11 +169,18 @@ class SnapClient(AbstractSnapsClient):
         :returns: The response object resulting from the HTTP request.
         :rtype: httpx.Response
 
-        :raises httpx.HTTPStatusError: If the response contains an HTTP status code indicating an error.
+        :raises SnapdAPIError: If snapd answered with an error envelope; the
+            parsed ``kind`` and ``value`` are available on the exception.
+        :raises httpx.HTTPStatusError: If the response contains an HTTP status
+            code indicating an error and the body is not a snapd envelope.
         """
 
         response = await self.snapd_client.request(method, endpoint, **kwargs)
 
+        if response.is_error:
+            snapd_error = _snapd_error_from_response(response)
+            if snapd_error is not None:
+                raise snapd_error
         response.raise_for_status()
         return response
 

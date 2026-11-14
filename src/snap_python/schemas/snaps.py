@@ -1,6 +1,12 @@
 from typing import Optional
 
-from pydantic import AliasChoices, AwareDatetime, BaseModel, Field
+from pydantic import (
+    AliasChoices,
+    AwareDatetime,
+    BaseModel,
+    ConfigDict,
+    Field,
+)
 
 from snap_python.schemas.common import (
     BaseErrorResult,
@@ -19,16 +25,101 @@ class SnapHealth(BaseModel):
     timestamp: AwareDatetime
 
 
+class SnapRefreshInhibit(BaseModel):
+    """A pending refresh for a running snap."""
+
+    proceed_time: AwareDatetime = Field(
+        validation_alias=AliasChoices("proceed-time", "proceed_time"),
+        serialization_alias="proceed-time",
+    )
+
+
+class SnapRefreshFailures(BaseModel):
+    """Information about failed refresh attempts for a snap."""
+
+    revision: Optional[int | str] = None
+    failure_count: int = Field(
+        validation_alias=AliasChoices("failure-count", "failure_count"),
+        serialization_alias="failure-count",
+    )
+    last_failure_time: AwareDatetime = Field(
+        validation_alias=AliasChoices("last-failure-time", "last_failure_time"),
+        serialization_alias="last-failure-time",
+    )
+    last_failure_severity: Optional[str] = Field(
+        None,
+        validation_alias=AliasChoices("last-failure-severity", "last_failure_severity"),
+        serialization_alias="last-failure-severity",
+    )
+
+
+class SnapComponent(BaseModel):
+    """A component shipped with an installed snap."""
+
+    model_config = ConfigDict(exclude_unset=True)
+
+    name: str
+    type: Optional[str] = None
+    version: Optional[str] = None
+    summary: Optional[str] = None
+    description: Optional[str] = None
+    revision: Optional[int | str] = None
+    installed_size: Optional[int] = Field(
+        None,
+        validation_alias=AliasChoices("installed-size", "installed_size"),
+        serialization_alias="installed-size",
+    )
+    install_date: Optional[AwareDatetime] = Field(
+        None,
+        validation_alias=AliasChoices("install-date", "install_date"),
+        serialization_alias="install-date",
+    )
+
+
+class ChannelSnapInfo(BaseModel):
+    """A flattened ``track/risk`` entry from a snap's channel map."""
+
+    model_config = ConfigDict(exclude_unset=True)
+
+    revision: Optional[int | str] = None
+    confinement: Optional[str] = None
+    version: Optional[str] = None
+    channel: Optional[str] = None
+    epoch: Optional[dict] = None
+    size: Optional[int] = None
+    released_at: Optional[AwareDatetime] = Field(
+        None,
+        validation_alias=AliasChoices("released-at", "released_at"),
+        serialization_alias="released-at",
+    )
+
+
 class InstalledSnapFields(Revision):
     apps: list[SnapApp] = Field(default_factory=list)
+    broken: Optional[str] = None
+    channels: Optional[dict[str, ChannelSnapInfo]] = None
+    cohort_key: Optional[str] = Field(
+        default=None,
+        validation_alias=AliasChoices("cohort-key", "cohort_key"),
+        serialization_alias="cohort-key",
+    )
+    components: list[SnapComponent] = Field(default_factory=list)
     developer: Optional[str] = None
     devmode: Optional[bool] = None
+    gating_hold: Optional[AwareDatetime] = Field(
+        default=None,
+        validation_alias=AliasChoices("gating-hold", "gating_hold"),
+        serialization_alias="gating-hold",
+    )
+    grade: Optional[str] = None
     health: Optional[SnapHealth] = None
+    hold: Optional[AwareDatetime] = None
     icon: Optional[str] = None
     id: Optional[str] = Field(
         None, validation_alias=AliasChoices("id", "snap-id"), serialization_alias="id"
     )
     ignore_validation: bool = Field(
+        default=False,
         validation_alias=AliasChoices("ignore-validation", "ignore_validation"),
         serialization_alias="ignore-validation",
     )
@@ -37,21 +128,35 @@ class InstalledSnapFields(Revision):
         validation_alias=AliasChoices("install-date", "install_date"),
         serialization_alias="install-date",
     )
-    installed_size: int = Field(
+    installed_size: Optional[int] = Field(
+        default=None,
         validation_alias=AliasChoices("installed-size", "installed_size"),
         serialization_alias="installed-size",
     )
-    jailmode: bool
-    mounted_from: str = Field(
+    jailmode: bool = False
+    mounted_from: Optional[str] = Field(
+        default=None,
         validation_alias=AliasChoices("mounted-from", "mounted_from"),
         serialization_alias="mounted-from",
     )
-    status: str
+    refresh_failures: Optional[SnapRefreshFailures] = Field(
+        default=None,
+        validation_alias=AliasChoices("refresh-failures", "refresh_failures"),
+        serialization_alias="refresh-failures",
+    )
+    refresh_inhibit: Optional[SnapRefreshInhibit] = Field(
+        default=None,
+        validation_alias=AliasChoices("refresh-inhibit", "refresh_inhibit"),
+        serialization_alias="refresh-inhibit",
+    )
+    status: Optional[str] = None
     tracking_channel: Optional[str] = Field(
         validation_alias=AliasChoices("tracking-channel", "tracking_channel"),
         serialization_alias="tracking-channel",
         default=None,
     )
+    tracks: list[str] = Field(default_factory=list)
+    trymode: bool = False
 
 
 class StoreSnapFields(BaseModel):

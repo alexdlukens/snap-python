@@ -3,7 +3,7 @@ import functools
 import logging
 import time
 from abc import ABC, abstractmethod
-from typing import Awaitable, Callable, TypeVar
+from typing import Any, Awaitable, Callable, TypeVar
 
 import httpx
 
@@ -29,12 +29,40 @@ TRANSIENT_EXCEPTIONS: tuple[type[BaseException], ...] = (
 RetryPredicate = Callable[[BaseException, tuple, dict], bool]
 
 
-class SnapdAPIError(Exception):
-    """
-    General Exception raised for errors in the Snapd API.
+class SnapdAPIError(httpx.HTTPStatusError):
+    """Error raised for a non-2xx response from snapd.
+
+    Subclasses :class:`httpx.HTTPStatusError` so retry predicates and existing
+    ``except httpx.HTTPStatusError`` handlers keep working, while exposing the
+    parsed snapd error envelope (``kind`` and ``value``).
+
+    :param message: Human readable error message.
+    :param status_code: HTTP status code of the response, when there is one.
+    :param kind: snapd error kind, for example ``snap-change-conflict``.
+    :param value: Kind-specific payload from the snapd error envelope.
+    :param request: Request that produced the error, when known.
+    :param response: Response that produced the error, when known.
     """
 
-    pass
+    def __init__(
+        self,
+        message: str,
+        *,
+        status_code: int | None = None,
+        kind: str | None = None,
+        value: Any = None,
+        request: httpx.Request | None = None,
+        response: httpx.Response | None = None,
+    ) -> None:
+        if response is not None and request is None:
+            request = response.request
+        if status_code is None and response is not None:
+            status_code = response.status_code
+        super().__init__(message, request=request, response=response)
+        self.status_code = status_code
+        self.kind = kind
+        self.value = value
+        self.message = message
 
 
 def is_transient_exception(exc: BaseException) -> bool:
@@ -44,6 +72,8 @@ def is_transient_exception(exc: BaseException) -> bool:
     cannot succeed and only delays surfacing the error to the caller.
     """
     if isinstance(exc, httpx.HTTPStatusError):
+        if exc.response is None:
+            return False
         return exc.response.status_code in TRANSIENT_HTTP_STATUS_CODES
     return isinstance(exc, TRANSIENT_EXCEPTIONS)
 

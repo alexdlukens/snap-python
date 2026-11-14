@@ -1,4 +1,5 @@
 import pathlib
+from types import SimpleNamespace
 from unittest.mock import AsyncMock
 
 import httpx
@@ -147,3 +148,72 @@ async def test_get_snap_details_returns_raw_dict(store: StoreEndpoints):
     details = await store.get_snap_details("hello-world")
 
     assert details == payload
+
+
+@pytest.mark.asyncio
+async def test_find_sends_documented_hyphenated_wire_params(store: StoreEndpoints):
+    store.store_client.get = AsyncMock(return_value=make_response(200, SEARCH_BODY))
+
+    await store.find(
+        query="hello",
+        name_startswith="hello-world",
+        common_id="org.kde.krita",
+    )
+
+    params = store.store_client.get.await_args.kwargs["params"]
+    assert params["name-startswith"] == "hello-world"
+    assert params["common-id"] == "org.kde.krita"
+    assert "name_startswith" not in params
+    assert "common_id" not in params
+
+
+REFRESH_BODY = {
+    "results": [
+        {
+            "name": "store-tui",
+            "snap": {"name": "store-tui"},
+            "instance-key": "instance-key",
+            "result": "download",
+            "snap-id": "store-tui-snap-id",
+        }
+    ]
+}
+
+
+async def _call_revision_info(store: StoreEndpoints, method_name: str, **kwargs):
+    store.get_snap_info = AsyncMock(
+        return_value=SimpleNamespace(
+            snap_id="store-tui-snap-id",
+            channel_map=[SimpleNamespace(revision=29)],
+        )
+    )
+    store.snap_refresh = AsyncMock(return_value=make_response(200, REFRESH_BODY))
+    if method_name == "get_snap_revision_info":
+        await store.get_snap_revision_info("store-tui", 20, "amd64", **kwargs)
+    else:
+        await store.get_many_snap_revision_info("store-tui", 20, 22, "amd64", **kwargs)
+    return store.snap_refresh.await_args.kwargs["payload"]
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "method_name", ["get_snap_revision_info", "get_many_snap_revision_info"]
+)
+async def test_revision_info_omits_fields_when_none(
+    store: StoreEndpoints, method_name: str
+):
+    payload = await _call_revision_info(store, method_name)
+
+    assert "fields" not in payload
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "method_name", ["get_snap_revision_info", "get_many_snap_revision_info"]
+)
+async def test_revision_info_sends_fields_when_supplied(
+    store: StoreEndpoints, method_name: str
+):
+    payload = await _call_revision_info(store, method_name, fields=["name"])
+
+    assert payload["fields"] == ["name"]

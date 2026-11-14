@@ -1,9 +1,12 @@
+import asyncio
+
 import httpx
 import pytest
 
+from snap_python.client import SnapClient
 from snap_python.components.snaps import SnapsEndpoints
 from snap_python.schemas.common import BaseErrorResult
-from snap_python.schemas.snaps import InstalledSnap
+from snap_python.schemas.snaps import InstalledSnap, SingleInstalledSnapResponse
 from snap_python.utils import AbstractSnapsClient, SnapdAPIError
 
 NOT_FOUND_BODY = {
@@ -132,3 +135,110 @@ async def test_get_installed_snap_returns_model():
     assert isinstance(result, InstalledSnap)
     assert result.name == "hello-world"
     assert await snaps.is_snap_installed("hello-world") is True
+
+
+CONFLICT_BODY = {
+    "status-code": 409,
+    "type": "error",
+    "status": "Conflict",
+    "result": {
+        "message": 'snap "hello-world" has "install" change in progress',
+        "kind": "snap-change-conflict",
+        "value": {"snap-names": ["hello-world"]},
+    },
+}
+
+
+def make_client(handler) -> SnapClient:
+    """Build a SnapClient whose snapd transport is a MockTransport."""
+    client = SnapClient(version="v2")
+    client.snapd_client = httpx.AsyncClient(transport=httpx.MockTransport(handler))
+    return client
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("use_raw", [False, True])
+async def test_request_exposes_snapd_error_kind_and_value(use_raw: bool):
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(409, json=CONFLICT_BODY)
+
+    client = make_client(handler)
+
+    with pytest.raises(SnapdAPIError) as exc_info:
+        if use_raw:
+            await client.request_raw("GET", "http://localhost/v2/snaps/hello-world")
+        else:
+            await client.request("GET", "snaps/hello-world")
+
+    error = exc_info.value
+    assert isinstance(error, httpx.HTTPStatusError)
+    assert error.status_code == 409
+    assert error.kind == "snap-change-conflict"
+    assert error.value == {"snap-names": ["hello-world"]}
+    assert error.response is not None
+    assert error.response.status_code == 409
+    assert "http://localhost/v2/snaps/hello-world" in str(error)
+
+
+@pytest.mark.asyncio
+async def test_request_falls_back_to_http_status_error_for_non_json_500(monkeypatch):
+    async def fake_sleep(delay):
+        return None
+
+    monkeypatch.setattr(asyncio, "sleep", fake_sleep)
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(500, text="<html>not a snapd envelope</html>")
+
+    client = make_client(handler)
+
+    with pytest.raises(httpx.HTTPStatusError) as exc_info:
+        await client.request("GET", "snaps")
+
+    assert not isinstance(exc_info.value, SnapdAPIError)
+    assert exc_info.value.response.status_code == 500
+
+
+def test_error_result_parses_kind_and_value():
+    body = {
+        "status-code": 404,
+        "type": "error",
+        "status": "Not Found",
+        "result": {
+            "message": 'snap "banana" is not installed',
+            "kind": "snap-not-installed",
+            "value": "banana",
+        },
+    }
+
+    response = SingleInstalledSnapResponse.model_validate(body)
+
+    assert isinstance(response.result, BaseErrorResult)
+    assert response.result.kind == "snap-not-installed"
+    assert response.result.value == "banana"
+
+
+@pytest.mark.asyncio
+async def test_get_snap_info_returns_error_model_for_enveloped_404():
+    body = {
+        "status-code": 404,
+        "type": "error",
+        "status": "Not Found",
+        "result": {
+            "message": 'snap "banana" is not installed',
+            "kind": "snap-not-installed",
+            "value": "banana",
+        },
+    }
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(404, json=body)
+
+    client = make_client(handler)
+
+    response = await client.snaps.get_snap_info("banana")
+
+    assert response.status_code == 404
+    assert isinstance(response.result, BaseErrorResult)
+    assert response.result.kind == "snap-not-installed"
+    assert response.result.value == "banana"
