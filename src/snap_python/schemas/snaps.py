@@ -213,6 +213,11 @@ class SnapAppInfo(BaseModel):
         serialization_alias="desktop-file",
     )
     daemon: Optional[str] = None
+    daemon_scope: Optional[str] = Field(
+        default=None,
+        validation_alias=AliasChoices("daemon-scope", "daemon_scope"),
+        serialization_alias="daemon-scope",
+    )
     enabled: Optional[bool] = None
     active: Optional[bool] = None
     common_id: Optional[str] = Field(

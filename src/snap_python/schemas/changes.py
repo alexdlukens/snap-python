@@ -20,6 +20,7 @@ class Task(BaseModel):
     summary: str
     status: str
     progress: ProgressInfo
+    log: list[str] | None = None
     spawn_time: AwareDatetime = Field(
         validation_alias=AliasChoices("spawn-time", "spawn_time"),
         serialization_alias="spawn-time",
@@ -37,7 +38,9 @@ class ChangesResult(BaseModel):
     kind: str
     summary: str
     status: str
-    tasks: list[Task]
+    # snapd tags tasks with ``omitempty``, and taskless changes exist: a
+    # repeated connect, or any change whose tasks have not been built yet.
+    tasks: list[Task] = Field(default_factory=list)
     ready: bool
     spawn_time: AwareDatetime = Field(
         validation_alias=AliasChoices("spawn-time", "spawn_time"),
@@ -70,3 +73,20 @@ class ChangesResponse(BaseResponse):
         if isinstance(self.result, BaseErrorResult):
             return True
         return self.result.ready
+
+
+class ChangesListResponse(BaseResponse):
+    """Response of ``GET /v2/changes``.
+
+    snapd always returns a JSON array, empty rather than ``null`` when no
+    change matches, so :attr:`changes` is never ``None``.
+    """
+
+    result: list[ChangesResult] | BaseErrorResult
+    maintenance: MaintenanceInfo | None = None
+
+    @property
+    def changes(self) -> list[ChangesResult]:
+        if isinstance(self.result, BaseErrorResult):
+            return []
+        return self.result

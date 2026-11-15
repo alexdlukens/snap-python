@@ -1,15 +1,15 @@
-import asyncio
 import logging
-import time
 from typing import AsyncGenerator
 
 import httpx
 
+from snap_python.components.changes import ChangeEndpoints
 from snap_python.components.config import ConfigEndpoints
+from snap_python.components.interfaces import InterfacesEndpoints
+from snap_python.components.logs import LogsEndpoints
 from snap_python.components.snaps import SnapsEndpoints
 from snap_python.components.store import StoreEndpoints
 from snap_python.schemas.changes import ChangesResponse
-from snap_python.schemas.common import BaseErrorResult
 from snap_python.utils import (
     IDEMPOTENT_HTTP_METHODS,
     AbstractSnapsClient,
@@ -120,6 +120,21 @@ class SnapClient(AbstractSnapsClient):
             headers=self.store_headers,
         )
         self.config = ConfigEndpoints(self)
+        self.changes = ChangeEndpoints(self)
+        self.interfaces = InterfacesEndpoints(self)
+        self.logs = LogsEndpoints(self)
+
+    def endpoint_url(self, endpoint: str) -> str:
+        """
+        Build the absolute URL of a snapd ``/v2`` endpoint.
+
+        :param endpoint: Endpoint relative to ``/v2/``, for example ``"logs"``.
+        :type endpoint: str
+
+        :returns: The absolute URL, using the configured base URL and version.
+        :rtype: str
+        """
+        return f"{self._base_url}/{self.version}/{endpoint}"
 
     @async_retry(
         httpx.HTTPError, tries=3, delay=1, backoff=1, retry_if=_is_retryable_request
@@ -144,7 +159,7 @@ class SnapClient(AbstractSnapsClient):
         """
 
         response = await self.snapd_client.request(
-            method, f"{self._base_url}/{self.version}/{endpoint}", **kwargs
+            method, self.endpoint_url(endpoint), **kwargs
         )
         if response.is_error:
             snapd_error = _snapd_error_from_response(response)
@@ -224,10 +239,11 @@ class SnapClient(AbstractSnapsClient):
     async def __aexit__(self, exc_type, exc, tb) -> None:
         await self.close()
 
-    @async_retry(httpx.HTTPError, tries=3, delay=0.5)
     async def get_changes_by_id(self, change_id: str) -> ChangesResponse:
         """
         Asynchronously retrieves changes by their ID.
+
+        Thin delegate to :meth:`snap_python.components.changes.ChangeEndpoints.get`.
 
         :param change_id: The ID of the change to retrieve.
         :type change_id: str
@@ -237,9 +253,7 @@ class SnapClient(AbstractSnapsClient):
 
         :raises httpx.HTTPStatusError: If the request results in an HTTP error.
         """
-
-        response = await self.request("GET", f"changes/{change_id}")
-        return ChangesResponse.model_validate_json(response.content)
+        return await self.changes.get(change_id)
 
     async def get_changes_by_id_generator(
         self,
@@ -250,8 +264,10 @@ class SnapClient(AbstractSnapsClient):
         """
         Asynchronous generator to fetch changes by change ID.
 
-        Polls snapd and yields every :class:`ChangesResponse` until the change
-        is ready. Error results are raised instead of being yielded silently.
+        Thin delegate to
+        :meth:`snap_python.components.changes.ChangeEndpoints.watch`: polls
+        snapd and yields every :class:`ChangesResponse` until the change is
+        ready. Error results are raised instead of being yielded silently.
 
         :param change_id: The ID of the change to fetch.
         :type change_id: str
@@ -268,32 +284,10 @@ class SnapClient(AbstractSnapsClient):
             expires.
         :raises httpx.HTTPStatusError: If the request fails with an HTTP error.
         """
-        deadline = None if timeout is None else time.monotonic() + timeout
-
-        while True:
-            change_response = await self.get_changes_by_id(change_id)
-
-            if isinstance(change_response.result, BaseErrorResult):
-                raise SnapdAPIError(
-                    f"Error waiting for change {change_id}: "
-                    f"{change_response.result.message}"
-                )
-            if change_response.result.err:
-                raise SnapdAPIError(
-                    f"Error waiting for change {change_id}: "
-                    f"{change_response.result.err}"
-                )
-
+        async for change_response in self.changes.watch(
+            change_id, timeout=timeout, poll_interval=poll_interval
+        ):
             yield change_response
-
-            if change_response.ready:
-                return
-
-            if deadline is not None and time.monotonic() >= deadline:
-                raise SnapdAPIError(
-                    f"Timed out after {timeout}s waiting for change {change_id}"
-                )
-            await asyncio.sleep(poll_interval)
 
     async def get_system_info(self) -> dict:
         """
