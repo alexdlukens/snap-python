@@ -10,29 +10,29 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5
       with:
         python-version: '3.12'
 
     - name: Install Poetry
-      run: |
-        curl -sSL https://install.python-poetry.org | python3 -
-        export PATH="$HOME/.local/bin:$PATH"
-
-    - name: Install dependencies
-      run: |
-        poetry install
+      run: pipx install poetry
 
     - name: Build package
       run: |
+        rm -rf dist
         poetry build
+        ls -l dist
+
     - name: Upload release asset
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
         files: dist/*.whl
+
     - name: Publish package
       run: |
-        poetry publish --username ${{ secrets.PYPI_USERNAME }} --password ${{ secrets.PYPI_PASSWORD }}
+        poetry publish --no-interaction \
+          --username "${{ secrets.PYPI_USERNAME }}" \
+          --password "${{ secrets.PYPI_PASSWORD }}"
